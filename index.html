@@ -3,192 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Street Kitchen | RSK Indore</title>
+    <title>Royal Street Kitchen | Indore's Finest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #D4AF37;
-            --dark-gold: #996515;
-            --black: #0a0a0a;
-            --card-bg: #1a1a1a;
+            --gold: #D4AF37; /* Authentic Gold */
+            --dark-gold: #aa882c;
+            --black-bg: #050505;
+            --card-bg: #111111;
+            --font-main: 'Poppins', sans-serif;
+            --font-royal: 'Cinzel', serif; /* Special font for titles */
         }
 
         body { 
             margin: 0; 
             padding: 0; 
-            background-color: var(--black); 
-            color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f1f1f1; 
+            font-family: var(--font-main); 
             text-align: center; 
+            /* Unique Royal Pattern Background using CSS radial gradients */
+            background-color: var(--black-bg);
+            background-image: radial-gradient(var(--gold) 0.5px, transparent 0.5px), radial-gradient(var(--gold) 0.5px, var(--black-bg) 0.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.98;
         }
 
-        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+        .container { 
+            width: 100%; 
+            max-width: 550px; 
+            margin: 0 auto; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            /* Subtle overlay on the container for better readability */
+            background: rgba(0,0,0,0.8);
+            min-height: 100vh;
+        }
 
-        /* Header & Logo */
-        .header { padding: 40px 0 20px 0; }
+        /* Header & Logo with unique font */
+        .header { padding: 50px 0 20px 0; }
         .logo { 
+            font-family: var(--font-royal);
             color: var(--gold); 
-            font-size: 26px; 
-            font-weight: bold; 
+            font-size: 30px; 
+            font-weight: 600; 
             letter-spacing: 3px;
-            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            margin-bottom: 10px;
         }
-        .tagline { color: var(--gold); font-size: 12px; margin-top: 5px; letter-spacing: 1px; opacity: 0.8; }
+        .tagline { 
+            font-family: var(--font-royal);
+            color: #fff; 
+            font-size: 11px; 
+            letter-spacing: 2px; 
+            opacity: 0.7; 
+            margin-top: 5px;
+        }
 
         /* Navigation Tabs Control */
         .nav-tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 25px 0;
-            position: sticky;
-            top: 10px;
-            z-index: 100;
+            gap: 8px;
+            margin: 30px 0;
+            padding: 0 10px;
         }
 
         .tab-link {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 10px 20px;
+            background: var(--card-bg);
+            border: 1px solid #333;
+            color: #aaa;
+            padding: 12px 0;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: bold;
-            border-radius: 30px;
+            flex: 1; /* Stretch to fill space */
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: 0.3s;
+            max-width: 120px;
         }
 
         .tab-link.active {
-            background: var(--gold);
-            color: black;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            background: linear-gradient(180deg, #1a1a1a, #000);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
         }
 
         /* Content Sections Management */
         .content-section { 
             display: none; 
-            animation: fadeIn 0.4s ease-in-out; 
-            min-height: 300px;
+            animation: fadeIn 0.5s ease-in-out; 
+            padding: 0 15px;
         }
         .content-section.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Elements Styling */
-        .banner-img { width: 100%; border-radius: 20px; border: 1px solid var(--gold); margin-bottom: 20px; }
-        
-        .order-btn { 
-            background: linear-gradient(45deg, #25D366, #128C7E);
-            color: white; text-decoration: none; padding: 16px 32px; 
-            border-radius: 50px; font-weight: bold; display: inline-block; 
-            margin: 20px 0; box-shadow: 0 8px 20px rgba(37,211,102,0.3);
+        /* Section Titles */
+        .section-title {
+            font-family: var(--font-royal);
+            color: var(--gold);
+            margin-bottom: 25px;
+            font-size: 20px;
+            letter-spacing: 2px;
         }
 
+        /* HOME Elements */
+        .banner-wrapper { position: relative; margin-bottom: 25px; }
+        .banner-img { 
+            width: 100%; 
+            border-radius: 8px; 
+            border: 2px solid var(--gold); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .banner-overlay-text {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            font-family: var(--font-royal);
+            font-size: 18px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #fff;
+        }
+        
+        .order-btn { 
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: black; 
+            text-decoration: none; 
+            padding: 18px 35px; 
+            border-radius: 4px; 
+            font-weight: 600; 
+            display: inline-block; 
+            margin: 25px 0; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            font-family: var(--font-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .order-btn:hover {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* MENU Elements */
+        .menu-list { text-align: left; }
         .menu-item {
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            text-align: left;
-            border-bottom: 2px solid var(--gold);
+            padding: 18px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
+        .item-main {
+            font-family: var(--font-royal);
+            font-size: 15px;
+            color: #fff;
+        }
+        .item-desc {
+            display: block;
+            font-family: var(--font-main);
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 3px;
+        }
+        .item-price {
+            font-family: var(--font-royal);
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* GALLERY Elements (NEW) */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .gallery-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .gallery-img:hover {
+            border-color: var(--gold);
+            transform: scale(1.03);
+        }
+
+        /* CONTACT Elements */
+        .contact-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 4px;
+            text-align: left;
+            border: 1px solid #222;
+            margin-bottom: 25px;
+        }
+        .contact-info { margin-bottom: 12px; display: flex; align-items: center; gap: 10px;}
+        .icon { color: var(--gold); font-size: 18px;}
 
         .qr-wrapper {
-            background: white;
+            background: #fff;
             padding: 15px;
-            border-radius: 15px;
+            border-radius: 8px;
             display: inline-block;
             margin-top: 15px;
+            border: 2px solid var(--gold);
         }
 
-        footer { margin-top: 50px; font-size: 11px; color: #444; letter-spacing: 1px; }
+        footer { 
+            margin-top: 60px; 
+            padding-bottom: 30px;
+            font-family: var(--font-royal);
+            font-size: 10px; 
+            color: #555; 
+            letter-spacing: 2px; 
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <div class="logo">👑 Royal Street Kitchen</div>
-        <div class="tagline">TASTE THE ROYALTY ON STREETS</div>
+        <div class="logo">Royal Street Kitchen</div>
+        <div class="tagline">INDORE'S STREET ROYALTY</div>
     </div>
 
     <div class="nav-tabs">
         <div class="tab-link active" onclick="showTab('home', this)">HOME</div>
         <div class="tab-link" onclick="showTab('menu', this)">MENU</div>
+        <div class="tab-link" onclick="showTab('gallery', this)">GALLERY</div>
         <div class="tab-link" onclick="showTab('contact', this)">CONTACT</div>
     </div>
 
     <div id="home" class="content-section active">
-        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=80" alt="Food Banner" class="banner-img">
-        <h2 style="color: var(--gold);">Welcome to RSK</h2>
-        <p style="color: #ccc; line-height: 1.6;">Indore's favorite spot for premium street flavors served with a royal touch.</p>
-        <a href="https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER" class="order-btn">
-            ORDER VIA WHATSAPP
-        </a>
-    </div>
-
-    <div id="menu" class="content-section">
-        <h3 style="color: var(--gold);">Our Specialties</h3>
-        <div class="menu-item">
-            <span>🍔 Classic Royal Burger</span>
-            <span style="color: var(--gold);">₹99</span>
-        </div>
-        <div class="menu-item">
-            <span>🍟 Peri Peri Loaded Fries</span>
-            <span style="color: var(--gold);">₹129</span>
-        </div>
-        <div class="menu-item">
-            <span>🥤 Maharaja Cold Coffee</span>
-            <span style="color: var(--gold);">₹79</span>
-        </div>
-        <p style="font-size: 12px; color: #777; margin-top: 20px;">*Prices are subject to change. Check WhatsApp for full menu.</p>
-    </div>
-
-    <div id="contact" class="content-section">
-        <h3 style="color: var(--gold);">Visit / Reach Us</h3>
-        <p>📍 Scheme No. 54, Vijay Nagar, Indore</p>
-        <p>📞 +91 74899 99890</p>
-        
-        <div style="margin-top: 30px;">
-            <p style="font-size: 13px; color: var(--gold);">SCAN TO QUICK ORDER</p>
-            <div class="qr-wrapper">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890" width="150" alt="QR Code">
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        DESIGNED FOR ROYAL STREET KITCHEN | 2024
-    </footer>
-</div>
-
-<script>
-    function showTab(tabId, element) {
-        // Hide all sections
-        var sections = document.getElementsByClassName('content-section');
-        for (var i = 0; i < sections.length; i++) {
-            sections[i].classList.remove('active');
-        }
-
-        // Deactivate all buttons
-        var buttons = document.getElementsByClassName('tab-link');
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].classList.remove('active');
-        }
-
-        // Show selected section and activate button
-        document.getElementById(tabId).classList.add('active');
-        element.classList.add('active');
-        
-        // Scroll to top of container when switching tabs
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-</script>
-
-</body>
-</html>
+        <div class="banner-wrapper">
