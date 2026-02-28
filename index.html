@@ -7,114 +7,133 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --bg: #050505; --card: #111; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; text-align: center; }
-        .container { max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.9); min-height: 100vh; padding: 20px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Poppins', sans-serif; text-align: center; overflow-x: hidden; }
+        .container { max-width: 600px; margin: 0 auto; background: rgba(0,0,0,0.95); min-height: 100vh; padding: 15px; box-sizing: border-box; border-left: 1px solid #222; border-right: 1px solid #222; }
         
-        /* Typography */
-        h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); letter-spacing: 2px; }
-        .logo-text { font-size: 28px; margin-bottom: 5px; text-shadow: 0 0 15px rgba(212,175,55,0.5); }
+        /* Header */
+        .header-section { padding: 30px 0 10px 0; }
+        .main-logo-img { width: 120px; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(212,175,55,0.4)); }
         
-        /* Tabs */
-        .tabs { display: flex; overflow-x: auto; gap: 10px; margin: 20px 0; scrollbar-width: none; }
-        .tab-btn { background: #1a1a1a; border: 1px solid #333; color: #888; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap; }
-        .tab-btn.active { border-color: var(--gold); color: var(--gold); background: #000; }
+        /* Navigation */
+        .nav-scroll { display: flex; overflow-x: auto; gap: 8px; padding: 10px 0; margin-bottom: 20px; scrollbar-width: none; border-bottom: 1px solid #222; }
+        .nav-scroll::-webkit-scrollbar { display: none; }
+        .tab-btn { background: #111; border: 1px solid #333; color: #666; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 600; white-space: nowrap; transition: 0.3s; }
+        .tab-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212,175,55,0.1); }
 
-        .content { display: none; animation: fadeIn 0.5s ease; }
-        .content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section { display: none; animation: slideUp 0.5s ease; }
+        .section.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Styles */
-        .banner { width: 100%; border-radius: 8px; border: 1px solid var(--gold); margin-bottom: 20px; }
-        .menu-cat { text-align: left; margin-top: 25px; border-bottom: 1px solid var(--gold); padding-bottom: 5px; }
-        .item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; }
-        .price { color: var(--gold); font-weight: 600; }
-        .about-box { text-align: left; background: var(--card); padding: 20px; border-radius: 8px; line-height: 1.6; border-left: 4px solid var(--gold); }
-        .trust-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 40px; padding: 20px; border-top: 1px solid #333; }
-        .trust-logos img { height: 50px; filter: grayscale(1) brightness(1.5); transition: 0.3s; }
-        .trust-logos img:hover { filter: none; }
+        .main-img { width: 100%; border-radius: 12px; border: 1px solid var(--gold); margin-bottom: 15px; }
+
+        /* Menu */
+        .menu-grid { text-align: left; }
+        .category-title { color: var(--gold); font-family: 'Cinzel', serif; font-size: 16px; margin: 20px 0 10px 0; border-left: 3px solid var(--gold); padding-left: 10px; background: linear-gradient(to right, rgba(212,175,55,0.1), transparent); }
+        .menu-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; font-size: 13px; }
+        .item-price { color: var(--gold); font-weight: 600; font-family: 'Cinzel'; }
+
+        .royal-card { background: #0a0a0a; padding: 20px; border-radius: 12px; text-align: left; border: 1px solid #222; margin-bottom: 15px; }
+        .cta-btn { background: linear-gradient(135deg, var(--gold), #aa882c); color: #000; padding: 15px; border-radius: 6px; text-decoration: none; display: block; font-weight: 800; margin: 20px 0; text-transform: uppercase; font-size: 13px; }
         
-        .nav-btn { background: var(--gold); color: #000; padding: 15px; border-radius: 4px; text-decoration: none; display: block; margin: 20px 0; font-weight: bold; }
+        /* Footer Logos */
+        .trust-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: center; padding: 20px 0; border-top: 1px solid #333; margin-top: 30px; }
+        .trust-section img { width: 100%; max-height: 40px; object-fit: contain; opacity: 0.8; }
+        
+        footer { padding: 30px 0; font-size: 9px; color: #555; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="logo-text">Royal Street Kitchen</div>
-    <div style="font-size: 10px; letter-spacing: 3px; color: #aaa;">MAHALAXMI NAGAR • INDORE</div>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('home', this)">HOME</button>
-        <button class="tab-btn" onclick="openTab('about', this)">THE SAFAR</button>
-        <button class="tab-btn" onclick="openTab('menu', this)">ROYAL MENU</button>
-        <button class="tab-btn" onclick="openTab('contact', this)">FIND US</button>
+    <div class="header-section">
+        <img src="MAIN LOGO.jpeg" class="main-logo-img" alt="RSK Logo">
+        <div style="font-family:'Cinzel'; color:var(--gold); letter-spacing:2px; font-size:18px;">Royal Street Kitchen</div>
     </div>
 
-    <div id="home" class="content active">
-        <img src="MAIN BANNER.jpeg" class="banner" alt="RSK Banner">
-        <img src="CART ROYAL TYPE.jpeg" class="banner" alt="RSK Cart">
-        <h3>Taste The Royalty</h3>
-        <p>Indore's Premium Street Food Experience</p>
-        <a href="https://wa.me/917489999890" class="nav-btn">ORDER ON WHATSAPP</a>
+    <div class="nav-scroll">
+        <button class="tab-btn active" onclick="showS('home', this)">HOME</button>
+        <button class="tab-btn" onclick="showS('menu', this)">ROYAL MENU</button>
+        <button class="tab-btn" onclick="showS('story', this)">THE SAFAR</button>
+        <button class="tab-btn" onclick="showS('reach', this)">REACH US</button>
     </div>
 
-    <div id="about" class="content">
-        <img src="IMAGEEE CCCART.jpeg" class="banner" style="height:200px; object-fit:cover;">
-        <div class="about-box">
-            <h4 style="color:var(--gold); margin-top:0;">The Journey (Safar)</h4>
-            <p>Numbers ki duniya se nikal kar Swaad ki duniya tak ka safar! Ek Accountant hone ke naate, maine hamesha precision aur perfection ki value samjhi hai. Lekin mera asli passion hamesha se cooking aur logon ko khush karna raha hai. Isi junoon ne RSK ko janam diya.</p>
-            <h4 style="color:var(--gold);">Our Philosophy</h4>
-            <p>Har street food lover ko wahi premium quality aur shuddhata (hygiene) milni chahiye. Hum sirf khana nahi, Indore ka apnapan serve karte hain.</p>
-        </div>
+    <div id="home" class="section active">
+        <img src="MAIN BANNER.jpeg" class="main-img">
+        <img src="CART ROYAL TYPE.jpeg" class="main-img">
+        <a href="https://wa.me/917489999890" class="cta-btn">Order via WhatsApp</a>
     </div>
 
-    <div id="menu" class="content">
-        <img src="ROYAL COMBO.jpg" class="banner">
-        <h3 style="margin-bottom:0;">Shahi Menu</h3>
+    <div id="menu" class="section">
+        <img src="ROYAL COMBO.jpg" class="main-img">
         
-        <div class="menu-cat">Non-Veg Specials</div>
-        <div class="item"><span>Tawa Chicken + Kulcha</span><span class="price">₹249</span></div>
-        <div class="item"><span>RSK Special Chicken (Half)</span><span class="price">₹219</span></div>
-        <div class="item"><span>Chicken Cheese Balls</span><span class="price">₹189</span></div>
+        <div class="menu-grid">
+            <div class="category-title">Combos</div>
+            <div class="menu-item"><span>Tawa Chicken + Kulcha</span><span class="item-price">₹249</span></div>
+            <div class="menu-item"><span>Tawa Chicken + Paratha</span><span class="item-price">₹259</span></div>
+            <div class="menu-item"><span>Paneer Bhurji + Paratha</span><span class="item-price">₹209</span></div>
+            <div class="menu-item"><span>Egg Bhurji + Paratha</span><span class="item-price">₹119</span></div>
 
-        <div class="menu-cat">Veg & Quick Bites</div>
-        <div class="item"><span>RSK Special Maggie</span><span class="price">₹99</span></div>
-        <div class="item"><span>Paneer Bhurji + Kulcha</span><span class="price">₹199</span></div>
-        <div class="item"><span>French Fries</span><span class="price">₹79 - 159</span></div>
+            <div class="category-title">Rice & Breads</div>
+            <div class="menu-item"><span>Veg Fried Rice</span><span class="item-price">₹129</span></div>
+            <div class="menu-item"><span>Chicken Fried Rice</span><span class="item-price">₹149</span></div>
+            <div class="menu-item"><span>Kulcha / Paratha</span><span class="item-price">₹20 / ₹25</span></div>
+
+            <div class="category-title">Chicken Specialties</div>
+            <div class="menu-item"><span>RSK Special Chicken</span><span class="item-price">₹219 / ₹399</span></div>
+            <div class="menu-item"><span>Chilly Chicken</span><span class="item-price">₹189 / ₹349</span></div>
+            <div class="menu-item"><span>Chicken Cheese Balls</span><span class="item-price">₹189</span></div>
+
+            <div class="category-title">Egg Variety</div>
+            <div class="menu-item"><span>Tawa Egg</span><span class="item-price">₹119</span></div>
+            <div class="menu-item"><span>Kastoori Egg</span><span class="item-price">₹99</span></div>
+            <div class="menu-item"><span>Boiled Egg (2pc)</span><span class="item-price">₹25</span></div>
+
+            <div class="category-title">Maggie & Bites</div>
+            <div class="menu-item"><span>RSK Special Maggie</span><span class="item-price">₹99</span></div>
+            <div class="menu-item"><span>Cheese / Butter Maggie</span><span class="item-price">₹89 / ₹69</span></div>
+            <div class="menu-item"><span>Potato Bites / Fries</span><span class="item-price">₹79</span></div>
+        </div>
     </div>
 
-    <div id="contact" class="content">
-        <h3>The Royal Court</h3>
-        <p>Visit us for the authentic experience</p>
-        <div style="border: 1px solid var(--gold); padding: 10px; border-radius: 8px;">
-            <p>📍 Mahalaxmi Nagar, Indore</p>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=Royal+street+kitchen+Indore" class="nav-btn">START NAVIGATION</a>
-        </div>
-        <div style="margin-top:20px;">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890" style="background:#fff; padding:10px; border-radius:8px;">
-            <p style="font-size:12px; color:var(--gold);">SCAN TO ORDER</p>
+    <div id="story" class="section">
+        <img src="IMAGEEE CCCART.jpeg" class="main-img">
+        <div class="royal-card">
+            <h3 style="font-size:16px; color:var(--gold);">The Journey (Safar)</h3>
+            <p style="font-size:13px; line-height:1.6; color:#ccc;">Numbers ki duniya se nikal kar Swaad ki duniya tak ka safar! Ek Accountant hone ke naate, maine hamesha precision aur perfection ki value samjhi hai. RSK isi junoon ka natija hai.</p>
+            <h3 style="font-size:16px; color:var(--gold);">Our Philosophy</h3>
+            <p style="font-size:13px; line-height:1.6; color:#ccc;">Street food lover ko wahi premium quality aur shuddhata (hygiene) milni chahiye. Hum sirf khana nahi, ek Royal experience serve karte hain.</p>
         </div>
     </div>
 
-    <div class="trust-logos">
+    <div id="reach" class="section">
+        <div class="royal-card" style="text-align:center;">
+            <h3>The Royal Court</h3>
+            <p style="font-size:14px; color:#aaa;">📍 Mahalaxmi Nagar, Indore</p>
+            <a href="http://googleusercontent.com/maps.google.com/7" class="cta-btn">Start Navigation</a>
+        </div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890" style="background:#fff; padding:10px; border-radius:10px; margin-top:10px;">
+    </div>
+
+    <div class="trust-section">
         <img src="fssai logo.webp" alt="FSSAI">
         <img src="msme logo.avif" alt="MSME">
-        <div style="color:#666; font-size:10px; text-align:center;">SWACHH BHARAT<br>CERTIFIED</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e1/Swachh_Bharat_Abhiyan_logo.svg/1200px-Swachh_Bharat_Abhiyan_logo.svg.png" alt="Swachh Bharat">
+        <img src="https://www.fssai.gov.in/upload/uploadfiles/files/food_safety_logo.png" alt="Food Safety">
     </div>
 
-    <footer style="margin-top:40px; font-size:10px; color:#444; border-top:1px solid #222; padding-top:20px;">
+    <footer>
         EST. 2026 / ROYAL STREET KITCHEN<br>
         Indore's Premium Street Food Destination
     </footer>
 </div>
 
 <script>
-    function openTab(tabName, btn) {
-        let contents = document.getElementsByClassName('content');
-        for (let c of contents) c.classList.remove('active');
-        let btns = document.getElementsByClassName('tab-btn');
-        for (let b of btns) b.classList.remove('active');
-        document.getElementById(tabName).classList.add('active');
+    function showS(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
         btn.classList.add('active');
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 </script>
 
