@@ -7,58 +7,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --dark: #050505; --glass: rgba(255, 255, 255, 0.03); }
-        
-        body { 
-            margin: 0; background: var(--dark); color: #fff; 
-            font-family: 'Poppins', sans-serif; overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%);
-        }
-
+        body { margin: 0; background: var(--dark); color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
         .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 90px; border: 1px solid #1a1a1a; }
-
-        /* Floating Header */
         header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.2); }
-        .main-logo { 
-            width: 100px; height: 100px; border-radius: 50%; 
-            border: 2px solid var(--gold); padding: 5px;
-            box-shadow: 0 0 20px rgba(212,175,55,0.3); object-fit: cover;
-        }
+        .main-logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; object-fit: cover; }
         h1 { font-family: 'Cinzel Decorative', cursive; color: var(--gold); font-size: 20px; margin: 10px 0 0; }
-        .indore-tag { width: 60px; margin-top: 10px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
-
-        /* Navigation Bar */
-        .bottom-nav {
-            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px); border: 1px solid rgba(212,175,55,0.4);
-            border-radius: 30px; display: flex; justify-content: space-around;
-            padding: 12px; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,1);
-        }
-        .nav-item { color: #555; font-size: 10px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
+        .indore-tag { width: 80px; margin-top: 10px; }
+        .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(212,175,55,0.4); border-radius: 30px; display: flex; justify-content: space-around; padding: 12px; z-index: 1000; }
+        .nav-item { color: #555; font-size: 10px; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 1px; }
         .nav-item.active { color: var(--gold); text-shadow: 0 0 8px var(--gold); }
-
-        /* Page Management */
         .page { display: none; padding: 20px; animation: fadeInUp 0.5s ease; }
         .page.active { display: block; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Elements */
         .royal-banner { width: 100%; border-radius: 12px; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 15px; }
-        .menu-card {
-            background: var(--glass); border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px; padding: 12px; margin-bottom: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .item-info h4 { margin: 0; font-size: 14px; font-weight: 500; color: #eee; }
+        .menu-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .price-tag { color: var(--gold); font-family: 'Cinzel Decorative'; font-weight: bold; font-size: 14px; }
         .cat-head { color: var(--gold); font-family: 'Cinzel Decorative'; font-size: 16px; margin: 20px 0 10px; text-align: left; border-left: 3px solid var(--gold); padding-left: 10px; }
-
-        .about-card { background: rgba(212,175,55,0.03); border: 1px solid rgba(212,175,55,0.1); padding: 20px; border-radius: 15px; line-height: 1.7; font-size: 13px; color: #ccc; text-align: left; }
         .btn-order { background: linear-gradient(135deg, #D4AF37, #996515); color: #000; display: block; text-align: center; padding: 16px; border-radius: 10px; text-decoration: none; font-weight: 800; margin-top: 20px; text-transform: uppercase; }
-
-        /* Footer */
-        .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 25px 10px; opacity: 0.7; }
-        .trust-grid img { width: 100%; height: 35px; object-fit: contain; }
+        .trust-grid { padding: 25px 10px; border-top: 1px solid #333; margin-top: 30px; text-align: center; }
+        .fssai-banner { width: 100%; max-width: 400px; margin-bottom: 20px; }
+        .sub-logos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; align-items: center; }
+        .sub-logos img { width: 100%; max-height: 45px; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -67,7 +36,7 @@
     <header>
         <img src="MAIN LOGO.jpeg" class="main-logo" alt="RSK Logo">
         <h1>Royal Street Kitchen</h1>
-        <img src="i_love_indore.png" class="indore-tag" alt="I Love Indore">
+        <img src="i love ind.png" class="indore-tag" alt="I Love Indore">
     </header>
 
     <div class="bottom-nav">
@@ -91,34 +60,37 @@
         <div class="menu-card"><div><h4>Tawa Chicken + Kulcha</h4></div><div class="price-tag">₹249</div></div>
         <div class="menu-card"><div><h4>Paneer Bhurji + Paratha</h4></div><div class="price-tag">₹209</div></div>
         <div class="menu-card"><div><h4>Egg Bhurji + Paratha</h4></div><div class="price-tag">₹119</div></div>
+        <div class="menu-card"><div><h4>Tawa Egg + Paratha</h4></div><div class="price-tag">₹139</div></div>
 
-        <div class="cat-head">Rice & Specialties</div>
+        <div class="cat-head">Rice Specialties</div>
         <div class="menu-card"><div><h4>Veg Fried Rice</h4></div><div class="price-tag">₹129</div></div>
         <div class="menu-card"><div><h4>Chicken Fried Rice</h4></div><div class="price-tag">₹149</div></div>
-        <div class="menu-card"><div><h4>RSK Special Chicken</h4></div><div class="price-tag">₹219/399</div></div>
+        <div class="menu-card"><div><h4>Egg Fried Rice</h4></div><div class="price-tag">₹139</div></div>
 
-        <div class="cat-head">Maggie & Snacks</div>
+        <div class="cat-head">Chicken & Paneer</div>
+        <div class="menu-card"><div><h4>RSK Special Chicken</h4></div><div class="price-tag">₹219/399</div></div>
+        <div class="menu-card"><div><h4>Chilly Chicken</h4></div><div class="price-tag">₹189/349</div></div>
+        <div class="menu-card"><div><h4>Kastoori Paneer</h4></div><div class="price-tag">₹179</div></div>
+
+        <div class="cat-head">Quick Bites</div>
         <div class="menu-card"><div><h4>RSK Special Maggie</h4></div><div class="price-tag">₹99</div></div>
         <div class="menu-card"><div><h4>Cheese Maggie</h4></div><div class="price-tag">₹89</div></div>
+        <div class="menu-card"><div><h4>Garlic Bread</h4></div><div class="price-tag">₹159</div></div>
         <div class="menu-card"><div><h4>French Fries</h4></div><div class="price-tag">₹79</div></div>
     </div>
 
     <div id="s" class="page">
         <img src="IMAGEEE CCCART.jpeg" class="royal-banner">
-        <div class="about-card">
+        <div style="background: rgba(212,175,55,0.03); border: 1px solid rgba(212,175,55,0.1); padding: 20px; border-radius: 15px; line-height: 1.7; font-size: 13px; color: #ccc; text-align: left;">
             <b style="color:var(--gold); display:block; margin-bottom:8px;">The Journey (Safar)</b>
             Numbers ki duniya se nikal kar Swaad ki duniya tak ka safar! Ek Accountant hone ke naate, maine hamesha precision aur perfection ki value samjhi hai. RSK isi junoon ka natija hai.
-            <br><br>
-            <b style="color:var(--gold); display:block; margin-bottom:8px;">Our Philosophy</b>
-            Street food lover ko wahi premium quality aur shuddhata (hygiene) milni chahiye. Hum sirf khana nahi, ek Royal experience serve karte hain.
         </div>
     </div>
 
     <div id="r" class="page">
-        <div class="about-card" style="text-align:center;">
+        <div style="background: rgba(212,175,55,0.03); border: 1px solid rgba(212,175,55,0.1); padding: 20px; border-radius: 15px; text-align:center;">
             <h3 style="color:var(--gold); font-family:'Cinzel Decorative'; margin-top:0;">The Royal Court</h3>
             <p>📍 Mahalaxmi Nagar, Indore</p>
-            <p>⏰ 5:00 PM - 11:30 PM</p>
             <a href="http://googleusercontent.com/maps.google.com/8" class="btn-order" style="width:80%; margin:15px auto;">Start Navigation</a>
         </div>
         <div style="text-align:center; margin-top:25px;">
@@ -127,10 +99,12 @@
     </div>
 
     <div class="trust-grid">
-        <img src="fssai logo.webp" alt="FSSAI">
-        <img src="msme logo.avif" alt="MSME">
-        <img src="swachh_bharat.png" alt="Swachh Bharat">
-        <img src="food_safety.png" alt="Food Safety">
+        <img src="FSSAI_Logo.7617ad221e54e0e6c02e.png" class="fssai-banner" alt="FSSAI Registered">
+        <div class="sub-logos">
+            <img src="msme logo.avif" alt="MSME">
+            <img src="Swachh_Bharat_Mission_Logo.svg.png" alt="Swachh Bharat">
+            <img src="i love ind.png" alt="I Love Indore">
+        </div>
     </div>
 
     <footer style="text-align:center; padding-bottom:20px; font-size:9px; color:#444;">
