@@ -254,3 +254,128 @@
 
     <div id="home" class="content-section active">
         <div class="banner-wrapper">
+            <img src="https://images.unsplash.com/photo-1598511757337-fe2cafc31ba0?q=80&w=600&h=400&auto=format&fit=crop" alt="Royal Burger Banner" class="banner-img">
+            <div class="banner-overlay-text">The Grand RSK Burger</div>
+        </div>
+        
+        <p style="color: #ccc; line-height: 1.8; font-size: 14px; margin-top: 0;">Experience Indore's favorite premium street flavors, where every bite is crafted with a royal touch.</p>
+        
+        <a href="https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER" class="order-btn">
+            ORDER VIA WHATSAPP
+        </a>
+    </div>
+
+    <div id="menu" class="content-section">
+        <div class="section-title">THE ROYAL MENU</div>
+        <div class="menu-list">
+            <div class="menu-item">
+                <div>
+                    <span class="item-main">Maharaja Royal Burger</span>
+                    <span class="item-desc">Premium patty, secret royal spices, melted cheese.</span>
+                </div>
+                <span class="item-price">₹149</span>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <span class="item-main">Loaded Gold Fries</span>
+                    <span class="item-desc">Peri-peri dust, triple cheese sauce, toppings.</span>
+                </div>
+                <span class="item-price">₹179</span>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <span class="item-main">Shaahi Sandwich</span>
+                    <span class="item-desc">Paneer tikka, grilled to perfection with special chutney.</span>
+                </div>
+                <span class="item-price">₹129</span>
+            </div>
+             <div class="menu-item">
+                <div>
+                    <span class="item-main">Royal Cold Coffee</span>
+                    <span class="item-desc">Thick, creamy, topped with chocolate lace.</span>
+                </div>
+                <span class="item-price">₹99</span>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: #666; margin-top: 25px; text-transform: uppercase;">*Prices check WhatsApp for live menu.</p>
+    </div>
+
+    <div id="gallery" class="content-section">
+        <div class="section-title">VISUALS OF ROYALTY</div>
+        <p style="color: #aaa; font-size: 13px; margin-bottom: 20px;">Glimpses of our signature dishes.</p>
+        
+        <div class="gallery-grid">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=400&auto=format&fit=crop" alt="Menu 1" class="gallery-img">
+            <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?q=80&w=400&auto=format&fit=crop" alt="Menu 2" class="gallery-img">
+            <img src="https://images.unsplash.com/photo-1619211029318-687f8721c5f3?q=80&w=400&auto=format&fit=crop" alt="Menu 3" class="gallery-img">
+            <img src="https://images.unsplash.com/photo-1594179047519-f347310d3322?q=80&w=400&auto=format&fit=crop" alt="Menu 4" class="gallery-img">
+        </div>
+        
+        <p style="font-size: 13px;">Follow us on social media for more updates.</p>
+    </div>
+
+    <div id="contact" class="content-section">
+        <div class="section-title">THE ROYAL COURT</div>
+        
+        <div class="contact-card">
+            <div class="contact-info">
+                <span class="icon">📍</span>
+                <div>
+                    <strong style="color:white;">Location</strong><br>
+                    <span style="color:#aaa; font-size: 14px;">Vijay Nagar, Indore, Madhya Pradesh</span>
+                </div>
+            </div>
+            <div class="contact-info">
+                <span class="icon">📞</span>
+                <div>
+                    <strong style="color:white;">WhatsApp Order</strong><br>
+                    <span style="color:#aaa; font-size: 14px;">+91 74899 99890</span>
+                </div>
+            </div>
+             <div class="contact-info">
+                <span class="icon">⏰</span>
+                <div>
+                    <strong style="color:white;">Royal Hours</strong><br>
+                    <span style="color:#aaa; font-size: 14px;">5:00 PM - 11:30 PM (Daily)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <p style="font-size: 13px; color: var(--gold); font-weight: bold; font-family:var(--font-royal); letter-spacing:1px;">SCAN TO ROYAL ORDER</p>
+            <div class="qr-wrapper">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890" width="150" alt="QR Code">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        DESIGNED FOR ROYAL STREET KITCHEN | 2024
+    </footer>
+</div>
+
+<script>
+    function showTab(tabId, element) {
+        // Hide all sections
+        var sections = document.getElementsByClassName('content-section');
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
+        }
+
+        // Deactivate all buttons
+        var buttons = document.getElementsByClassName('tab-link');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+
+        // Show selected section and activate button
+        document.getElementById(tabId).classList.add('active');
+        element.classList.add('active');
+        
+        // Smooth scroll to top when changing tabs
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+
+</body>
+</html>
