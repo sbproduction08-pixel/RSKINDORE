@@ -3,39 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Street Kitchen | Indore</title>
+    <title>Royal Street Kitchen | Home</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #0a0a0a; color: #ffffff; font-family: sans-serif; text-align: center; }
+        body { margin: 0; padding: 0; background-color: #0a0a0a; color: #ffffff; font-family: 'Segoe UI', sans-serif; text-align: center; }
+        
+        /* Navigation Bar (Tabs) */
+        nav { background: #1a1a1a; padding: 15px; border-bottom: 2px solid #D4AF37; position: sticky; top: 0; z-index: 100; }
+        nav a { color: #D4AF37; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        nav a:hover { color: #fff; }
+
         .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; }
-        .logo { color: #D4AF37; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .banner-img { width: 100%; border-radius: 15px; border: 2px solid #D4AF37; }
+        .logo { color: #D4AF37; font-size: 26px; font-weight: bold; margin: 20px 0; letter-spacing: 2px; }
+        .banner-img { width: 100%; border-radius: 15px; border: 2px solid #D4AF37; box-shadow: 0 5px 15px rgba(212,175,55,0.2); }
+        
         .order-btn { 
-            background: #25D366; color: white; text-decoration: none; padding: 15px 25px; 
-            border-radius: 50px; font-weight: bold; display: inline-block; margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; text-decoration: none; 
+            padding: 15px 25px; border-radius: 50px; font-weight: bold; display: inline-flex; align-items: center; gap: 10px; margin: 25px 0;
         }
-        .qr-card { background: white; padding: 15px; border-radius: 15px; display: inline-block; border: 2px solid #D4AF37; }
-        .qr-img { width: 150px; height: 150px; display: block; }
+        
+        .section-title { color: #D4AF37; border-bottom: 1px solid #D4AF37; display: inline-block; margin-top: 30px; padding-bottom: 5px; }
     </style>
 </head>
 <body>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="contact.html">Contact</a>
+</nav>
+
 <div class="container">
     <div class="logo">👑 ROYAL STREET KITCHEN</div>
     
-    <img src="https://lh3.googleusercontent.com/d/1H0iCt2_DfTUyI5-fUrnekatsrN1uwdZ5" alt="RSK Banner" class="banner-img">
+    <img src="cart.jpg" alt="RSK Banner" class="banner-img">
 
-    <p style="color: #D4AF37; font-style: italic;">Taste the Royalty on Streets</p>
+    <h2 class="section-title">WELCOME TO RSK</h2>
+    <p style="line-height: 1.6; color: #ccc;">Indore ka sabse royal street food experience. Hum laaye hain aapke liye swad jo dil jeet le.</p>
 
-    <a href="https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER%20FROM%20YOUR%20MENU" class="order-btn">
-        ORDER ON WHATSAPP
+    <a href="https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER" class="order-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="20"> ORDER NOW
     </a>
-
-    <div style="margin: 20px 0;">
-        <p style="font-size: 12px; color: #D4AF37;">SCAN TO ORDER</p>
-        <div class="qr-card">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER%20FROM%20YOUR%20MENU" class="qr-img">
-        </div>
-    </div>
 </div>
+
 </body>
 </html>
