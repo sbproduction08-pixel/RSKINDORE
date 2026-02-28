@@ -9,7 +9,20 @@
         :root { --gold: #D4AF37; --black: #0a0a0a; --royal-red: #3a0d0d; }
         body { margin: 0; background: var(--black); background-image: radial-gradient(circle at center, var(--royal-red) 0%, var(--black) 100%); color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        /* --- ROYAL HEADER (APPROVED OPTION 1 STYLE) --- */
+        /* --- STICKY TABS --- */
+        .bottom-nav { 
+            position: sticky; top: 0; z-index: 2000;
+            width: 100%; background: rgba(15, 12, 5, 0.95); 
+            border-bottom: 2px solid var(--gold); border-top: 1px solid rgba(212,175,55,0.3);
+            display: flex; justify-content: space-around; padding: 15px 0; 
+            backdrop-filter: blur(10px);
+        }
+        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; }
+        .nav-item.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
+
+        .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; padding-bottom: 50px; }
+
+        /* --- Header: MIMICKING GEMINI ORNAMENTAL GOLD --- */
         header { padding: 40px 20px; text-align: center; background: linear-gradient(to bottom, rgba(58, 13, 13, 0.9), transparent); }
         .main-logo { width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; box-shadow: 0 0 25px var(--gold); margin-bottom: 10px; }
         
@@ -17,58 +30,58 @@
         .crown-icon { font-size: 24px; color: var(--gold); display: block; margin-bottom: -10px; filter: drop-shadow(0 0 8px var(--gold)); }
         
         h1 { 
-            font-family: 'Marcellus', serif; font-weight: 400; font-size: 32px; margin: 10px 0; 
-            letter-spacing: 4px; text-transform: uppercase;
+            font-family: 'Marcellus', serif; /* Spacing mimic logic */
+            font-weight: 400;
+            font-size: 32px; 
+            margin: 10px 0 5px;
+            letter-spacing: 4px; /* Essential for Marcellus royal look */
+            text-transform: uppercase;
+            /* Gemini Gold mimic: silver + gold blend */
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 15px rgba(212, 175, 55, 0.6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Gemini heavy glow mimic */
+            filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.6));
             animation: textGlow 3s ease-in-out infinite alternate;
         }
 
-        @keyframes textGlow { from { filter: drop-shadow(0 2px 5px rgba(212, 175, 55, 0.4)); } to { filter: drop-shadow(0 2px 20px rgba(212, 175, 55, 0.8)); } }
+        @keyframes textGlow {
+            from { filter: drop-shadow(0 2px 5px rgba(212, 175, 55, 0.4)); }
+            to { filter: drop-shadow(0 2px 20px rgba(212, 175, 55, 0.8)); }
+        }
 
         .indore-heartbeat { width: 150px; filter: drop-shadow(0 0 12px #fff); animation: heartbeat 1.5s ease-in-out infinite; margin-top: 10px; }
         @keyframes heartbeat { 0%, 28%, 70% { transform: scale(1); } 14%, 42% { transform: scale(1.1); } }
 
-        /* --- STICKY TABS --- */
-        .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); border-top: 1px solid rgba(212,175,55,0.3); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
-        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; }
-        .nav-item.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
-
-        .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; padding-bottom: 50px; }
-
-        /* --- SEARCH & PAGES --- */
+        /* --- SEARCH --- */
         .search-container { padding: 10px 15px; background: rgba(255,255,255,0.05); margin: 15px; border-radius: 10px; border: 1px solid var(--gold); box-shadow: 0 0 10px rgba(212,175,55,0.1); }
         #menuSearch { width: 100%; background: transparent; border: none; color: #fff; font-family: 'Poppins'; outline: none; }
+        
+        /* --- PAGES --- */
         .page { display: none; padding: 15px; animation: fadeIn 0.5s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- GLOW EFFECTS --- */
         .royal-frame { width: 100%; border: 2px solid var(--gold); border-radius: 15px; margin: 25px 0 15px; overflow: hidden; box-shadow: 0 0 15px rgba(212,175,55,0.2); transition: 0.5s; }
         .page.active .royal-frame { animation: frameGlow 4s infinite alternate; }
         @keyframes frameGlow { from { box-shadow: 0 0 10px rgba(212,175,55,0.2); } to { box-shadow: 0 0 25px rgba(212,175,55,0.5); } }
 
         .banner-img { width: 100%; display: block; }
-        .cat-title { color: var(--gold); border-left: 4px solid var(--gold); padding-left: 10px; margin: 10px 0 15px; font-family: 'Marcellus', serif; }
 
+        /* --- TWO COLUMN MENU --- */
         .menu-row { display: flex; gap: 8px; margin-bottom: 8px; }
         .menu-card { flex: 1; background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; padding: 12px 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 13px; }
         .price { color: var(--gold); font-weight: bold; margin-top: 5px; }
-        .hf-label { font-size: 9px; color: #aaa; text-transform: uppercase; margin-top: 2px; }
+        .cat-title { color: var(--gold); border-left: 4px solid var(--gold); padding-left: 10px; margin: 25px 0 15px; font-family: 'Marcellus', serif; }
 
-        /* --- REACH DETAILS --- */
-        .reach-card { background: rgba(20, 5, 5, 0.9); border: 2px solid var(--gold); padding: 30px; border-radius: 20px; text-align:center; box-shadow: 0 0 20px rgba(212,175,55,0.2); }
-        .qr-container { background: #fff; padding: 10px; display: inline-block; border-radius: 10px; margin: 20px 0; border: 3px solid var(--gold); }
-        .qr-container img { width: 150px; height: 150px; display: block; }
+        /* --- INSTA JUMPU --- */
+        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); }
+        @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-25px);} 60% {transform: translateY(-12px);} }
 
-        /* --- FOOTER GLOW --- */
+        /* --- FOOTER & LOGOS --- */
         .footer-logos { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); margin-top: 20px; animation: footerGlow 5s infinite alternate; }
         @keyframes footerGlow { from { background: transparent; } to { background: rgba(212,175,55,0.03); } }
         .sub-logos img { height: 45px; margin: 0 10px; filter: grayscale(0.5) brightness(0.8); }
-
-        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); }
-        @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-25px);} 60% {transform: translateY(-12px);} }
     </style>
 </head>
 <body>
@@ -94,65 +107,46 @@
 
     <div id="home" class="page">
         <div class="royal-frame"><img src="MAIN_BANNER.jpeg" class="banner-img"></div>
-        <p style="text-align:center; color:var(--gold); font-style:italic; letter-spacing: 1px;">"Numbers ki duniya se nikal kar, Swaad ki duniya tak ka safar"</p>
+        <p style="text-align:center; color:var(--gold); font-style:italic;">"Numbers ki duniya se nikal kar, Swaad ki duniya tak ka safar"</p>
         <div class="royal-frame"><img src="CART_ROYAL_TYPE.jpeg" class="banner-img"></div>
-        <a href="https://wa.me/917489999890" style="text-decoration:none;"><div style="background:linear-gradient(135deg, var(--gold), #996515); color:#000; text-align:center; padding:18px; border-radius:50px; font-weight:900; margin-top:20px; box-shadow: 0 5px 15px rgba(212,175,55,0.4);">Order on WhatsApp</div></a>
+        <a href="https://wa.me/917489999890" style="text-decoration:none;"><div style="background:linear-gradient(135deg, var(--gold), #996515); color:#000; text-align:center; padding:18px; border-radius:50px; font-weight:900; margin-top:20px;">Order on WhatsApp</div></a>
     </div>
 
     <div id="menu" class="page">
-        <div class="search-container"><input type="text" id="menuSearch" placeholder="Search dish..." onkeyup="filterMenu()"></div>
+        <div class="search-container"><input type="text" id="menuSearch" placeholder="Chicken, Maggie, Paneer..." onkeyup="filterMenu()"></div>
+        <div class="royal-frame"><img src="ROYAL COMBO.jpg" class="banner-img"></div>
         
-        <div class="royal-frame"><img src="NON_VEG_HEAD.jpg" class="banner-img"></div>
-        <div class="cat-title"><h3>🍗 Non-Veg Starters & Mains</h3></div>
-        <div class="menu-row">
-            <div class="menu-card"><div>Chilly Chicken</div><div class="price">₹189 / ₹349</div><div class="hf-label">Half / Full</div></div>
-            <div class="menu-card"><div>Diet Paper Chicken</div><div class="price">₹199 / ₹359</div><div class="hf-label">Half / Full</div></div>
-        </div>
-        <div class="royal-frame"><img src="ROYAL_COMBO.jpg" class="banner-img"></div>
-        <div class="cat-title"><h3>🍱 RSK Royal Combos</h3></div>
+        <div class="cat-title"><h3>Royal Combos</h3></div>
         <div class="menu-row">
             <div class="menu-card"><div>Tawa Chicken + Paratha</div><div class="price">₹259</div></div>
             <div class="menu-card"><div>Tawa Chicken + Kulcha</div><div class="price">₹249</div></div>
+        </div>
+        <div class="menu-row">
+            <div class="menu-card"><div>Paneer Bhurji + Paratha</div><div class="price">₹209</div></div>
+            <div class="menu-card"><div>Paneer Bhurji + Kulcha</div><div class="price">₹199</div></div>
         </div>
     </div>
 
     <div id="safar" class="page">
         <div class="royal-frame"><img src="IMAGEEE_CCCART.jpeg" class="banner-img"></div>
-        <div style="background: rgba(58, 13, 13, 0.8); border: 2px solid var(--gold); padding: 25px; border-radius: 15px; line-height: 1.8; text-align: center;">
-            <p>"Numbers ki duniya se nikal kar Swaad ki duniya tak ka safar!"</p>
-            <p>RSK ki neev precision aur passion hai.</p>
-        </div>
+        <div style="background: rgba(58, 13, 13, 0.8); border: 2px solid var(--gold); padding: 25px; border-radius: 15px; line-height: 1.8;">Numbers ki duniya se nikal kar Swaad ki duniya tak ka safar! RSK ki neev precision aur passion hai.</div>
     </div>
 
     <div id="reach" class="page">
-        <div class="reach-card">
-            <h3 style="color:var(--gold); font-family: 'Marcellus', serif; letter-spacing: 2px;">Royal Serving Hours</h3>
-            <p style="font-size: 18px;">4:00 PM - 11:00 PM (All Day)</p>
-            <p style="color:var(--gold); font-weight: bold; border: 1px solid var(--gold); display: inline-block; padding: 5px 15px; border-radius: 5px;">TUESDAY CLOSED</p>
-            
-            <div style="margin-top: 30px;">
-                <h3 style="color:var(--gold); font-family: 'Marcellus', serif;">Location</h3>
-                <p>📍 Nearby Elite Apex Township,<br>Mahalaxmi Nagar, Indore</p>
-            </div>
-
-            <div class="qr-container">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890" alt="WhatsApp QR">
-            </div>
-            <p style="font-size: 11px; color: #888;">Scan to chat on WhatsApp</p>
-
-            <a href="https://maps.app.goo.gl/3fF8p" target="_blank" style="text-decoration:none;">
-                <div style="background:var(--gold); color:#000; padding:15px; border-radius:10px; font-weight:bold; margin-top:20px;">Open in Google Maps</div>
-            </a>
+        <div style="background: rgba(20, 5, 5, 0.9); border: 2px solid var(--gold); padding: 30px; border-radius: 20px; text-align:center;">
+            <h3 style="color:var(--gold);">Royal Court</h3>
+            <p>📍 Mahalaxmi Nagar, Indore</p>
+            <p>⏰ 4:00 PM - 11:00 PM (Tuesday Off)</p>
+            <a href="http://googleusercontent.com/maps.google.com/8" style="text-decoration:none;"><div style="background:var(--gold); color:#000; padding:10px; border-radius:5px; font-weight:bold; margin-top:15px;">Get Directions</div></a>
         </div>
     </div>
 
     <div class="footer-logos">
-        <img src="FSSAI_Logo.png" style="width:100%; max-width:250px; margin-bottom:20px;" alt="FSSAI">
+        <img src="FSSAI_Logo.png" style="width:100%; max-width:280px; margin-bottom:20px;" alt="FSSAI">
         <div class="sub-logos">
             <img src="msme_logo.avif" alt="MSME">
             <img src="Swachh_Bharat_Mission_Logo.png" alt="Swachh Bharat">
         </div>
-        <p style="font-size: 10px; color: #555; margin-top: 20px; letter-spacing: 2px;">© ROYAL STREET KITCHEN | INDORE</p>
     </div>
 </div>
 
@@ -167,17 +161,10 @@
         for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
-        
         document.getElementById(tabId).classList.add('active');
         if(el) el.classList.add('active');
         localStorage.setItem('activeTab', tabId);
-        
-        // Scroll adjustment
-        if(tabId !== 'home') {
-            window.scrollTo({top: document.querySelector('header').offsetHeight - 50, behavior: 'smooth'});
-        } else {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+        window.scrollTo({top: document.querySelector('header').offsetHeight - 50, behavior: 'smooth'});
     }
 
     function filterMenu() {
@@ -185,7 +172,7 @@
         var cards = document.getElementsByClassName('menu-card');
         for (var i = 0; i < cards.length; i++) {
             var txt = cards[i].textContent || cards[i].innerText;
-            cards[i].style.display = txt.toUpperCase().indexOf(input) > -1 ? "" : "none";
+            cards[i].closest('.menu-card').style.display = txt.toUpperCase().indexOf(input) > -1 ? "" : "none";
         }
     }
 </script>
