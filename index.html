@@ -70,6 +70,58 @@
         const activeBtn = document.getElementById('btn-' + tabId);
         if(activeBtn) activeBtn.classList.add('active');
 
+// 2. YAHAN PASTE KAREIN (Royal Logic)
+    let cart = [];
+
+    function registerUser() {
+        let name = prompt("Royal Street Kitchen mein aapka swagat hai! Aapka Naam?");
+        let phone = prompt("Aapka Mobile Number?");
+        if(name && phone && phone.length >= 10) {
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userPhone', phone);
+            alert("Registration Successful! Ab aap order kar sakte hain.");
+        }
+    }
+
+    function addToCart(name, price) {
+        cart.push({name: name, price: price});
+        alert(name + " cart mein add ho gaya!");
+    }
+
+    async function checkout() {
+        let uName = localStorage.getItem('userName');
+        let uPhone = localStorage.getItem('userPhone');
+
+        if(!uName || !uPhone) {
+            registerUser();
+            return;
+        }
+
+        if(cart.length === 0) {
+            alert("Pehle kuch tasty add toh kijiye!");
+            return;
+        }
+
+        let token = Math.floor(Math.random() * 100) + 1; 
+
+        let itemsList = cart.map(item => `- ${item.name} (₹${item.price})`).join('%0A');
+        let total = cart.reduce((sum, item) => sum + item.price, 0);
+
+        let message = `*ROYAL STREET KITCHEN* 👑%0A--------------------------%0A*Token No:* #${token}%0A*Customer:* ${uName}%0A*Phone:* ${uPhone}%0A--------------------------%0A*Order Details:*%0A${itemsList}%0A--------------------------%0A*Total Amount:* ₹${total}%0A--------------------------%0A_Pay via UPI: yourid@upi_%0A_Kripya counter par token dikhayein._`;
+
+        window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
+        cart = []; 
+    }
+
+    function filterItems(type) {
+        const cards = document.querySelectorAll('.item-card');
+        cards.forEach(card => {
+            if (type === 'all') card.style.display = 'flex';
+            else card.style.display = card.classList.contains(type) ? 'flex' : 'none';
+        });
+    }
+
+    
         // Loading indicator
         const contentArea = document.getElementById('content-area');
         contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>👑 Loading Royal Experience...</div>";
