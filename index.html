@@ -41,6 +41,19 @@
     <h1>Royal Street Kitchen</h1>
     <img src="i_love_ind.png" class="i-love-ind" alt="I Love Indore">
     <div id="welcome-user"></div>
+// --- LOGOUT LOGIC ---
+window.logout = function() {
+    if(confirm("Kya aap Royal Street Kitchen se Logout karna chahte hain?")) {
+        localStorage.removeItem('userName');
+        localStorage.setItem('isVerified', 'false');
+        // Mobile number rehne de sakte hain ya use bhi hata sakte hain
+        localStorage.removeItem('userPhone'); 
+        
+        alert("Aap Logout ho gaye hain. Agli baar naye siray se Register karna hoga.");
+        location.reload(); // Page refresh taaki "Namaste" wala naam hat jaye
+    }
+};
+    
 </header>
 
 <div class="bottom-nav">
