@@ -1,1 +1,79 @@
+<style>
+    /* Home Specific Styles */
+    .royal-frame { 
+        width: 100%; 
+        border: 2px solid var(--gold); 
+        border-radius: 15px; 
+        margin-bottom: 25px; 
+        overflow: hidden; 
+        box-shadow: 0 0 15px rgba(212,175,55,0.2);
+        background: #111;
+    }
+    
+    .banner-img { 
+        width: 100%; 
+        display: block; 
+        transition: transform 0.5s ease;
+    }
+    
+    .royal-frame:hover .banner-img {
+        transform: scale(1.05); /* Halka sa zoom effect */
+    }
 
+    .welcome-text {
+        text-align: center;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+    }
+
+    .welcome-text p {
+        color: var(--gold);
+        font-style: italic;
+        font-size: 15px;
+        line-height: 1.6;
+        text-shadow: 1px 1px 2px #000;
+    }
+
+    .status-badge {
+        background: linear-gradient(45deg, #1a1a1a, #3a0d0d);
+        border: 1px solid var(--gold);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 10px;
+        box-shadow: inset 0 0 10px rgba(212,175,55,0.1);
+    }
+
+    .status-badge h3 {
+        color: var(--gold);
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .status-badge p {
+        font-size: 13px;
+        margin: 0;
+        color: #ccc;
+    }
+</style>
+
+<div class="page-content">
+    <div class="royal-frame">
+        <img src="MAIN_BANNER.jpeg" class="banner-img" alt="Royal Street Kitchen Main Banner">
+    </div>
+
+    <div class="welcome-text">
+        <p>"Numbers ki duniya se nikal kar,<br>Swaad ki duniya tak ka safar..."</p>
+    </div>
+
+    <div class="royal-frame">
+        <img src="CART_ROYAL_TYPE.jpeg" class="banner-img" alt="RSK Royal Cart">
+    </div>
+
+    <div class="status-badge">
+        <h3>✨ Coming Soon ✨</h3>
+        <p>Indore ka sabse royal street food experience ab aapke sheher <strong>Mahalakshmi Nagar</strong> mein.</p>
+        <p style="margin-top:10px; color:var(--gold); font-weight:bold;">Tayaar ho jaiye!</p>
+    </div>
+</div>
