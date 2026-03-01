@@ -9,29 +9,30 @@
         :root { --gold: #D4AF37; --black: #0a0a0a; --royal-red: #3a0d0d; }
         body { margin: 0; background: var(--black); background-image: radial-gradient(circle at center, var(--royal-red) 0%, var(--black) 100%); color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.3); }
-        .main-logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 20px var(--gold); }
-        h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 15px 0 5px; letter-spacing: 2px; text-transform: uppercase; }
-        .i-love-ind { width: 120px; margin-top: 5px; filter: drop-shadow(0 0 5px var(--gold)); }
+        header { padding: 25px 20px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.3); }
+        .main-logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 20px var(--gold); }
+        h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 10px 0 5px; letter-spacing: 2px; text-transform: uppercase; font-size: 20px; }
+        .i-love-ind { width: 100px; margin-top: 5px; filter: drop-shadow(0 0 5px var(--gold)); }
 
-        /* Welcome User Styling */
-        #welcome-user { color: var(--gold); text-align: center; font-weight: bold; font-size: 16px; margin-top: 10px; min-height: 24px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
+        /* Welcome & Logout Section */
+        .user-panel { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; min-height: 25px; }
+        #welcome-user { color: var(--gold); font-weight: bold; font-size: 14px; font-family: 'Marcellus', serif; }
+        .logout-btn { display: none; background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; color: #ff4444; padding: 2px 8px; border-radius: 4px; font-size: 9px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
 
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
-        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; transition: 0.3s; }
+        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; }
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
 
-        .app-container { max-width: 500px; margin: 0 auto; min-height: 70vh; padding: 15px; padding-bottom: 50px; }
+        .app-container { max-width: 500px; margin: 0 auto; min-height: 60vh; padding: 15px; padding-bottom: 80px; }
         #content-area { animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none; }
-        @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-25px);} 60% {transform: translateY(-12px);} }
+        .insta-jumpu { position: fixed; bottom: 25px; right: 20px; z-index: 1001; width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); }
+        @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
 
         .footer-section { text-align: center; padding: 30px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.5); }
-        .fssai-main { width: 180px; margin-bottom: 15px; }
-        .sub-logos { display: flex; justify-content: center; gap: 25px; align-items: center; }
-        .sub-logos img { height: 40px; filter: grayscale(1) invert(1); }
+        .fssai-main { width: 150px; margin-bottom: 15px; }
+        .sub-logos img { height: 35px; filter: grayscale(1) invert(1); margin: 0 10px; }
     </style>
 </head>
 <body>
@@ -40,20 +41,11 @@
     <img src="MAIN_LOGO.jpeg" class="main-logo" alt="RSK Logo">
     <h1>Royal Street Kitchen</h1>
     <img src="i_love_ind.png" class="i-love-ind" alt="I Love Indore">
-    <div id="welcome-user"></div>
-// --- LOGOUT LOGIC ---
-window.logout = function() {
-    if(confirm("Kya aap Royal Street Kitchen se Logout karna chahte hain?")) {
-        localStorage.removeItem('userName');
-        localStorage.setItem('isVerified', 'false');
-        // Mobile number rehne de sakte hain ya use bhi hata sakte hain
-        localStorage.removeItem('userPhone'); 
-        
-        alert("Aap Logout ho gaye hain. Agli baar naye siray se Register karna hoga.");
-        location.reload(); // Page refresh taaki "Namaste" wala naam hat jaye
-    }
-};
     
+    <div class="user-panel">
+        <span id="welcome-user"></span>
+        <button onclick="window.logout()" id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
 </header>
 
 <div class="bottom-nav">
@@ -66,7 +58,7 @@ window.logout = function() {
 <div class="app-container" id="content-area"></div>
 
 <a href="https://www.instagram.com/rsk.indore/" class="insta-jumpu" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="28">
 </a>
 
 <div class="footer-section">
@@ -78,10 +70,9 @@ window.logout = function() {
 </div>
 
 <script>
-    // --- 1. GLOBAL VARIABLES ---
     window.cart = []; 
 
-    // --- 2. TAB MANAGEMENT (FETCH LOGIC) ---
+    // --- TAB MANAGEMENT ---
     function showTab(tabId) {
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
@@ -89,126 +80,95 @@ window.logout = function() {
         if(activeBtn) activeBtn.classList.add('active');
 
         const contentArea = document.getElementById('content-area');
-        contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>👑 Loading Royal Experience...</div>";
+        contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading Royal Experience...</div>";
 
         fetch('./' + tabId + '-tab.html?v=' + Date.now())
-            .then(response => {
-                if (!response.ok) throw new Error("File Missing");
-                return response.text();
-            })
+            .then(res => res.text())
             .then(data => {
                 contentArea.innerHTML = data;
-                updateWelcomeHeader(); // Naam dikhane ke liye call
+                updateUserUI(); // UI refresh on tab change
             })
             .catch(err => {
-                contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:red;'>Kripya check karein: " + tabId + "-tab.html nahi mili.</div>";
+                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>File Missing: " + tabId + "</div>";
             });
 
         localStorage.setItem('activeTab', tabId);
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // Header mein user ka naam update karna
-    function updateWelcomeHeader() {
+    // --- USER UI (WELCOME & LOGOUT) ---
+    function updateUserUI() {
         const userName = localStorage.getItem('userName');
         const welcomeDiv = document.getElementById('welcome-user');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
         if(userName && welcomeDiv) {
             welcomeDiv.innerHTML = "Namaste, " + userName + "! ✨";
+            if(logoutBtn) logoutBtn.style.display = 'inline-block';
+        } else {
+            if(welcomeDiv) welcomeDiv.innerHTML = "";
+            if(logoutBtn) logoutBtn.style.display = 'none';
         }
     }
 
-    // --- 3. REGISTRATION & LOGIN (With WhatsApp Verification) ---
+    // --- REGISTRATION & OTP ---
     window.registerUser = function() {
-        let name = prompt("Royal Street Kitchen mein aapka swagat hai! Aapka Naam?");
+        let name = prompt("Aapka Naam?");
         let phone = prompt("Aapka Mobile Number?");
         
         if(name && phone && phone.length >= 10) {
-            let tempCode = Math.floor(1000 + Math.random() * 9000);
-            alert("Verification Code: RSK-" + tempCode + "\n\nAgli screen par ye code WhatsApp par bhejein.");
+            let tempOTP = Math.floor(1000 + Math.random() * 9000);
+            alert("Verification Code: RSK-" + tempOTP + "\n\nIse WhatsApp par bhejein.");
             
-            let verifyMsg = encodeURIComponent("Pranam RSK! Mera Verification Code hai: RSK-" + tempCode + " (Name: " + name + ")");
+            let verifyMsg = encodeURIComponent("Pranam RSK! Mera Verification Code hai: RSK-" + tempOTP + " (Name: " + name + ")");
             window.open(`https://wa.me/917489999890?text=${verifyMsg}`, '_blank');
 
             localStorage.setItem('userName', name);
             localStorage.setItem('userPhone', phone);
-            updateWelcomeHeader();
+            updateUserUI();
             return true;
         }
-        alert("Sahi details dena zaroori hai.");
         return false;
     };
 
-    // --- 4. CART & TOKEN LOGIC ---
+    // --- LOGOUT ---
+    window.logout = function() {
+        if(confirm("Kya aap Logout karna chahte hain?")) {
+            localStorage.clear();
+            alert("Aap Logout ho gaye hain.");
+            location.reload();
+        }
+    };
+
+    // --- CART & CHECKOUT (WITH FIXED TOKEN) ---
     window.addToCart = function(name, price) {
-        window.cart.push({name: name, price: price});
-        alert(name + " cart mein add ho gaya!");
+        window.cart.push({name, price});
+        alert(name + " added! Niche 'Place Order' dabayein.");
         const bar = document.getElementById('floatingCheckout');
         if(bar) bar.style.display = 'flex';
     };
 
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
-        let uPhone = localStorage.getItem('userPhone');
-
-        if(!uName || !uPhone) {
+        if(!uName) {
             if(!window.registerUser()) return;
-            uName = localStorage.getItem('userName');
-            uPhone = localStorage.getItem('userPhone');
-        }
-
-        if(window.cart.length === 0) {
-            alert("Pehle kuch tasty add toh kijiye!");
             return;
         }
 
-        // --- FIXED TOKEN & MESSAGE LOGIC ---
-        let tokenNo = Math.floor(Math.random() * 100) + 1; 
-        let total = window.cart.reduce((sum, item) => sum + item.price, 0);
-        let itemsList = window.cart.map(item => `- ${item.name}`).join('%0A');
+        if(window.cart.length === 0) return alert("Pehle kuch tasty add karein!");
 
-        let message = `*ROYAL STREET KITCHEN* 👑%0A` +
-                      `--------------------------%0A` +
-                      `*Token No:* %23${tokenNo}%0A` + // %23 means #
-                      `*Date:* ${new Date().toLocaleDateString('en-GB')}%0A` +
-                      `*Customer:* ${uName}%0A` +
-                      `*Phone:* ${uPhone}%0A` +
-                      `--------------------------%0A` +
-                      `*Order Details:*%0A${itemsList}%0A` +
-                      `--------------------------%0A` +
-                      `*Total Amount:* ₹${total}%0A` +
-                      `--------------------------%0A` +
-                      `_Kripya counter par token dikhayein._`;
+        let tokenNo = Math.floor(Math.random() * 100) + 1; 
+        let total = window.cart.reduce((s, i) => s + i.price, 0);
+        let items = window.cart.map(i => `- ${i.name}`).join('%0A');
+
+        let message = `*ROYAL STREET KITCHEN* 👑%0A--------------------------%0A*Token No:* %23${tokenNo}%0A*Date:* ${new Date().toLocaleDateString('en-GB')}%0A*Customer:* ${uName}%0A--------------------------%0A*Order:*%0A${items}%0A--------------------------%0A*Total:* ₹${total}%0A--------------------------%0A_Kripya counter par token dikhayein._`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
-        
-        window.cart = []; // Reset cart
-        const bar = document.getElementById('floatingCheckout');
-        if(bar) bar.style.display = 'none';
+        window.cart = [];
+        if(document.getElementById('floatingCheckout')) document.getElementById('floatingCheckout').style.display = 'none';
     };
 
-    // --- 5. SEARCH & FILTER ---
-    window.filterMenu = function() {
-        let input = document.getElementById('menuSearch').value.toLowerCase();
-        let cards = document.getElementsByClassName('item-card');
-        for (let card of cards) {
-            let name = card.getAttribute('data-name') || card.innerText.toLowerCase();
-            card.style.display = name.includes(input) ? "block" : "none";
-        }
-    };
-
-    window.filterItems = function(type) {
-        const cards = document.querySelectorAll('.item-card');
-        cards.forEach(card => {
-            if (type === 'all') card.style.display = 'block';
-            else card.style.display = card.classList.contains(type) ? 'block' : 'none';
-        });
-    };
-
-    // --- 6. INITIAL LOAD ---
-    window.onload = function() {
-        var savedTab = localStorage.getItem('activeTab') || 'home';
-        showTab(savedTab);
-    };
+    window.onload = () => showTab(localStorage.getItem('activeTab') || 'home');
 </script>
 </body>
 </html>
