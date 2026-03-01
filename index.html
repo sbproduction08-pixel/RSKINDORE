@@ -87,65 +87,85 @@
         </div>
     </div>
 <style>
-    /* New Grid Styling */
+    /* Side-by-Side Grid */
     .menu-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Do columns side-by-side */
-        gap: 15px;
-        margin-top: 15px;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 30px;
     }
 
-    .category-banner {
-        background: linear-gradient(90deg, #D4AF37, #b8860b);
-        color: black;
-        padding: 10px;
-        font-weight: bold;
-        border-radius: 5px;
-        margin: 30px 0 10px 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .item-card {
-        background: #1a1a1a;
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 10px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .item-img {
+    /* Category Image with Glow Effect */
+    .category-header {
+        position: relative;
         width: 100%;
-        height: 100px;
-        background: #222; /* Placeholder jab tak aap image na lagayein */
-        border-radius: 8px;
-        margin-bottom: 8px;
+        height: 150px;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 25px 0 15px 0;
+        border: 2px solid #333;
+        transition: 0.4s ease;
+        cursor: pointer;
+    }
+
+    /* Cursor ya Touch par Glow */
+    .category-header:hover {
+        border-color: #D4AF37;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); /* Gold Glow */
+        transform: scale(1.02);
+    }
+
+    .cat-img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        opacity: 0.6; /* Photo thodi dark taaki text dikhe */
+    }
+
+    .cat-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #D4AF37;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        width: 100%;
+    }
+
+    /* Item Card Styling */
+    .item-card {
+        background: #111;
+        border-left: 3px solid #D4AF37;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: left;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
 
     .item-title {
         font-size: 14px;
         font-weight: bold;
+        color: #fff;
         margin-bottom: 8px;
-        min-height: 35px;
+        text-transform: uppercase;
     }
 
-    .price-row {
+    .price-box {
         display: flex;
-        justify-content: space-around;
-        font-size: 13px;
-        border-top: 1px solid #333;
-        padding-top: 8px;
+        justify-content: space-between;
+        background: #1a1a1a;
+        padding: 5px 8px;
+        border-radius: 4px;
     }
 
-    .p-label { color: #888; font-size: 10px; display: block; }
-    .p-amt { color: #D4AF37; font-weight: bold; }
+    .p-label { color: #666; font-size: 10px; }
+    .p-amt { color: #D4AF37; font-weight: bold; font-size: 13px; }
 
-    /* WhatsApp Button Highlighted */
-    .wa-sticky-btn {
+    /* Green WhatsApp Button */
+    .wa-btn {
         background: #25D366;
         color: white;
         text-decoration: none;
@@ -156,79 +176,80 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        margin: 40px auto;
-        width: 90%;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-        font-size: 16px;
+        margin: 30px 0;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
     }
 </style>
 
-    <div class="container">
-    <h1 class="menu-title">ROYAL MENU</h1>
+<div class="container">
+    <h1 class="menu-title" style="color:#D4AF37;">ROYAL MENU</h1>
 
-    <div class="category-banner">🍗 NON-VEG SPECIALS</div>
+    <div class="category-header">
+        <img src="nonveg-head.jpg" class="cat-img" alt="Non-Veg Specials">
+        <div class="cat-text">🍗 NON-VEG SPECIALS</div>
+    </div>
     
     <div class="menu-grid">
         <div class="item-card">
-            <img src="lollipop.jpg" class="item-img" alt="Chicken Lollipop">
             <div class="item-title">Chicken Lollipop</div>
-            <div class="price-row">
-                <div><span class="p-label">HALF</span><span class="p-amt">₹100</span></div>
-                <div><span class="p-label">FULL</span><span class="p-amt">₹180</span></div>
+            <div class="price-box">
+                <div><span class="p-label">H</span> <span class="p-amt">₹100</span></div>
+                <div><span class="p-label">F</span> <span class="p-amt">₹180</span></div>
             </div>
         </div>
 
         <div class="item-card">
-            <img src="crispy.jpg" class="item-img" alt="Chicken Crispy">
             <div class="item-title">Chicken Crispy</div>
-            <div class="price-row">
-                <div><span class="p-label">HALF</span><span class="p-amt">₹90</span></div>
-                <div><span class="p-label">FULL</span><span class="p-amt">₹160</span></div>
+            <div class="price-box">
+                <div><span class="p-label">H</span> <span class="p-amt">₹90</span></div>
+                <div><span class="p-label">F</span> <span class="p-amt">₹160</span></div>
             </div>
         </div>
 
         <div class="item-card">
-            <img src="popcorn.jpg" class="item-img" alt="Chicken Popcorn">
             <div class="item-title">Chicken Popcorn</div>
-            <div class="price-row">
-                <span class="p-amt">₹100</span>
-            </div>
+            <div class="p-amt">₹100</div>
         </div>
 
         <div class="item-card">
-            <img src="wings.jpg" class="item-img" alt="Chicken Wings">
             <div class="item-title">Chicken Wings</div>
-            <div class="price-row">
-                <span class="p-amt">₹100</span>
-            </div>
+            <div class="p-amt">₹100</div>
         </div>
     </div>
 
-    <div class="category-banner">🥬 VEG DELIGHTS</div>
-    
+    <div class="category-header">
+        <img src="veg-head.jpg" class="cat-img" alt="Veg Delights">
+        <div class="cat-text">🥬 VEG DELIGHTS</div>
+    </div>
+
     <div class="menu-grid">
         <div class="item-card">
-            <img src="fries.jpg" class="item-img" alt="French Fries">
             <div class="item-title">French Fries</div>
-            <div class="price-row">
-                <span class="p-amt">₹60</span>
-            </div>
+            <div class="p-amt">₹60</div>
         </div>
 
         <div class="item-card">
-            <img src="peri-peri.jpg" class="item-img" alt="Peri Peri">
             <div class="item-title">Peri Peri Fries</div>
-            <div class="price-row">
-                <span class="p-amt">₹80</span>
-            </div>
+            <div class="p-amt">₹80</div>
+        </div>
+
+        <div class="item-card">
+            <div class="item-title">Veg Nuggets</div>
+            <div class="p-amt">₹80</div>
+        </div>
+
+        <div class="item-card">
+            <div class="item-title">Veg Seekh Kebab</div>
+            <div class="p-amt">₹80</div>
         </div>
     </div>
 
-    <a href="https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER" class="wa-sticky-btn">
+    <a href="https://wa.me/917489999890?text=HI%20RSK%20I%20WANT%20TO%20ORDER" class="wa-btn">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="25">
         ORDER ON WHATSAPP
     </a>
-
+</div>
+    
     <p style="font-size: 11px; color: #555;">*Prices are subject to change</p>
 </div>
     
