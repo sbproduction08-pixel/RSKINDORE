@@ -1,43 +1,30 @@
 <style>
     .menu-header { color: var(--gold); font-family: 'Marcellus', serif; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; }
     
-    /* Search Box */
+    /* Search & Filters */
     .search-box { width:100%; padding:15px; border-radius:30px; border:1px solid var(--gold); background:#1a1a1a; color:#fff; margin-bottom:10px; outline:none; box-sizing:border-box; }
-
-    /* Category Filters */
     .filter-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px; scrollbar-width: none; }
     .filter-scroll::-webkit-scrollbar { display: none; }
-    .filter-btn { 
-        background: rgba(255,255,255,0.05); border: 1px solid #444; color: #ccc; 
-        padding: 8px 18px; border-radius: 20px; font-size: 11px; white-space: nowrap; 
-        cursor: pointer; font-weight: bold; transition: 0.3s;
-    }
+    .filter-btn { background: rgba(255,255,255,0.05); border: 1px solid #444; color: #ccc; padding: 8px 18px; border-radius: 20px; font-size: 11px; white-space: nowrap; cursor: pointer; font-weight: bold; transition: 0.3s; }
     .filter-btn.active { background: var(--gold); color: #000; border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
 
     /* --- HERO SECTION: ROYAL COMBO ONLY --- */
-    .hero-card { 
-        background: #111; border: 2px solid var(--gold); border-radius: 15px; 
-        overflow: hidden; margin-bottom: 30px; box-shadow: 0 0 20px rgba(212,175,55,0.3);
-        transition: transform 0.4s;
-    }
-    .hero-card:hover { transform: scale(1.02); }
-    .hero-img { width: 100%; height: 200px; object-fit: cover; }
-    .hero-content { padding: 15px; text-align: center; }
+    .hero-section { display: flex; justify-content: center; margin-bottom: 30px; }
+    .hero-card { width: 100%; max-width: 400px; background: #000; border: 2px solid var(--gold); border-radius: 15px; overflow: hidden; box-shadow: 0 0 25px rgba(212,175,55,0.4); }
+    .hero-img { width: 100%; height: 200px; object-fit: cover; transition: 0.5s; }
+    .hero-card:hover .hero-img { transform: scale(1.05); }
 
-    /* --- SECTION BANNERS WITH HIGHLIGHT --- */
-    .img-wrap { width: 100%; height: 120px; border-radius: 10px; overflow: hidden; margin: 30px 0 15px; border: 1px solid rgba(212,175,55,0.4); }
-    .section-banner { 
-        width: 100%; height: 100%; object-fit: cover; 
-        transition: transform 0.5s ease, filter 0.5s ease;
-    }
-    .img-wrap:hover .section-banner { transform: scale(1.1); filter: brightness(1.2); }
-    .cat-title { color: var(--gold); font-size: 18px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; display: block; }
+    /* --- SECTION BANNERS & HIGHLIGHTS --- */
+    .section-wrap { margin-top: 40px; }
+    .img-frame { width: 100%; height: 130px; border-radius: 12px; overflow: hidden; border: 1px solid var(--gold); margin-bottom: 15px; }
+    .section-banner { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: brightness(0.8); }
+    .img-frame:hover .section-banner { transform: scale(1.1); filter: brightness(1.1); }
+    .cat-title { color: var(--gold); font-size: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
 
-    /* --- GRID & CARDS --- */
+    /* --- GRID & ITEMS --- */
     .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .item-card { background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; transition: 0.3s; }
-    .item-card:hover { background: rgba(255,255,255,0.1); border-left-width: 6px; }
-    .item-name { font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 5px; min-height: 35px; }
+    .item-card { background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; }
+    .item-name { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 5px; min-height: 32px; }
     .price-tag { color: var(--gold); font-size: 11px; font-weight: bold; margin-bottom: 10px; }
 
     .btn-row { display: flex; gap: 5px; margin-top: auto; }
@@ -52,7 +39,8 @@
 <div class="menu-tab">
     <h2 class="menu-header">ROYAL MENU</h2>
     
-    <input type="text" id="menuSearch" class="search-box" placeholder="Kya khaoge? (Search 42+ items...)" onkeyup="runFilters()">
+    <input type="text" id="menuSearch" class="search-box" placeholder="Kya khaoge? (Search 42 items...)" onkeyup="runFilters()">
+    
     <div class="filter-scroll">
         <button class="filter-btn active" onclick="setCat('all', this)">All</button>
         <button class="filter-btn" onclick="setCat('combo', this)">Combos</button>
@@ -60,50 +48,47 @@
         <button class="filter-btn" onclick="setCat('veg', this)">Veg</button>
         <button class="filter-btn" onclick="setCat('maggie', this)">Maggie</button>
         <button class="filter-btn" onclick="setCat('egg', this)">Egg Station</button>
+        <button class="filter-btn" onclick="setCat('rice', this)">Rice & Breads</button>
     </div>
 
     <div class="section-group" data-cat="combo">
         <span class="cat-title">👑 The Royal Hero</span>
-        <div class="hero-card dish-item" data-name="tawa chicken paratha combo">
-            <img src="ROYAL COMBO.jpg" class="hero-img">
-            <div class="hero-content">
-                <div class="item-name">Tawa Chicken + Paratha</div>
-                <div class="price-tag">₹259</div>
-                <button class="order-btn" onclick="window.addToCart('Tawa Chicken Combo', 259)">+ Add Royal Combo</button>
+        <div class="hero-section">
+            <div class="hero-card dish-item" data-name="tawa chicken paratha combo">
+                <img src="ROYAL COMBO.jpg" class="hero-img">
+                <div style="padding:15px; text-align:center;">
+                    <div class="item-name" style="font-size:16px;">Tawa Chicken + Paratha</div>
+                    <div class="price-tag" style="font-size:14px; margin-bottom:15px;">₹259</div>
+                    <button class="order-btn" style="padding:15px; font-size:12px;" onclick="window.addToCart('Tawa Chicken Combo', 259)">+ Add Royal Combo</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="section-group" data-cat="nonveg">
-        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=1000&auto=format&fit=crop" class="section-banner"></div>
+    <div class="section-group section-wrap" data-cat="nonveg">
+        <div class="img-frame"><img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=1000&auto=format&fit=crop" class="section-banner"></div>
         <span class="cat-title">🍗 Non-Veg Specials</span>
         <div class="menu-grid">
             <div class="item-card dish-item" data-name="rsk special chicken half full">
                 <div class="item-name">RSK Special Chicken</div><div class="price-tag">Half: ₹219 / Full: ₹399</div>
-                <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('RSK Chicken (H)', 219)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('RSK Chicken (F)', 399)">Full</button></div>
+                <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('RSK Chicken (Half)', 219)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('RSK Chicken (Full)', 399)">Full</button></div>
             </div>
             <div class="item-card dish-item" data-name="tawa chicken half full">
                 <div class="item-name">Tawa Chicken</div><div class="price-tag">Half: ₹229 / Full: ₹409</div>
-                <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Tawa Chicken (H)', 229)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Tawa Chicken (F)', 409)">Full</button></div>
+                <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Tawa Chicken (Half)', 229)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Tawa Chicken (Full)', 409)">Full</button></div>
             </div>
-        </div>
+            </div>
     </div>
 
-    <div class="section-group" data-cat="veg">
-        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1000&auto=format&fit=crop" class="section-banner"></div>
-        <span class="cat-title">🌿 Veg Delights</span>
-        <div class="menu-grid">
-            <div class="item-card dish-item" data-name="kastoori paneer"><div class="item-name">Kastoori Paneer</div><div class="price-tag">₹179</div><button class="order-btn" onclick="window.addToCart('Kastoori Paneer', 179)">+ Add</button></div>
-            <div class="item-card dish-item" data-name="paneer bhurji"><div class="item-name">Paneer Bhurji</div><div class="price-tag">₹189</div><button class="order-btn" onclick="window.addToCart('Paneer Bhurji', 189)">+ Add</button></div>
-        </div>
-    </div>
-
-    <div class="section-group" data-cat="veg">
-        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1512058560566-42724afbc2aa?q=80&w=1000&auto=format&fit=crop" class="section-banner"></div>
+    <div class="section-group section-wrap" data-cat="rice">
+        <div class="img-frame"><img src="https://images.unsplash.com/photo-1512058560566-42724afbc2aa?q=80&w=1000&auto=format&fit=crop" class="section-banner"></div>
         <span class="cat-title">🍚 Rice & Breads</span>
         <div class="menu-grid">
             <div class="item-card dish-item" data-name="chicken fried rice"><div class="item-name">Chicken Fried Rice</div><div class="price-tag">₹149</div><button class="order-btn" onclick="window.addToCart('Chicken Fried Rice', 149)">+ Add</button></div>
-            <div class="item-card dish-item" data-name="paratha kulcha"><div class="item-name">Paratha / Kulcha</div><div class="price-tag">₹20 - ₹25</div><button class="order-btn" onclick="window.addToCart('Bread', 25)">+ Add</button></div>
+            <div class="item-card dish-item" data-name="egg fried rice"><div class="item-name">Egg Fried Rice</div><div class="price-tag">₹139</div><button class="order-btn" onclick="window.addToCart('Egg Fried Rice', 139)">+ Add</button></div>
+            <div class="item-card dish-item" data-name="veg fried rice"><div class="item-name">Veg Fried Rice</div><div class="price-tag">₹129</div><button class="order-btn" onclick="window.addToCart('Veg Fried Rice', 129)">+ Add</button></div>
+            <div class="item-card dish-item" data-name="paratha"><div class="item-name">Paratha</div><div class="price-tag">₹25</div><button class="order-btn" onclick="window.addToCart('Paratha', 25)">+ Add</button></div>
+            <div class="item-card dish-item" data-name="kulcha"><div class="item-name">Kulcha</div><div class="price-tag">₹20</div><button class="order-btn" onclick="window.addToCart('Kulcha', 20)">+ Add</button></div>
         </div>
     </div>
 
@@ -112,10 +97,10 @@
 </div>
 
 <script>
-    let currentCat = 'all';
+    let activeCategory = 'all';
 
     function setCat(cat, btn) {
-        currentCat = cat;
+        activeCategory = cat;
         let btns = document.getElementsByClassName('filter-btn');
         for(let b of btns) b.classList.remove('active');
         btn.classList.add('active');
@@ -125,17 +110,27 @@
     function runFilters() {
         let query = document.getElementById('menuSearch').value.toLowerCase();
         let sections = document.getElementsByClassName('section-group');
-        let items = document.getElementsByClassName('dish-item');
+        
+        for (let section of sections) {
+            let sectionCat = section.getAttribute('data-cat');
+            let items = section.getElementsByClassName('dish-item');
+            let hasVisibleItem = false;
 
-        for (let s of sections) {
-            let catMatch = (currentCat === 'all' || s.getAttribute('data-cat') === currentCat);
-            s.style.display = catMatch ? "block" : "none";
-        }
+            for (let item of items) {
+                let name = item.getAttribute('data-name').toLowerCase();
+                let matchesSearch = name.includes(query);
+                let matchesCat = (activeCategory === 'all' || sectionCat === activeCategory);
 
-        for (let i of items) {
-            let name = i.getAttribute('data-name');
-            let searchMatch = name.includes(query);
-            i.style.display = searchMatch ? "" : "none";
+                if (matchesSearch && matchesCat) {
+                    item.style.display = "flex";
+                    hasVisibleItem = true;
+                } else {
+                    item.style.display = "none";
+                }
+            }
+
+            // Agar section mein koi item nahi bacha ya category match nahi hui, toh section header chhupa do
+            section.style.display = hasVisibleItem ? "block" : "none";
         }
     }
 </script>
