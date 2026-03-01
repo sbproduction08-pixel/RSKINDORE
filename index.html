@@ -62,105 +62,113 @@
 </div>
 
 <script>
-    // Tab Management Logic
+    // --- 1. GLOBAL VARIABLES ---
+    window.cart = []; 
+
+    // --- 2. TAB MANAGEMENT (FETCH LOGIC) ---
     function showTab(tabId) {
-        // Nav highlight logic
+        // Nav highlight
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
         const activeBtn = document.getElementById('btn-' + tabId);
         if(activeBtn) activeBtn.classList.add('active');
 
-// 2. YAHAN PASTE KAREIN (Royal Logic)
-    let cart = [];
-
-    function registerUser() {
-        let name = prompt("Royal Street Kitchen mein aapka swagat hai! Aapka Naam?");
-        let phone = prompt("Aapka Mobile Number?");
-        if(name && phone && phone.length >= 10) {
-            localStorage.setItem('userName', name);
-            localStorage.setItem('userPhone', phone);
-            alert("Registration Successful! Ab aap order kar sakte hain.");
-        }
-    }
-
-    function addToCart(name, price) {
-        cart.push({name: name, price: price});
-        alert(name + " cart mein add ho gaya!");
-    }
-
-    async function checkout() {
-        let uName = localStorage.getItem('userName');
-        let uPhone = localStorage.getItem('userPhone');
-
-        if(!uName || !uPhone) {
-            registerUser();
-            return;
-        }
-
-        if(cart.length === 0) {
-            alert("Pehle kuch tasty add toh kijiye!");
-            return;
-        }
-
-        let token = Math.floor(Math.random() * 100) + 1; 
-
-        let itemsList = cart.map(item => `- ${item.name} (₹${item.price})`).join('%0A');
-        let total = cart.reduce((sum, item) => sum + item.price, 0);
-
-        let message = `*ROYAL STREET KITCHEN* 👑%0A--------------------------%0A*Token No:* #${token}%0A*Customer:* ${uName}%0A*Phone:* ${uPhone}%0A--------------------------%0A*Order Details:*%0A${itemsList}%0A--------------------------%0A*Total Amount:* ₹${total}%0A--------------------------%0A_Pay via UPI: yourid@upi_%0A_Kripya counter par token dikhayein._`;
-
-        window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
-        cart = []; 
-    }
-
-    function filterItems(type) {
-        const cards = document.querySelectorAll('.item-card');
-        cards.forEach(card => {
-            if (type === 'all') card.style.display = 'flex';
-            else card.style.display = card.classList.contains(type) ? 'flex' : 'none';
-        });
-    }
-
-    
-        // Loading indicator
+        // Content area loading
         const contentArea = document.getElementById('content-area');
         contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>👑 Loading Royal Experience...</div>";
 
-        // Fetch Logic with Cache Buster (?v=)
+        // Fetch logic
         fetch('./' + tabId + '-tab.html?v=' + Date.now())
             .then(response => {
-                if (!response.ok) throw new Error("File '" + tabId + "-tab.html' Missing");
+                if (!response.ok) throw new Error("File Missing");
                 return response.text();
             })
             .then(data => {
                 contentArea.innerHTML = data;
             })
             .catch(err => {
-                contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:red;'>" + err.message + "</div>";
+                contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:red;'>Kripya check karein: " + tabId + "-tab.html nahi mili.</div>";
             });
 
         localStorage.setItem('activeTab', tabId);
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // Global Search Function (Menu tab ke liye)
-    function filterMenu() {
+    // --- 3. REGISTRATION & LOGIN ---
+    window.registerUser = function() {
+        let name = prompt("Royal Street Kitchen mein aapka swagat hai! Aapka Naam?");
+        let phone = prompt("Aapka Mobile Number?");
+        if(name && phone && phone.length >= 10) {
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userPhone', phone);
+            alert("Swaagat hai " + name + "! Ab aap order kar sakte hain.");
+            return true;
+        }
+        alert("Sahi details dena zaroori hai.");
+        return false;
+    };
+
+    // --- 4. CART & TOKEN LOGIC ---
+    window.addToCart = function(name, price) {
+        window.cart.push({name: name, price: price});
+        alert(name + " cart mein add ho gaya!");
+        // Menu tab mein checkout bar dikhane ke liye
+        const bar = document.getElementById('floatingCheckout');
+        if(bar) bar.style.display = 'flex';
+    };
+
+    window.checkout = function() {
+        let uName = localStorage.getItem('userName');
+        let uPhone = localStorage.getItem('userPhone');
+
+        // Agar details nahi hain toh register karwao
+        if(!uName || !uPhone) {
+            if(!window.registerUser()) return;
+            uName = localStorage.getItem('userName');
+            uPhone = localStorage.getItem('userPhone');
+        }
+
+        if(window.cart.length === 0) {
+            alert("Pehle kuch tasty add toh kijiye!");
+            return;
+        }
+
+        // Token No (Random for now, Central Sheet baad mein link karenge)
+        let token = Math.floor(Math.random() * 100) + 1; 
+        let total = window.cart.reduce((sum, item) => sum + item.price, 0);
+        let itemsList = window.cart.map(item => `- ${item.name} (₹${item.price})`).join('%0A');
+
+        let message = `*ROYAL STREET KITCHEN* 👑%0A--------------------------%0A*Token No:* #${token}%0A*Date:* ${new Date().toLocaleDateString('en-GB')}%0A*Customer:* ${uName}%0A*Phone:* ${uPhone}%0A--------------------------%0A*Order Details:*%0A${itemsList}%0A--------------------------%0A*Total Amount:* ₹${total}%0A--------------------------%0A_Pay via UPI: yourid@upi_%0A_Kripya counter par token dikhayein._`;
+
+        window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
+        window.cart = []; // Reset cart after order
+        const bar = document.getElementById('floatingCheckout');
+        if(bar) bar.style.display = 'none';
+    };
+
+    // --- 5. SEARCH & FILTER ---
+    window.filterMenu = function() {
         let input = document.getElementById('menuSearch').value.toLowerCase();
         let cards = document.getElementsByClassName('item-card');
         for (let card of cards) {
-            let name = card.getAttribute('data-name');
-            if (name) {
-                card.style.display = name.includes(input) ? "block" : "none";
-            }
+            let name = card.getAttribute('data-name') || card.innerText.toLowerCase();
+            card.style.display = name.includes(input) ? "block" : "none";
         }
-    }
+    };
 
-    // Load default tab
+    window.filterItems = function(type) {
+        const cards = document.querySelectorAll('.item-card');
+        cards.forEach(card => {
+            if (type === 'all') card.style.display = 'block';
+            else card.style.display = card.classList.contains(type) ? 'block' : 'none';
+        });
+    };
+
+    // --- 6. INITIAL LOAD ---
     window.onload = function() {
         var savedTab = localStorage.getItem('activeTab') || 'home';
         showTab(savedTab);
     };
 </script>
-
 </body>
 </html>
