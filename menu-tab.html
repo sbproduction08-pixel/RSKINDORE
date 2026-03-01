@@ -11,17 +11,14 @@
 
     .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .item-card { background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; }
-    .item-name { font-size: 12px; font-weight: bold; color: #fff; min-height: 32px; }
+    .item-name { font-size: 12px; font-weight: bold; color: #fff; min-height: 32px; line-height: 1.2; }
     .price-tag { color: var(--gold); font-size: 11px; font-weight: bold; margin-bottom: 8px; }
 
-    /* Half/Full Buttons Layout */
     .half-full-row { display: flex; gap: 5px; margin-top: 5px; }
-    .hf-btn { flex: 1; background: #fff; color: #000; border: none; padding: 6px; border-radius: 4px; font-size: 10px; font-weight: 800; cursor: pointer; }
+    .hf-btn { flex: 1; background: #fff; color: #000; border: none; padding: 8px 4px; border-radius: 4px; font-size: 9px; font-weight: 800; cursor: pointer; }
     .hf-btn.full { background: var(--gold); }
-    
-    /* Counter Overlay */
     .counter-row { display: flex; align-items: center; justify-content: space-between; background: var(--gold); border-radius: 6px; padding: 2px; }
-    .count-btn { background: none; border: none; color: #000; font-size: 18px; font-weight: bold; width: 25px; }
+    .count-btn { background: none; border: none; color: #000; font-size: 16px; font-weight: bold; width: 20px; cursor: pointer; }
 
     .cart-bar { position: fixed; bottom: 85px; left: 5%; width: 90%; background: var(--gold); color: #000; padding: 15px; border-radius: 50px; display: none; justify-content: space-between; z-index: 3000; box-shadow: 0 5px 20px #000; font-weight: 900; }
     .cart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 4000; display: none; flex-direction: column; padding: 20px; box-sizing: border-box; }
@@ -41,26 +38,69 @@
         <button class="f-btn" onclick="setCategory('rice', this)">Rice & Breads</button>
     </div>
 
+    <div class="section-group" id="sec-combo">
+        <div class="img-frame"><img src="ROYAL COMBO.jpg" class="section-banner"></div>
+        <span class="cat-title">👑 RSK Royal Combos</span>
+        <div class="menu-grid">
+            <div class="item-card dish-item" data-name="tawa chicken paratha combo"><div class="item-name">Tawa Chicken + Paratha</div><div class="price-tag">₹259</div><div id="btn-C1"><button class="hf-btn full" onclick="changeQty('Tawa Chicken Combo', 259, 1, 'C1')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="tawa chicken kulcha combo"><div class="item-name">Tawa Chicken + Kulcha</div><div class="price-tag">₹249</div><div id="btn-C2"><button class="hf-btn full" onclick="changeQty('Tawa Chicken Kulcha', 249, 1, 'C2')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="paneer bhurji paratha combo"><div class="item-name">Paneer Bhurji + Paratha</div><div class="price-tag">₹209</div><div id="btn-C3"><button class="hf-btn full" onclick="changeQty('Paneer Bhurji Paratha', 209, 1, 'C3')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="paneer bhurji kulcha combo"><div class="item-name">Paneer Bhurji + Kulcha</div><div class="price-tag">₹199</div><div id="btn-C4"><button class="hf-btn full" onclick="changeQty('Paneer Bhurji Kulcha', 199, 1, 'C4')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="tawa paneer paratha combo"><div class="item-name">Tawa Paneer + Paratha</div><div class="price-tag">₹209</div><div id="btn-C5"><button class="hf-btn full" onclick="changeQty('Tawa Paneer Paratha', 209, 1, 'C5')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="tawa paneer kulcha combo"><div class="item-name">Tawa Paneer + Kulcha</div><div class="price-tag">₹199</div><div id="btn-C6"><button class="hf-btn full" onclick="changeQty('Tawa Paneer Kulcha', 199, 1, 'C6')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="tawa egg paratha combo"><div class="item-name">Tawa Egg + Paratha</div><div class="price-tag">₹139</div><div id="btn-C7"><button class="hf-btn full" onclick="changeQty('Tawa Egg Paratha', 139, 1, 'C7')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="tawa egg kulcha combo"><div class="item-name">Tawa Egg + Kulcha</div><div class="price-tag">₹129</div><div id="btn-C8"><button class="hf-btn full" onclick="changeQty('Tawa Egg Kulcha', 129, 1, 'C8')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="egg bhurji paratha combo"><div class="item-name">Egg Bhurji + Paratha</div><div class="price-tag">₹119</div><div id="btn-C9"><button class="hf-btn full" onclick="changeQty('Egg Bhurji Paratha', 119, 1, 'C9')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="egg bhurji kulcha combo"><div class="item-name">Egg Bhurji + Kulcha</div><div class="price-tag">₹109</div><div id="btn-C10"><button class="hf-btn full" onclick="changeQty('Egg Bhurji Kulcha', 109, 1, 'C10')">+ Add</button></div></div>
+        </div>
+    </div>
+
     <div class="section-group" id="sec-nonveg">
         <div class="img-frame"><img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&w=1000&q=80" class="section-banner"></div>
         <span class="cat-title">🍗 Non-Veg Specials</span>
         <div class="menu-grid">
-            <div class="item-card dish-item" data-name="rsk special chicken half full">
-                <div class="item-name">RSK Special Chicken</div>
-                <div class="price-tag">H: ₹219 / F: ₹399</div>
-                <div class="half-full-row">
-                    <div id="btn-RSKSpecialChickenH"><button class="hf-btn" onclick="changeQty('RSK Chicken (H)', 219, 1, 'RSKSpecialChickenH')">Half</button></div>
-                    <div id="btn-RSKSpecialChickenF"><button class="hf-btn full" onclick="changeQty('RSK Chicken (F)', 399, 1, 'RSKSpecialChickenF')">Full</button></div>
-                </div>
-            </div>
-            <div class="item-card dish-item" data-name="tawa chicken half full">
-                <div class="item-name">Tawa Chicken</div>
-                <div class="price-tag">H: ₹229 / F: ₹409</div>
-                <div class="half-full-row">
-                    <div id="btn-TawaChickenH"><button class="hf-btn" onclick="changeQty('Tawa Chicken (H)', 229, 1, 'TawaChickenH')">Half</button></div>
-                    <div id="btn-TawaChickenF"><button class="hf-btn full" onclick="changeQty('Tawa Chicken (F)', 409, 1, 'TawaChickenF')">Full</button></div>
-                </div>
-            </div>
+            <div class="item-card dish-item" data-name="rsk special chicken half full"><div class="item-name">RSK Special Chicken</div><div class="price-tag">H: ₹219 / F: ₹399</div><div class="half-full-row"><div id="btn-NV1H"><button class="hf-btn" onclick="changeQty('RSK Chicken (H)', 219, 1, 'NV1H')">Half</button></div><div id="btn-NV1F"><button class="hf-btn full" onclick="changeQty('RSK Chicken (F)', 399, 1, 'NV1F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="tawa chicken half full"><div class="item-name">Tawa Chicken</div><div class="price-tag">H: ₹229 / F: ₹409</div><div class="half-full-row"><div id="btn-NV2H"><button class="hf-btn" onclick="changeQty('Tawa Chicken (H)', 229, 1, 'NV2H')">Half</button></div><div id="btn-NV2F"><button class="hf-btn full" onclick="changeQty('Tawa Chicken (F)', 409, 1, 'NV2F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="chilly chicken half full"><div class="item-name">Chilly Chicken</div><div class="price-tag">H: ₹189 / F: ₹349</div><div class="half-full-row"><div id="btn-NV3H"><button class="hf-btn" onclick="changeQty('Chilly Chicken (H)', 189, 1, 'NV3H')">Half</button></div><div id="btn-NV3F"><button class="hf-btn full" onclick="changeQty('Chilly Chicken (F)', 349, 1, 'NV3F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="diet paper chicken half full"><div class="item-name">Diet Paper Chicken</div><div class="price-tag">H: ₹199 / F: ₹359</div><div class="half-full-row"><div id="btn-NV4H"><button class="hf-btn" onclick="changeQty('Diet Paper (H)', 199, 1, 'NV4H')">Half</button></div><div id="btn-NV4F"><button class="hf-btn full" onclick="changeQty('Diet Paper (F)', 359, 1, 'NV4F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="creamy paper chicken half full"><div class="item-name">Creamy Paper Chicken</div><div class="price-tag">H: ₹219 / F: ₹399</div><div class="half-full-row"><div id="btn-NV5H"><button class="hf-btn" onclick="changeQty('Creamy Paper (H)', 219, 1, 'NV5H')">Half</button></div><div id="btn-NV5F"><button class="hf-btn full" onclick="changeQty('Creamy Paper (F)', 399, 1, 'NV5F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="fry chicken half full"><div class="item-name">Fry Chicken</div><div class="price-tag">H: ₹149 / F: ₹279</div><div class="half-full-row"><div id="btn-NV6H"><button class="hf-btn" onclick="changeQty('Fry Chicken (H)', 149, 1, 'NV6H')">Half</button></div><div id="btn-NV6F"><button class="hf-btn full" onclick="changeQty('Fry Chicken (F)', 279, 1, 'NV6F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="finger chicken half full"><div class="item-name">Finger Chicken</div><div class="price-tag">H: ₹169 / F: ₹299</div><div class="half-full-row"><div id="btn-NV7H"><button class="hf-btn" onclick="changeQty('Finger Chicken (H)', 169, 1, 'NV7H')">Half</button></div><div id="btn-NV7F"><button class="hf-btn full" onclick="changeQty('Finger Chicken (F)', 299, 1, 'NV7F')">Full</button></div></div></div>
+            <div class="item-card dish-item" data-name="chicken cheese balls half full"><div class="item-name">Chicken Cheese Balls</div><div class="price-tag">H: ₹189 / F: ₹349</div><div class="half-full-row"><div id="btn-NV8H"><button class="hf-btn" onclick="changeQty('Cheese Balls (H)', 189, 1, 'NV8H')">Half</button></div><div id="btn-NV8F"><button class="hf-btn full" onclick="changeQty('Cheese Balls (F)', 349, 1, 'NV8F')">Full</button></div></div></div>
+        </div>
+    </div>
+
+    <div class="section-group" id="sec-veg">
+        <div class="img-frame"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1000&q=80" class="section-banner"></div>
+        <span class="cat-title">🌿 Veg Delights</span>
+        <div class="menu-grid">
+            <div class="item-card dish-item" data-name="kastoori paneer"><div class="item-name">Kastoori Paneer</div><div class="price-tag">₹179</div><div id="btn-V1"><button class="hf-btn full" onclick="changeQty('Kastoori Paneer', 179, 1, 'V1')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="tawa paneer"><div class="item-name">Tawa Paneer</div><div class="price-tag">₹189</div><div id="btn-V2"><button class="hf-btn full" onclick="changeQty('Tawa Paneer', 189, 1, 'V2')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="paneer bhurji"><div class="item-name">Paneer Bhurji</div><div class="price-tag">₹189</div><div id="btn-V3"><button class="hf-btn full" onclick="changeQty('Paneer Bhurji', 189, 1, 'V3')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="garlic bread"><div class="item-name">Garlic Bread</div><div class="price-tag">₹159</div><div id="btn-V4"><button class="hf-btn full" onclick="changeQty('Garlic Bread', 159, 1, 'V4')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="french fries potato bites"><div class="item-name">Fries / Potato Bites</div><div class="price-tag">₹79</div><div id="btn-V5"><button class="hf-btn full" onclick="changeQty('Fries / Bites', 79, 1, 'V5')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="chips choice"><div class="item-name">Chips of Choice</div><div class="price-tag">₹69</div><div id="btn-V6"><button class="hf-btn full" onclick="changeQty('Chips of Choice', 69, 1, 'V6')">+ Add</button></div></div>
+        </div>
+    </div>
+
+    <div class="section-group" id="sec-maggie">
+        <div class="img-frame"><img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=1000&q=80" class="section-banner"></div>
+        <span class="cat-title">🍜 Maggie Corner</span>
+        <div class="menu-grid">
+            <div class="item-card dish-item" data-name="rsk special maggie"><div class="item-name">RSK Special Maggie</div><div class="price-tag">₹99</div><div id="btn-M1"><button class="hf-btn full" onclick="changeQty('RSK Special Maggie', 99, 1, 'M1')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="cheese maggie veg maggie"><div class="item-name">Cheese / Veg Maggie</div><div class="price-tag">₹89</div><div id="btn-M2"><button class="hf-btn full" onclick="changeQty('Cheese/Veg Maggie', 89, 1, 'M2')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="butter maggie"><div class="item-name">Butter Maggie</div><div class="price-tag">₹69</div><div id="btn-M3"><button class="hf-btn full" onclick="changeQty('Butter Maggie', 69, 1, 'M3')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="masala maggie"><div class="item-name">Masala Maggie</div><div class="price-tag">₹49</div><div id="btn-M4"><button class="hf-btn full" onclick="changeQty('Masala Maggie', 49, 1, 'M4')">+ Add</button></div></div>
+        </div>
+    </div>
+
+    <div class="section-group" id="sec-egg">
+        <div class="img-frame"><img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=1000&q=80" class="section-banner"></div>
+        <span class="cat-title">🥚 Egg Station</span>
+        <div class="menu-grid">
+            <div class="item-card dish-item" data-name="tawa egg"><div class="item-name">Tawa Egg</div><div class="price-tag">₹119</div><div id="btn-E1"><button class="hf-btn full" onclick="changeQty('Tawa Egg', 119, 1, 'E1')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="kastoori egg egg bhurji"><div class="item-name">Kastoori / Egg Bhurji</div><div class="price-tag">₹99</div><div id="btn-E2"><button class="hf-btn full" onclick="changeQty('Kastoori/Bhurji Egg', 99, 1, 'E2')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="boiled egg"><div class="item-name">Boiled Egg (2 pc)</div><div class="price-tag">₹25</div><div id="btn-E3"><button class="hf-btn full" onclick="changeQty('Boiled Egg', 25, 1, 'E3')">+ Add</button></div></div>
         </div>
     </div>
 
@@ -68,7 +108,11 @@
         <div class="img-frame"><img src="https://images.pexels.com/photos/3926124/pexels-photo-3926124.jpeg" class="section-banner"></div>
         <span class="cat-title">🍚 Rice & Breads</span>
         <div class="menu-grid">
-            <div class="item-card dish-item" data-name="chicken fried rice"><div class="item-name">Chicken Fried Rice</div><div class="price-tag">₹149</div><div id="btn-Rice"><button class="hf-btn full" onclick="changeQty('Chicken Fried Rice', 149, 1, 'Rice')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="chicken fried rice"><div class="item-name">Chicken Fried Rice</div><div class="price-tag">₹149</div><div id="btn-R1"><button class="hf-btn full" onclick="changeQty('Chicken Fried Rice', 149, 1, 'R1')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="egg fried rice"><div class="item-name">Egg Fried Rice</div><div class="price-tag">₹139</div><div id="btn-R2"><button class="hf-btn full" onclick="changeQty('Egg Fried Rice', 139, 1, 'R2')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="veg fried rice"><div class="item-name">Veg Fried Rice</div><div class="price-tag">₹129</div><div id="btn-R3"><button class="hf-btn full" onclick="changeQty('Veg Fried Rice', 129, 1, 'R3')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="paratha"><div class="item-name">Paratha</div><div class="price-tag">₹25</div><div id="btn-R4"><button class="hf-btn full" onclick="changeQty('Paratha', 25, 1, 'R4')">+ Add</button></div></div>
+            <div class="item-card dish-item" data-name="kulcha"><div class="item-name">Kulcha</div><div class="price-tag">₹20</div><div id="btn-R5"><button class="hf-btn full" onclick="changeQty('Kulcha', 20, 1, 'R5')">+ Add</button></div></div>
         </div>
     </div>
 
@@ -104,10 +148,11 @@
         if(!container) return;
         const qty = cart[name] ? cart[name].qty : 0;
         if (qty > 0) {
-            container.innerHTML = `<div class="counter-row"><button class="count-btn" onclick="changeQty('${name}', ${price}, -1, '${btnId}')">-</button><span style="color:#000; font-weight:800;">${qty}</span><button class="count-btn" onclick="changeQty('${name}', ${price}, 1, '${btnId}')">+</button></div>`;
+            container.innerHTML = `<div class="counter-row"><button class="count-btn" onclick="changeQty('${name}', ${price}, -1, '${btnId}')">-</button><span style="color:#000; font-weight:800; font-size:14px;">${qty}</span><button class="count-btn" onclick="changeQty('${name}', ${price}, 1, '${btnId}')">+</button></div>`;
         } else {
-            const isFull = name.includes('(F)') || name.includes('Rice');
-            container.innerHTML = `<button class="hf-btn ${isFull?'full':''}" onclick="changeQty('${name}', ${price}, 1, '${btnId}')">${name.includes('(H)')?'Half':name.includes('(F)')?'Full':'+ Add'}</button>`;
+            const label = name.includes('(H)') ? 'Half' : name.includes('(F)') ? 'Full' : '+ Add';
+            const isGold = name.includes('(F)') || !name.includes('(');
+            container.innerHTML = `<button class="hf-btn ${isGold?'full':''}" onclick="changeQty('${name}', ${price}, 1, '${btnId}')">${label}</button>`;
         }
     }
 
@@ -122,7 +167,7 @@
         document.getElementById('cartModal').style.display = show ? 'flex' : 'none';
         if (show) {
             let h = '', t = 0;
-            for (let k in cart) { let s = cart[k].price * cart[k].qty; t += s; h += `<div style="display:flex; justify-content:space-between; color:#fff; margin-bottom:10px;"><span>${k} x ${cart[k].qty}</span><span>₹${s}</span></div>`; }
+            for (let k in cart) { let s = cart[k].price * cart[k].qty; t += s; h += `<div style="display:flex; justify-content:space-between; color:#fff; margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:5px;"><span>${k} x ${cart[k].qty}</span><span>₹${s}</span></div>`; }
             document.getElementById('modalList').innerHTML = h || 'Cart empty';
             document.getElementById('modalTotal').innerText = `Total: ₹${t}`;
         }
