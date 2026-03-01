@@ -7,153 +7,180 @@
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --black: #0a0a0a; --royal-red: #3a0d0d; }
-        body { margin: 0; background: var(--black); background-image: radial-gradient(circle at center, var(--royal-red) 0%, var(--black) 100%); color: #fff; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-
-        /* --- ROYAL HEADER --- */
-        header { padding: 40px 20px; text-align: center; background: linear-gradient(to bottom, rgba(58, 13, 13, 0.9), transparent); }
-        .main-logo { width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; box-shadow: 0 0 25px var(--gold); margin-bottom: 10px; }
         
-        .crown-shahi { 
-            font-size: 30px; display: block; margin-bottom: -10px;
-            background: linear-gradient(to bottom, #fff, var(--gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px var(--gold));
+        body { 
+            margin: 0; 
+            background: var(--black); 
+            background-image: radial-gradient(circle at center, var(--royal-red) 0%, var(--black) 100%); 
+            color: #fff; 
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden; 
         }
 
-        h1 { 
-            font-family: 'Marcellus', serif; font-size: 32px; margin: 5px 0; 
-            letter-spacing: 4px; text-transform: uppercase;
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.6));
+        /* --- HEADER --- */
+        header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.3); }
+        .main-logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 20px var(--gold); }
+        h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 15px 0 5px; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* --- FIXED TAB LINE (Jha refresh wahi open logic) --- */
+        .bottom-nav { 
+            position: sticky; 
+            top: 0; 
+            z-index: 2000; 
+            width: 100%; 
+            background: rgba(15, 12, 5, 0.95); 
+            border-bottom: 2px solid var(--gold); 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 15px 0; 
+            backdrop-filter: blur(10px); 
         }
+        .nav-item { color: #888; font-size: 12px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; padding: 5px 10px; transition: 0.3s; }
+        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
 
-        .indore-heartbeat { width: 150px; filter: drop-shadow(0 0 12px #fff); animation: heartbeat 1.5s ease-in-out infinite; margin-top: 10px; }
-        @keyframes heartbeat { 0%, 28%, 70% { transform: scale(1); } 14%, 42% { transform: scale(1.1); } }
-
-        /* --- STICKY TABS --- */
-        .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); border-top: 1px solid rgba(212,175,55,0.3); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
-        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; }
-        .nav-item.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
-
-        .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; padding-bottom: 50px; }
-
-        /* --- PAGES --- */
-        .page { display: none; padding: 15px; animation: fadeIn 0.5s ease; }
+        .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; padding: 20px; padding-bottom: 100px; }
+        .page { display: none; animation: fadeIn 0.5s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MENU SYSTEM --- */
-        .search-container { padding: 10px 15px; background: rgba(255,255,255,0.05); margin: 15px; border-radius: 10px; border: 1px solid var(--gold); }
-        #menuSearch { width: 100%; background: transparent; border: none; color: #fff; outline: none; }
-        .royal-frame { width: 100%; border: 2px solid var(--gold); border-radius: 15px; margin: 25px 0 15px; overflow: hidden; box-shadow: 0 0 15px rgba(212,175,55,0.2); }
-        .banner-img { width: 100%; display: block; }
-        .cat-title { color: var(--gold); border-left: 4px solid var(--gold); padding-left: 10px; margin: 20px 0 10px; }
-        
-        .menu-row { display: flex; gap: 8px; margin-bottom: 8px; }
-        .menu-card { flex: 1; background: rgba(212,175,55,0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 12px 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; font-size: 13px; }
-        .price { color: var(--gold); font-weight: bold; margin-top: 5px; }
-        .hf-label { font-size: 9px; color: #aaa; text-transform: uppercase; }
+        /* --- ROYAL COMBO & MENU STYLE --- */
+        .menu-card { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .combo-tag { background: var(--gold); color: #000; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-bottom: 5px; display: inline-block; }
+        .item-name { color: var(--gold); font-weight: 600; font-size: 16px; }
+        .price { font-weight: bold; color: #fff; }
 
-        /* --- REACH --- */
-        .reach-card { background: rgba(20, 5, 5, 0.9); border: 2px solid var(--gold); padding: 30px; border-radius: 20px; text-align:center; }
-        .qr-wrapper { background: #fff; padding: 10px; border-radius: 15px; display: inline-block; border: 3px solid var(--gold); margin: 20px 0; box-shadow: 0 0 15px var(--gold); }
-        .qr-wrapper img { width: 140px; display: block; }
+        /* --- JUMPU INSTAGRAM LOGO --- */
+        .insta-jumpu { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 20px; 
+            z-index: 1001; 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%; 
+            background: #fff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            animation: jump 3s infinite; 
+            box-shadow: 0 0 15px var(--gold); 
+        }
+        @keyframes jump { 
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
+            40% {transform: translateY(-25px);} 
+            60% {transform: translateY(-12px);} 
+        }
+
+        /* --- FOOTER LOGOS --- */
+        .footer-section { text-align: center; padding: 40px 20px; margin-top: 20px; border-top: 1px solid rgba(212,175,55,0.2); }
+        .fssai-box img { width: 220px; margin-bottom: 20px; filter: brightness(1.2); }
+        .sub-logos { display: flex; justify-content: center; align-items: center; gap: 20px; }
+        .sub-logos img { height: 50px; filter: grayscale(1) invert(1) brightness(1.5); }
+
+        /* --- MAP SECTION --- */
+        .map-frame { width: 100%; border-radius: 15px; border: 2px solid var(--gold); overflow: hidden; height: 250px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <header>
     <img src="MAIN_LOGO.jpeg" class="main-logo" alt="RSK Logo">
-    <span class="crown-shahi">👑</span>
     <h1>Royal Street Kitchen</h1>
-    <img src="i_love_ind.png" class="indore-heartbeat" alt="I Love Indore">
 </header>
 
 <div class="bottom-nav">
-    <div class="nav-item" id="btn-home" onclick="showTab('home', this)">Home</div>
-    <div class="nav-item" id="btn-menu" onclick="showTab('menu', this)">Menu</div>
-    <div class="nav-item" id="btn-safar" onclick="showTab('safar', this)">Safar</div>
-    <div class="nav-item" id="btn-reach" onclick="showTab('reach', this)">Reach</div>
+    <div class="nav-item" id="btn-home" onclick="showTab('home')">Home</div>
+    <div class="nav-item" id="btn-menu" onclick="showTab('menu')">Menu</div>
+    <div class="nav-item" id="btn-reach" onclick="showTab('reach')">Reach</div>
 </div>
 
 <div class="app-container">
+    <a href="https://www.instagram.com/rsk.indore/" class="insta-jumpu" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="35">
+    </a>
+
     <div id="home" class="page">
-        <div class="royal-frame"><img src="MAIN_BANNER.jpeg" class="banner-img"></div>
-        <p style="text-align:center; color:var(--gold); font-style:italic;">"Numbers ki duniya se nikal kar, Swaad ki duniya tak ka safar"</p>
-        <div class="royal-frame"><img src="CART_ROYAL_TYPE.jpeg" class="banner-img"></div>
-        <a href="https://wa.me/917489999890" style="text-decoration:none;"><div style="background:linear-gradient(135deg, var(--gold), #996515); color:#000; text-align:center; padding:18px; border-radius:50px; font-weight:900; margin-top:20px;">Order on WhatsApp</div></a>
+        <div style="border:2px solid var(--gold); border-radius:15px; overflow:hidden;">
+            <img src="MAIN_BANNER.jpeg" style="width:100%;" alt="Banner">
+        </div>
+        <p style="text-align:center; color:var(--gold); font-style:italic; margin-top:20px;">
+            "Numbers ki duniya se nikal kar, Swaad ki duniya tak ka safar"
+        </p>
     </div>
 
     <div id="menu" class="page">
-        <div class="search-container"><input type="text" id="menuSearch" placeholder="Chicken, Maggie, Paneer..." onkeyup="filterMenu()"></div>
+        <h2 style="color:var(--gold); font-family:'Marcellus'; border-bottom:1px solid var(--gold); padding-bottom:5px;">Shahi Menu</h2>
         
-        <div class="royal-frame"><img src="NON_VEG_HEAD.jpg" class="banner-img"></div>
-        <div class="cat-title"><h3>Non-Veg Starters</h3></div>
-        <div class="menu-row">
-            <div class="menu-card"><div>Chilly Chicken</div><div class="price">₹189 / ₹349</div><div class="hf-label">Half / Full</div></div>
-            <div class="menu-card"><div>Diet Paper Chicken</div><div class="price">₹199 / ₹359</div><div class="hf-label">Half / Full</div></div>
+        <div class="menu-card" style="border-width:2px; background: rgba(212,175,55,0.1);">
+            <div>
+                <span class="combo-tag">BEST SELLER</span>
+                <div class="item-name">Royal Combo (Veg/Non-Veg)</div>
+                <small style="color:#ccc;">Fried Snacks + Shahi Dip + Drink</small>
+            </div>
+            <div class="price">₹199/-</div>
         </div>
-        <div class="menu-row">
-            <div class="menu-card"><div>Creamy Paper Chicken</div><div class="price">₹219 / ₹399</div><div class="hf-label">Half / Full</div></div>
-            <div class="menu-card"><div>RSK Special Chicken</div><div class="price">₹219 / ₹399</div><div class="hf-label">Half / Full</div></div>
-        </div>
-        <div class="royal-frame"><img src="ROYAL_COMBO.jpg" class="banner-img"></div>
-        <div class="cat-title"><h3>RSK Royal Combos</h3></div>
-        <div class="menu-row">
-            <div class="menu-card"><div>Tawa Chicken + Paratha</div><div class="price">₹259</div></div>
-            <div class="menu-card"><div>Tawa Chicken + Kulcha</div><div class="price">₹249</div></div>
-        </div>
-    </div>
 
-    <div id="safar" class="page">
-        <div class="royal-frame"><img src="IMAGEEE_CCCART.jpeg" class="banner-img"></div>
-        <div style="background: rgba(58, 13, 13, 0.8); border: 2px solid var(--gold); padding: 25px; border-radius: 15px;">Numbers ki duniya se nikal kar Swaad ki duniya tak ka safar! Ek Accountant se Chef banne tak ka passion hi RSK ki neev hai.</div>
-    </div>
+        <div class="menu-card">
+            <div class="item-name">Chicken Fried Bucket</div>
+            <div class="price">₹249/-</div>
+        </div>
+        </div>
 
     <div id="reach" class="page">
-        <div class="reach-card">
-            <h2 style="color:var(--gold);">Royal Serving Hours</h2>
-            <p>4:00 PM - 11:00 PM (All Day)</p>
-            <p style="color:#ff4d4d; font-weight: bold; border: 1px solid #ff4d4d; display: inline-block; padding: 5px 15px; border-radius: 5px;">⚠️ TUESDAY CLOSED</p>
-            <div style="margin-top: 25px;">
-                <h3 style="color:var(--gold);">Location</h3>
-                <p>📍 Nearby Elite Apex Township, Mahalaxmi Nagar, Indore</p>
+        <div style="background: rgba(20, 5, 5, 0.9); border: 2px solid var(--gold); padding: 20px; border-radius: 15px; text-align:center;">
+            <h3 style="color:var(--gold); margin-top:0;">Royal Court Location</h3>
+            <p>📍 Mahalaxmi Nagar, Indore</p>
+            <p>⏰ 4:00 PM - 11:00 PM</p>
+            
+            <div class="map-frame">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.123456789!2d75.8912345!3d22.7512345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDQ1JzAzLjUiTiA3NcKwNTMnMjguNCJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
-            <div class="qr-wrapper">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/917489999890" alt="WA QR">
-            </div>
-            <p style="font-size: 11px; color: #888;">Scan for WhatsApp Order</p>
-            <a href="https://maps.google.com/?q=Mahalaxmi+Nagar+Indore" target="_blank" style="text-decoration:none;"><div style="background:var(--gold); color:#000; padding:15px; border-radius:10px; font-weight:bold; margin-top:10px;">Open Maps</div></a>
+            
+            <a href="https://maps.app.goo.gl/YourMapLink" style="text-decoration:none;">
+                <div style="background:var(--gold); color:#000; padding:12px; border-radius:8px; font-weight:bold; margin-top:15px;">Open in Google Maps</div>
+            </a>
         </div>
     </div>
 </div>
 
+<div class="footer-section">
+    <div class="fssai-box">
+        <img src="FSSAI_Logo.png" alt="FSSAI Licensed">
+    </div>
+    <div class="sub-logos">
+        <img src="msme_logo.avif" alt="MSME">
+        <img src="Swachh_Bharat_Mission_Logo.png" alt="Swachh Bharat">
+    </div>
+    <p style="font-size:10px; color:#666; margin-top:20px;">&copy; 2026 Royal Street Kitchen | RSK Indore</p>
+</div>
+
 <script>
+    // Refresh pe wahi page open rakhne ka logic
     window.onload = function() {
         var savedTab = localStorage.getItem('activeTab') || 'home';
-        showTab(savedTab, document.getElementById('btn-' + savedTab));
+        showTab(savedTab);
     };
 
-    function showTab(tabId, el) {
+    function showTab(tabId) {
+        // Saare pages hide karo
         var pages = document.getElementsByClassName('page');
         for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
+        
+        // Saare nav-items inactive karo
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
+        
+        // Jo select kiya usse show karo
         document.getElementById(tabId).classList.add('active');
-        if(el) el.classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+        
+        // Selection save karo
         localStorage.setItem('activeTab', tabId);
+        
+        // Top par scroll (optional)
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
-
-    function filterMenu() {
-        var input = document.getElementById('menuSearch').value.toUpperCase();
-        var cards = document.getElementsByClassName('menu-card');
-        for (var i = 0; i < cards.length; i++) {
-            var txt = cards[i].textContent || cards[i].innerText;
-            cards[i].style.display = txt.toUpperCase().indexOf(input) > -1 ? "" : "none";
-        }
-    }
 </script>
+
 </body>
 </html>
