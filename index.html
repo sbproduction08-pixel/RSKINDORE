@@ -105,6 +105,18 @@
         var savedTab = localStorage.getItem('activeTab') || 'home';
         showTab(savedTab);
     };
+
+    // index.html ki script mein ye add karein
+function filterMenu() {
+    let input = document.getElementById('menuSearch').value.toLowerCase();
+    let cards = document.getElementsByClassName('item-card');
+    for (let card of cards) {
+        let name = card.getAttribute('data-name');
+        if (name) {
+            card.style.display = name.includes(input) ? "block" : "none";
+        }
+    }
+}
 </script>
     
 </body>
