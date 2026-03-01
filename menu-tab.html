@@ -1,51 +1,33 @@
 <style>
     .menu-header { color: var(--gold); font-family: 'Marcellus', serif; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; }
     
-    /* Search Box Style */
-    .search-container { position: relative; margin-bottom: 20px; }
-    .search-box { 
-        width: 100%; padding: 15px 20px; border-radius: 30px; 
-        border: 1px solid var(--gold); background: #1a1a1a; 
-        color: #fff; outline: none; box-sizing: border-box;
-        font-family: 'Poppins', sans-serif; font-size: 14px;
-    }
-    .search-box::placeholder { color: rgba(212,175,55,0.5); }
+    /* Search Bar */
+    .search-box { width:100%; padding:15px; border-radius:30px; border:1px solid var(--gold); background:#1a1a1a; color:#fff; margin-bottom:20px; outline:none; box-sizing:border-box; }
 
-    /* Category Filter Buttons */
-    .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 10px; scrollbar-width: none; }
-    .filter-row::-webkit-scrollbar { display: none; }
-    .f-btn { 
-        background: rgba(255,255,255,0.05); border: 1px solid #444; color: #ccc; 
-        padding: 6px 15px; border-radius: 20px; font-size: 11px; white-space: nowrap; 
-        cursor: pointer; font-weight: bold;
+    /* --- HERO SECTION: ROYAL COMBOS (Image Top, Info Bottom) --- */
+    .hero-combo-container { margin-bottom: 40px; }
+    .hero-card { 
+        background: #111; border: 1px solid var(--gold); border-radius: 15px; 
+        overflow: hidden; margin-bottom: 15px; box-shadow: 0 0 20px rgba(212,175,55,0.3);
     }
-    .f-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+    .hero-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid var(--gold); }
+    .hero-content { padding: 15px; text-align: center; }
 
-    /* --- ROYAL COMBO (RIGHT HERO) --- */
-    .combo-section { display: flex; justify-content: flex-end; margin-bottom: 25px; }
-    .royal-combo-box { 
-        width: 190px; background: #000; border: 2px solid var(--gold); 
-        border-radius: 15px; overflow: hidden; box-shadow: 0 0 15px var(--gold-glow);
-    }
-    .combo-img { width: 100%; height: 110px; object-fit: cover; }
-    .combo-info { padding: 10px; text-align: center; }
+    /* --- SECTION HEADERS (Rectangle Big Images) --- */
+    .section-banner { width: 100%; height: 100px; border-radius: 10px; object-fit: cover; margin: 30px 0 15px; border: 1px solid rgba(212,175,55,0.4); }
+    .cat-title { color: var(--gold); font-size: 18px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; display: block; }
 
-    /* --- MENU GRID & SECTION HEADERS --- */
-    .section-header { display: flex; align-items: center; gap: 12px; margin: 30px 0 15px; }
-    .section-icon { width: 45px; height: 45px; border-radius: 50%; border: 1.5px solid var(--gold); object-fit: cover; }
-    .cat-title { color: var(--gold); font-size: 15px; font-weight: bold; text-transform: uppercase; }
+    /* --- GRID & CARDS --- */
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .item-card { background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; }
+    .item-name { font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 5px; min-height: 35px; }
+    .price-tag { color: var(--gold); font-size: 11px; font-weight: bold; margin-bottom: 10px; }
 
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .item-card { 
-        background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); 
-        border-radius: 8px; padding: 12px; display: flex; flex-direction: column; 
-    }
-    .item-name { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 5px; min-height: 30px; }
-    .price-box { color: var(--gold); font-size: 11px; font-weight: bold; margin-bottom: 10px; }
-    .order-btn { 
-        background: var(--gold); color: #000; border: none; padding: 10px; 
-        border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer;
-    }
+    /* Buttons */
+    .btn-row { display: flex; gap: 5px; margin-top: auto; }
+    .order-btn { background: var(--gold); color: #000; border: none; padding: 10px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; }
+    .half-btn { background: #ddd; flex: 1; }
+    .full-btn { background: var(--gold); flex: 1; }
 
     .checkout-wrap { position: fixed; bottom: 85px; left: 0; width: 100%; display: none; justify-content: center; z-index: 2000; }
     .place-order-btn { background: var(--gold); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 900; box-shadow: 0 5px 20px #000; cursor: pointer; }
@@ -53,108 +35,146 @@
 
 <div class="menu-tab">
     <h2 class="menu-header">ROYAL MENU</h2>
+    <input type="text" id="menuSearch" class="search-box" placeholder="Kya khaoge? (Search 42+ items...)" onkeyup="filterMenu()">
 
-    <div class="search-container">
-        <input type="text" id="menuSearch" class="search-box" placeholder="Kya khaoge aaj? (Search...)" onkeyup="filterMenu()">
-    </div>
-
-    <div class="filter-row">
-        <div class="f-btn active" onclick="filterCategory('all', this)">All</div>
-        <div class="f-btn" onclick="filterCategory('nonveg', this)">Non-Veg</div>
-        <div class="f-btn" onclick="filterCategory('veg', this)">Veg</div>
-        <div class="f-btn" onclick="filterCategory('maggie', this)">Maggie</div>
-        <div class="f-btn" onclick="filterCategory('egg', this)">Egg Station</div>
-    </div>
-
-    <div class="combo-section dish-item" data-name="tawa chicken paratha combo" data-cat="nonveg">
-        <div class="royal-combo-box">
-            <img src="ROYAL COMBO.jpg" class="combo-img">
-            <div class="combo-info">
-                <div class="combo-title" style="color:var(--gold); font-size:12px; font-weight:bold;">Royal Combo #1</div>
-                <div class="price-box" style="margin:5px 0;">₹259</div>
-                <button class="order-btn" onclick="window.addToCart('Tawa Chicken Combo', 259)">+ Add Combo</button>
+    <span class="cat-title">👑 RSK Royal Combos</span>
+    <div class="hero-combo-container">
+        <div class="hero-card dish-item" data-name="tawa chicken paratha combo">
+            <img src="ROYAL COMBO.jpg" class="hero-img">
+            <div class="hero-content">
+                <div class="item-name">Tawa Chicken + Paratha</div>
+                <div class="price-tag">₹259</div>
+                <button class="order-btn" onclick="window.addToCart('Tawa Chicken + Paratha', 259)">+ Add Royal Combo</button>
+            </div>
+        </div>
+        <div class="menu-grid">
+            <div class="item-card dish-item" data-name="tawa chicken kulcha">
+                <div class="item-name">Tawa Chicken + Kulcha</div><div class="price-tag">₹249</div>
+                <button class="order-btn" onclick="window.addToCart('Tawa Chicken + Kulcha', 249)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="paneer bhurji paratha">
+                <div class="item-name">Paneer Bhurji + Paratha</div><div class="price-tag">₹209</div>
+                <button class="order-btn" onclick="window.addToCart('Paneer Bhurji + Paratha', 209)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="paneer bhurji kulcha">
+                <div class="item-name">Paneer Bhurji + Kulcha</div><div class="price-tag">₹199</div>
+                <button class="order-btn" onclick="window.addToCart('Paneer Bhurji + Kulcha', 199)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="tawa paneer paratha">
+                <div class="item-name">Tawa Paneer + Paratha</div><div class="price-tag">₹209</div>
+                <button class="order-btn" onclick="window.addToCart('Tawa Paneer + Paratha', 209)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="tawa paneer kulcha">
+                <div class="item-name">Tawa Paneer + Kulcha</div><div class="price-tag">₹199</div>
+                <button class="order-btn" onclick="window.addToCart('Tawa Paneer + Kulcha', 199)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="tawa egg paratha">
+                <div class="item-name">Tawa Egg + Paratha</div><div class="price-tag">₹139</div>
+                <button class="order-btn" onclick="window.addToCart('Tawa Egg + Paratha', 139)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="tawa egg kulcha">
+                <div class="item-name">Tawa Egg + Kulcha</div><div class="price-tag">₹129</div>
+                <button class="order-btn" onclick="window.addToCart('Tawa Egg + Kulcha', 129)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="egg bhurji paratha">
+                <div class="item-name">Egg Bhurji + Paratha</div><div class="price-tag">₹119</div>
+                <button class="order-btn" onclick="window.addToCart('Egg Bhurji + Paratha', 119)">+ Add</button>
+            </div>
+            <div class="item-card dish-item" data-name="egg bhurji kulcha">
+                <div class="item-name">Egg Bhurji + Kulcha</div><div class="price-tag">₹109</div>
+                <button class="order-btn" onclick="window.addToCart('Egg Bhurji + Kulcha', 109)">+ Add</button>
             </div>
         </div>
     </div>
 
-    <div id="menu-content">
-        <div class="section-group" data-cat="nonveg">
-            <div class="section-header">
-                <img src="https://cdn-icons-png.flaticon.com/512/3075/3075908.png" class="section-icon">
-                <span class="cat-title">Non-Veg Specials</span>
-            </div>
-            <div class="menu-grid">
-                <div class="item-card dish-item" data-name="rsk special chicken half full" data-cat="nonveg">
-                    <div class="item-name">RSK Special Chicken</div>
-                    <div class="price-box">Half: ₹219 / Full: ₹399</div>
-                    <div style="display:flex; gap:5px;">
-                        <button class="order-btn" style="flex:1;" onclick="window.addToCart('RSK Chicken (H)', 219)">Half</button>
-                        <button class="order-btn" style="flex:1;" onclick="window.addToCart('RSK Chicken (F)', 399)">Full</button>
-                    </div>
-                </div>
-                </div>
+    <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?q=80&w=1000&auto=format&fit=crop" class="section-banner">
+    <span class="cat-title">🍗 Non-Veg Specials</span>
+    <div class="menu-grid">
+        <div class="item-card dish-item" data-name="rsk special chicken half full">
+            <div class="item-name">RSK Special Chicken</div><div class="price-tag">Half: ₹219 / Full: ₹399</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('RSK Special Chicken (H)', 219)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('RSK Special Chicken (F)', 399)">Full</button></div>
         </div>
+        <div class="item-card dish-item" data-name="tawa chicken half full">
+            <div class="item-name">Tawa Chicken</div><div class="price-tag">Half: ₹229 / Full: ₹409</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Tawa Chicken (H)', 229)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Tawa Chicken (F)', 409)">Full</button></div>
+        </div>
+        <div class="item-card dish-item" data-name="chilly chicken half full">
+            <div class="item-name">Chilly Chicken</div><div class="price-tag">Half: ₹189 / Full: ₹349</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Chilly Chicken (H)', 189)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Chilly Chicken (F)', 349)">Full</button></div>
+        </div>
+        <div class="item-card dish-item" data-name="diet paper chicken half full">
+            <div class="item-name">Diet Paper Chicken</div><div class="price-tag">Half: ₹199 / Full: ₹359</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Diet Paper Chicken (H)', 199)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Diet Paper Chicken (F)', 359)">Full</button></div>
+        </div>
+        <div class="item-card dish-item" data-name="creamy paper chicken half full">
+            <div class="item-name">Creamy Paper Chicken</div><div class="price-tag">Half: ₹219 / Full: ₹399</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Creamy Paper Chicken (H)', 219)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Creamy Paper Chicken (F)', 399)">Full</button></div>
+        </div>
+        <div class="item-card dish-item" data-name="fry chicken half full">
+            <div class="item-name">Fry Chicken</div><div class="price-tag">Half: ₹149 / Full: ₹279</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Fry Chicken (H)', 149)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Fry Chicken (F)', 279)">Full</button></div>
+        </div>
+        <div class="item-card dish-item" data-name="finger chicken half full">
+            <div class="item-name">Finger Chicken</div><div class="price-tag">Half: ₹169 / Full: ₹299</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Finger Chicken (H)', 169)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Finger Chicken (F)', 299)">Full</button></div>
+        </div>
+        <div class="item-card dish-item" data-name="chicken cheese balls half full">
+            <div class="item-name">Chicken Cheese Balls</div><div class="price-tag">Half: ₹189 / Full: ₹349</div>
+            <div class="btn-row"><button class="order-btn half-btn" onclick="window.addToCart('Chicken Cheese Balls (H)', 189)">Half</button><button class="order-btn full-btn" onclick="window.addToCart('Chicken Cheese Balls (F)', 349)">Full</button></div>
+        </div>
+    </div>
 
-        <div class="section-group" data-cat="veg">
-            <div class="section-header">
-                <img src="https://cdn-icons-png.flaticon.com/512/2919/2919158.png" class="section-icon">
-                <span class="cat-title">Veg Delights</span>
-            </div>
-            <div class="menu-grid">
-                <div class="item-card dish-item" data-name="kastoori paneer" data-cat="veg">
-                    <div class="item-name">Kastoori Paneer</div>
-                    <div class="price-box">₹179</div>
-                    <button class="order-btn" onclick="window.addToCart('Kastoori Paneer', 179)">+ Add to Cart</button>
-                </div>
-            </div>
-        </div>
+    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1000&auto=format&fit=crop" class="section-banner">
+    <span class="cat-title">🌿 Veg Delights</span>
+    <div class="menu-grid">
+        <div class="item-card dish-item" data-name="kastoori paneer"><div class="item-name">Kastoori Paneer</div><div class="price-tag">₹179</div><button class="order-btn" onclick="window.addToCart('Kastoori Paneer', 179)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="tawa paneer"><div class="item-name">Tawa Paneer</div><div class="price-tag">₹189</div><button class="order-btn" onclick="window.addToCart('Tawa Paneer', 189)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="paneer bhurji"><div class="item-name">Paneer Bhurji</div><div class="price-tag">₹189</div><button class="order-btn" onclick="window.addToCart('Paneer Bhurji', 189)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="garlic bread"><div class="item-name">Garlic Bread</div><div class="price-tag">₹159</div><button class="order-btn" onclick="window.addToCart('Garlic Bread', 159)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="french fries potato bites"><div class="item-name">Fries / Potato Bites</div><div class="price-tag">₹79</div><button class="order-btn" onclick="window.addToCart('Fries', 79)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="chips of choice"><div class="item-name">Chips of Choice</div><div class="price-tag">₹69</div><button class="order-btn" onclick="window.addToCart('Chips', 69)">+ Add</button></div>
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?q=80&w=1000&auto=format&fit=crop" class="section-banner">
+    <span class="cat-title">🍜 Maggie Corner</span>
+    <div class="menu-grid">
+        <div class="item-card dish-item" data-name="rsk special maggie"><div class="item-name">RSK Special Maggie</div><div class="price-tag">₹99</div><button class="order-btn" onclick="window.addToCart('RSK Special Maggie', 99)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="cheese maggie veg maggie"><div class="item-name">Cheese / Veg Maggie</div><div class="price-tag">₹89</div><button class="order-btn" onclick="window.addToCart('Cheese Maggie', 89)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="butter maggie"><div class="item-name">Butter Maggie</div><div class="price-tag">₹69</div><button class="order-btn" onclick="window.addToCart('Butter Maggie', 69)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="masala maggie"><div class="item-name">Masala Maggie</div><div class="price-tag">₹49</div><button class="order-btn" onclick="window.addToCart('Masala Maggie', 49)">+ Add</button></div>
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1000&auto=format&fit=crop" class="section-banner">
+    <span class="cat-title">🥚 Egg Station</span>
+    <div class="menu-grid">
+        <div class="item-card dish-item" data-name="tawa egg"><div class="item-name">Tawa Egg</div><div class="price-tag">₹119</div><button class="order-btn" onclick="window.addToCart('Tawa Egg', 119)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="kastoori egg egg bhurji"><div class="item-name">Kastoori / Egg Bhurji</div><div class="price-tag">₹99</div><button class="order-btn" onclick="window.addToCart('Egg Bhurji', 99)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="boiled egg 2 pc"><div class="item-name">Boiled Egg (2 pc)</div><div class="price-tag">₹25</div><button class="order-btn" onclick="window.addToCart('Boiled Egg', 25)">+ Add</button></div>
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1512058560566-42724afbc2aa?q=80&w=1000&auto=format&fit=crop" class="section-banner">
+    <span class="cat-title">🍚 Rice & Breads</span>
+    <div class="menu-grid">
+        <div class="item-card dish-item" data-name="chicken fried rice"><div class="item-name">Chicken Fried Rice</div><div class="price-tag">₹149</div><button class="order-btn" onclick="window.addToCart('Chicken Fried Rice', 149)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="egg fried rice"><div class="item-name">Egg Fried Rice</div><div class="price-tag">₹139</div><button class="order-btn" onclick="window.addToCart('Egg Fried Rice', 139)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="veg fried rice"><div class="item-name">Veg Fried Rice</div><div class="price-tag">₹129</div><button class="order-btn" onclick="window.addToCart('Veg Fried Rice', 129)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="paratha"><div class="item-name">Paratha</div><div class="price-tag">₹25</div><button class="order-btn" onclick="window.addToCart('Paratha', 25)">+ Add</button></div>
+        <div class="item-card dish-item" data-name="kulcha"><div class="item-name">Kulcha</div><div class="price-tag">₹20</div><button class="order-btn" onclick="window.addToCart('Kulcha', 20)">+ Add</button></div>
     </div>
 
     <div style="height: 120px;"></div>
-
     <div class="checkout-wrap" id="floatingCheckout">
         <button class="place-order-btn" onclick="window.checkout()">🚀 PLACE ORDER (Get Token)</button>
     </div>
 </div>
 
 <script>
-    // --- Search Logic ---
     function filterMenu() {
         let input = document.getElementById('menuSearch').value.toLowerCase();
         let items = document.getElementsByClassName('dish-item');
-        
         for (let i = 0; i < items.length; i++) {
             let name = items[i].getAttribute('data-name');
-            if (name.includes(input)) {
-                items[i].style.display = "";
-            } else {
-                items[i].style.display = "none";
-            }
-        }
-    }
-
-    // --- Category Filter Logic ---
-    function filterCategory(cat, btn) {
-        // Active button change
-        let btns = document.getElementsByClassName('f-btn');
-        for (let b of btns) b.classList.remove('active');
-        btn.classList.add('active');
-
-        let groups = document.getElementsByClassName('section-group');
-        let items = document.getElementsByClassName('dish-item');
-
-        if(cat === 'all') {
-            for(let g of groups) g.style.display = "block";
-            for(let i of items) i.style.display = "flex";
-        } else {
-            for(let g of groups) {
-                if(g.getAttribute('data-cat') === cat) g.style.display = "block";
-                else g.style.display = "none";
-            }
-            // Combo box handle
-            let combo = document.querySelector('.combo-section');
-            if(combo.getAttribute('data-cat') === cat) combo.style.display = "flex";
-            else combo.style.display = "none";
+            items[i].style.display = name.includes(input) ? "" : "none";
         }
     }
 </script>
