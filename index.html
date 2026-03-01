@@ -14,6 +14,9 @@
         h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 15px 0 5px; letter-spacing: 2px; text-transform: uppercase; }
         .i-love-ind { width: 120px; margin-top: 5px; filter: drop-shadow(0 0 5px var(--gold)); }
 
+        /* Welcome User Styling */
+        #welcome-user { color: var(--gold); text-align: center; font-weight: bold; font-size: 16px; margin-top: 10px; min-height: 24px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
+
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
         .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; transition: 0.3s; }
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
@@ -37,6 +40,7 @@
     <img src="MAIN_LOGO.jpeg" class="main-logo" alt="RSK Logo">
     <h1>Royal Street Kitchen</h1>
     <img src="i_love_ind.png" class="i-love-ind" alt="I Love Indore">
+    <div id="welcome-user"></div>
 </header>
 
 <div class="bottom-nav">
@@ -46,8 +50,7 @@
     <div class="nav-item" id="btn-reach" onclick="showTab('reach')">Reach</div>
 </div>
 
-<div class="app-container" id="content-area">
-    </div>
+<div class="app-container" id="content-area"></div>
 
 <a href="https://www.instagram.com/rsk.indore/" class="insta-jumpu" target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30">
@@ -67,17 +70,14 @@
 
     // --- 2. TAB MANAGEMENT (FETCH LOGIC) ---
     function showTab(tabId) {
-        // Nav highlight
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
         const activeBtn = document.getElementById('btn-' + tabId);
         if(activeBtn) activeBtn.classList.add('active');
 
-        // Content area loading
         const contentArea = document.getElementById('content-area');
         contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>👑 Loading Royal Experience...</div>";
 
-        // Fetch logic
         fetch('./' + tabId + '-tab.html?v=' + Date.now())
             .then(response => {
                 if (!response.ok) throw new Error("File Missing");
@@ -85,6 +85,7 @@
             })
             .then(data => {
                 contentArea.innerHTML = data;
+                updateWelcomeHeader(); // Naam dikhane ke liye call
             })
             .catch(err => {
                 contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:red;'>Kripya check karein: " + tabId + "-tab.html nahi mili.</div>";
@@ -94,14 +95,30 @@
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // --- 3. REGISTRATION & LOGIN ---
+    // Header mein user ka naam update karna
+    function updateWelcomeHeader() {
+        const userName = localStorage.getItem('userName');
+        const welcomeDiv = document.getElementById('welcome-user');
+        if(userName && welcomeDiv) {
+            welcomeDiv.innerHTML = "Namaste, " + userName + "! ✨";
+        }
+    }
+
+    // --- 3. REGISTRATION & LOGIN (With WhatsApp Verification) ---
     window.registerUser = function() {
         let name = prompt("Royal Street Kitchen mein aapka swagat hai! Aapka Naam?");
         let phone = prompt("Aapka Mobile Number?");
+        
         if(name && phone && phone.length >= 10) {
+            let tempCode = Math.floor(1000 + Math.random() * 9000);
+            alert("Verification Code: RSK-" + tempCode + "\n\nAgli screen par ye code WhatsApp par bhejein.");
+            
+            let verifyMsg = encodeURIComponent("Pranam RSK! Mera Verification Code hai: RSK-" + tempCode + " (Name: " + name + ")");
+            window.open(`https://wa.me/917489999890?text=${verifyMsg}`, '_blank');
+
             localStorage.setItem('userName', name);
             localStorage.setItem('userPhone', phone);
-            alert("Swaagat hai " + name + "! Ab aap order kar sakte hain.");
+            updateWelcomeHeader();
             return true;
         }
         alert("Sahi details dena zaroori hai.");
@@ -112,7 +129,6 @@
     window.addToCart = function(name, price) {
         window.cart.push({name: name, price: price});
         alert(name + " cart mein add ho gaya!");
-        // Menu tab mein checkout bar dikhane ke liye
         const bar = document.getElementById('floatingCheckout');
         if(bar) bar.style.display = 'flex';
     };
@@ -121,7 +137,6 @@
         let uName = localStorage.getItem('userName');
         let uPhone = localStorage.getItem('userPhone');
 
-        // Agar details nahi hain toh register karwao
         if(!uName || !uPhone) {
             if(!window.registerUser()) return;
             uName = localStorage.getItem('userName');
@@ -133,15 +148,27 @@
             return;
         }
 
-        // Token No (Random for now, Central Sheet baad mein link karenge)
-        let token = Math.floor(Math.random() * 100) + 1; 
+        // --- FIXED TOKEN & MESSAGE LOGIC ---
+        let tokenNo = Math.floor(Math.random() * 100) + 1; 
         let total = window.cart.reduce((sum, item) => sum + item.price, 0);
-        let itemsList = window.cart.map(item => `- ${item.name} (₹${item.price})`).join('%0A');
+        let itemsList = window.cart.map(item => `- ${item.name}`).join('%0A');
 
-        let message = `*ROYAL STREET KITCHEN* 👑%0A--------------------------%0A*Token No:* #${token}%0A*Date:* ${new Date().toLocaleDateString('en-GB')}%0A*Customer:* ${uName}%0A*Phone:* ${uPhone}%0A--------------------------%0A*Order Details:*%0A${itemsList}%0A--------------------------%0A*Total Amount:* ₹${total}%0A--------------------------%0A_Pay via UPI: yourid@upi_%0A_Kripya counter par token dikhayein._`;
+        let message = `*ROYAL STREET KITCHEN* 👑%0A` +
+                      `--------------------------%0A` +
+                      `*Token No:* %23${tokenNo}%0A` + // %23 means #
+                      `*Date:* ${new Date().toLocaleDateString('en-GB')}%0A` +
+                      `*Customer:* ${uName}%0A` +
+                      `*Phone:* ${uPhone}%0A` +
+                      `--------------------------%0A` +
+                      `*Order Details:*%0A${itemsList}%0A` +
+                      `--------------------------%0A` +
+                      `*Total Amount:* ₹${total}%0A` +
+                      `--------------------------%0A` +
+                      `_Kripya counter par token dikhayein._`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
-        window.cart = []; // Reset cart after order
+        
+        window.cart = []; // Reset cart
         const bar = document.getElementById('floatingCheckout');
         if(bar) bar.style.display = 'none';
     };
