@@ -14,13 +14,14 @@
         h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 15px 0 5px; letter-spacing: 2px; text-transform: uppercase; font-size: 22px; }
         .i-love-ind { width: 110px; margin-top: 5px; filter: drop-shadow(0 0 5px var(--gold)); }
 
+        /* Auth Panel */
         .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; min-height: 40px; }
         #welcome-user { color: var(--gold); font-weight: bold; font-size: 15px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
-        
         .auth-btn { padding: 8px 20px; border-radius: 30px; font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: 0.4s; border: 1px solid var(--gold); }
         #loginBtn { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; box-shadow: 0 0 10px var(--gold-glow); }
         #logoutBtn { background: transparent; color: #ff4444; border: 1px solid #ff4444; display: none; padding: 4px 12px; font-size: 9px; }
 
+        /* Navigation */
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
         .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
@@ -29,20 +30,24 @@
         #content-area { animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Footer Logos Styling */
-        .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.6); }
-        .fssai-main { width: 180px; margin-bottom: 25px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+        /* Instagram Jumpy */
+        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 2100; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none; }
+        @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
+
+        /* Footer Section */
+        .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.6); margin-top: 20px; }
+        .fssai-main { width: 170px; margin-bottom: 20px; opacity: 0.9; }
         
         .sub-logos { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 10px; }
         .sub-logos img { 
-            height: 60px; /* Thoda bada kar diya */
+            height: 55px; /* Size Bada */
             filter: drop-shadow(0 0 8px var(--gold-glow)); /* Golden Glow */
             transition: 0.3s;
         }
         .sub-logos img:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--gold)); }
-
-        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px var(--gold); }
     </style>
+    
+    <script src="item_menu_code.js"></script>
 </head>
 <body>
 
@@ -72,15 +77,13 @@
 </a>
 
 <div class="footer-section">
-    <img src="FSSAI_Logo.png" class="fssai-main" alt="FSSAI">
+    <img src="FSSAI_Logo.png" class="fssai-main">
     <div class="sub-logos">
         <img src="msme_logo.avif" alt="MSME">
         <img src="Swachh_Bharat_Mission_Logo.png.png" alt="Swachh Bharat">
     </div>
     <p style="font-size: 10px; color: #555; margin-top: 25px;">© 2026 ROYAL STREET KITCHEN • INDORE</p>
 </div>
-
-<script src="item_menu_code.js"></script>
 
 <script>
     window.cart = []; 
@@ -101,7 +104,7 @@
                 updateUserUI(); 
             })
             .catch(err => {
-                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Tab load nahi ho saka. Refresh karein.</div>";
+                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Swagat Hai! Tab select karein.</div>";
             });
 
         localStorage.setItem('activeTab', tabId);
@@ -138,23 +141,21 @@
     };
 
     window.logout = function() {
-        if(confirm("Logout karna chahte hain?")) { localStorage.clear(); location.reload(); }
+        if(confirm("Logout karna chahte hain?")) {
+            localStorage.clear();
+            location.reload();
+        }
     };
 
     window.addToCart = function(name, price) {
         window.cart.push({name: name, price: price});
-        const floatingBtn = document.getElementById('floatingCheckout');
-        if(floatingBtn) floatingBtn.style.display = 'flex';
+        const bar = document.getElementById('floatingCheckout');
+        if(bar) bar.style.display = 'flex';
     };
 
     window.checkout = function() {
-        let uName = localStorage.getItem('userName');
-        if(!uName) {
-            if(!window.registerUser()) return;
-            uName = localStorage.getItem('userName');
-        }
-
-        if(window.cart.length === 0) return alert("Cart khali hai!");
+        let uName = localStorage.getItem('userName') || "Guest";
+        if(window.cart.length === 0) return alert("Pehle kuch add karein!");
 
         let today = new Date().toDateString();
         let lastDate = localStorage.getItem('tokenDate');
@@ -172,15 +173,12 @@
         let total = window.cart.reduce((s, i) => s + i.price, 0);
         let items = window.cart.map((i, idx) => `${idx + 1}. ${i.name} - ₹${i.price}`).join('%0A');
 
-        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${items}%0A━━━━━━━━━━━━━━━%0A*Total Amount:* ₹${total}%0A━━━━━━━━━━━━━━━%0A_Kripya counter par token dikhayein._`;
+        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${items}%0A━━━━━━━━━━━━━━━%0A*Total:* ₹${total}%0A━━━━━━━━━━━━━━━%0A_Kripya counter par token dikhayein._`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
-        
         window.cart = [];
-        const floatingBtn = document.getElementById('floatingCheckout');
-        if(floatingBtn) floatingBtn.style.display = 'none';
-        alert("Order sent! Token: #" + tokenNo);
-    }
+        if(document.getElementById('floatingCheckout')) document.getElementById('floatingCheckout').style.display = 'none';
+    };
 
     window.onload = () => showTab(localStorage.getItem('activeTab') || 'home');
 </script>
