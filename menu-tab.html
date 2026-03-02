@@ -1,29 +1,33 @@
 <script>
-Aap pareshan mat hoiye, main samajh gaya ki code block shayad copy karne mein dikat de raha hai. Ye raha ekdam simple code bina kisi extra line ya box ke.
-
-Aap is poore hisse ko copy karke apne menu-tab.html file mein <script> tag ke andar daal dijiye:
-
 (function() {
 function renderMenu() {
-const renderArea = document.getElementById('dynamic-menu-render');
-if (!renderArea || !window.menuData) {
+var area = document.getElementById('dynamic-menu-render');
+if (!area || !window.menuData) {
 setTimeout(renderMenu, 100);
 return;
 }
-let fullHTML = "";
-window.menuData.forEach(section => {
-let sectionHTML = <div style="margin-bottom:30px;"> <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px;" onerror="this.style.display='none'"> <div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase;">${section.sectionName}</div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">;
-section.items.forEach(item => {
-if (item.type === "single") {
-sectionHTML += <div style="background:rgba(255,255,255,0.05); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;"> <div style="color:#fff; font-size:13px;">${item.name}</div> <div style="color:#D4AF37; font-weight:bold; margin:8px 0;">₹${item.price}</div> <button onclick="window.addToCart('${item.name}', ${item.price})" style="background:#D4AF37; color:#000; border:none; padding:10px; border-radius:6px; font-weight:800; cursor:pointer;">+ ADD</button> </div>;
+var html = "";
+window.menuData.forEach(function(sec) {
+html += '<div style="margin-bottom:30px;">';
+html += '<img src="' + sec.sectionPhoto + '" style="width:100%; border-radius:12px; margin-bottom:15px;" onerror="this.style.display=&#39;none&#39;">';
+html += '<div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px;">' + sec.sectionName + '</div>';
+html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">';
+sec.items.forEach(function(it) {
+html += '<div style="background:rgba(255,255,255,0.05); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">';
+html += '<div style="color:#fff; font-size:13px;">' + it.name + '</div>';
+if (it.type === "single") {
+html += '<div style="color:#D4AF37; font-weight:bold; margin:8px 0;">₹' + it.price + '</div>';
+html += '<button onclick="window.addToCart(&#39;' + it.name + '&#39;,' + it.price + ')" style="background:#D4AF37; color:#000; border:none; padding:10px; border-radius:6px; font-weight:800; cursor:pointer;">+ ADD</button>';
 } else {
-sectionHTML += <div style="background:rgba(255,255,255,0.05); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;"> <div style="color:#fff; font-size:13px;">${item.name}</div> <div style="color:#D4AF37; font-size:11px; margin:8px 0;">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div> <button onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})" style="background:#f0f0f0; border:none; padding:8px; border-radius:6px; margin-bottom:5px; font-weight:700; cursor:pointer;">HALF</button> <button onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})" style="background:#D4AF37; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer;">FULL</button> </div>;
+html += '<div style="color:#D4AF37; font-size:11px; margin:8px 0;">H: ₹' + it.halfPrice + ' | F: ₹' + it.fullPrice + '</div>';
+html += '<button onclick="window.addToCart(&#39;' + it.name + ' (H)&#39;,' + it.halfPrice + ')" style="background:#f0f0f0; border:none; padding:8px; border-radius:6px; margin-bottom:5px; font-weight:700; cursor:pointer;">HALF</button>';
+html += '<button onclick="window.addToCart(&#39;' + it.name + ' (F)&#39;,' + it.fullPrice + ')" style="background:#D4AF37; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer;">FULL</button>';
 }
+html += '</div>';
 });
-sectionHTML += </div></div>;
-fullHTML += sectionHTML;
+html += '</div></div>';
 });
-renderArea.innerHTML = fullHTML;
+area.innerHTML = html;
 }
 renderMenu();
 })();
