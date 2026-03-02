@@ -18,20 +18,30 @@
         #welcome-user { color: var(--gold); font-weight: bold; font-size: 15px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
         
         .auth-btn { padding: 8px 20px; border-radius: 30px; font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: 0.4s; border: 1px solid var(--gold); }
-        #loginBtn { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; }
+        #loginBtn { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; box-shadow: 0 0 10px var(--gold-glow); }
         #logoutBtn { background: transparent; color: #ff4444; border: 1px solid #ff4444; display: none; padding: 4px 12px; font-size: 9px; }
 
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
         .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
+        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
 
         .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 80px; }
         #content-area { animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px var(--gold); }
+        /* Footer Logos Styling */
         .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.6); }
-        .fssai-main { width: 160px; margin-bottom: 15px; }
+        .fssai-main { width: 180px; margin-bottom: 25px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+        
+        .sub-logos { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 10px; }
+        .sub-logos img { 
+            height: 60px; /* Thoda bada kar diya */
+            filter: drop-shadow(0 0 8px var(--gold-glow)); /* Golden Glow */
+            transition: 0.3s;
+        }
+        .sub-logos img:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--gold)); }
+
+        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px var(--gold); }
     </style>
 </head>
 <body>
@@ -62,8 +72,12 @@
 </a>
 
 <div class="footer-section">
-    <img src="FSSAI_Logo.png" class="fssai-main">
-    <p style="font-size: 10px; color: #555; margin-top: 20px;">© 2026 ROYAL STREET KITCHEN • INDORE</p>
+    <img src="FSSAI_Logo.png" class="fssai-main" alt="FSSAI">
+    <div class="sub-logos">
+        <img src="msme_logo.avif" alt="MSME">
+        <img src="Swachh_Bharat_Mission_Logo.png.png" alt="Swachh Bharat">
+    </div>
+    <p style="font-size: 10px; color: #555; margin-top: 25px;">© 2026 ROYAL STREET KITCHEN • INDORE</p>
 </div>
 
 <script src="item_menu_code.js"></script>
@@ -87,7 +101,7 @@
                 updateUserUI(); 
             })
             .catch(err => {
-                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Swagat Hai! Tab select karein.</div>";
+                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Tab load nahi ho saka. Refresh karein.</div>";
             });
 
         localStorage.setItem('activeTab', tabId);
@@ -112,14 +126,12 @@
     }
 
     window.registerUser = function() {
-        let name = prompt("RSK mein aapka swagat hai! Aapka Naam?");
-        let phone = prompt("Aapka Mobile Number?");
-        
+        let name = prompt("Aapka Naam?");
+        let phone = prompt("Aapka WhatsApp Number?");
         if(name && phone && phone.length >= 10) {
             localStorage.setItem('userName', name);
             localStorage.setItem('userPhone', phone);
             updateUserUI();
-            alert("Swagat hai " + name + "!");
             return true;
         }
         return false;
@@ -129,16 +141,12 @@
         if(confirm("Logout karna chahte hain?")) { localStorage.clear(); location.reload(); }
     };
 
-    // --- UPDATED ADD TO CART ---
     window.addToCart = function(name, price) {
         window.cart.push({name: name, price: price});
         const floatingBtn = document.getElementById('floatingCheckout');
         if(floatingBtn) floatingBtn.style.display = 'flex';
-        // Vibrate for feedback
-        if(window.navigator.vibrate) window.navigator.vibrate(50);
     };
 
-    // --- UPDATED WHATSAPP CHECKOUT ---
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
         if(!uName) {
@@ -146,9 +154,8 @@
             uName = localStorage.getItem('userName');
         }
 
-        if(window.cart.length === 0) return alert("Pehle kuch tasty add karein!");
+        if(window.cart.length === 0) return alert("Cart khali hai!");
 
-        // Daily Token Logic
         let today = new Date().toDateString();
         let lastDate = localStorage.getItem('tokenDate');
         let count = parseInt(localStorage.getItem('dailyCount')) || 0;
@@ -172,7 +179,7 @@
         window.cart = [];
         const floatingBtn = document.getElementById('floatingCheckout');
         if(floatingBtn) floatingBtn.style.display = 'none';
-        alert("Parchi bhej di gayi hai! Token: #" + tokenNo);
+        alert("Order sent! Token: #" + tokenNo);
     }
 
     window.onload = () => showTab(localStorage.getItem('activeTab') || 'home');
