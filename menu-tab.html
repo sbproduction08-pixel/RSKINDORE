@@ -1,19 +1,21 @@
-<div id="dynamic-menu-render" style="background: #000; padding: 15px; font-family: 'Segoe UI', sans-serif;"></div>
+<div id="dynamic-menu-render" style="background: #000; padding: 15px; min-height: 400px;">
+    </div>
 
-<div id="cart-footer" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid #D4AF37; padding: 15px; display: none; z-index: 1000;">
-    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
+<div id="cart-footer" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid #D4AF37; padding: 15px; display: none; z-index: 9999; box-shadow: 0 -5px 15px rgba(0,0,0,0.5);">
+    <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
         <div style="color: #fff;">
-            <div id="cart-count" style="font-size: 12px; color: #D4AF37;">0 Items Selected</div>
+            <div id="cart-count" style="font-size: 12px; color: #D4AF37;">0 Items</div>
             <div style="font-size: 18px; font-weight: bold;">Total: ₹<span id="cart-total">0</span></div>
         </div>
-        <button onclick="sendToWhatsApp()" style="background: #25D366; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        <button onclick="sendToWhatsApp()" style="background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">
             Order on WhatsApp
         </button>
     </div>
 </div>
-
 <script>
-// 1. Your Menu Data
+// --- CONFIGURATION ---
+const RSK_PHONE = "91XXXXXXXXXX"; // Apna WhatsApp number yahan likhein
+
 const menuData = [
     {
         sectionName: "👑 RSK ROYAL COMBOS",
@@ -79,97 +81,80 @@ const menuData = [
     }
 ];
 
-window.menuData = menuData;
-
-// 2. Global Cart State
 let cart = [];
 
-// 3. Render Menu Function
-window.renderRSKMenu = function() {
-    var container = document.getElementById('dynamic-menu-render');
-    if (!container || !window.menuData) {
-        setTimeout(window.renderRSKMenu, 100);
-        return;
-    }
-    var html = "";
-    window.menuData.forEach(function(section) {
-        html += '<div style="margin-bottom:30px;">';
-        html += '<img src="' + section.sectionPhoto + '" style="width:100%; border-radius:12px; margin-bottom:15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);" onerror="this.style.display=\'none\'">';
-        html += '<div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">' + section.sectionName + '</div>';
-        html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">';
+// --- FUNCTIONS ---
+
+function renderMenu() {
+    const container = document.getElementById('dynamic-menu-render');
+    if(!container) return;
+
+    let html = "";
+    menuData.forEach(section => {
+        html += `
+        <div style="margin-bottom:30px;">
+            <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px;" onerror="this.style.display='none'">
+            <div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase;">${section.sectionName}</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        `;
         
-        section.items.forEach(function(item) {
-            html += '<div style="background:rgba(255,255,255,0.07); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; position:relative;">';
-            html += '<div style="color:#fff; font-size:14px; font-weight:500; margin-bottom:8px;">' + item.name + '</div>';
-            
-            if (item.type === "single") {
-                html += '<div style="color:#D4AF37; font-weight:bold; margin-bottom:10px;">₹' + item.price + '</div>';
-                html += '<button onclick="addToCart(\'' + item.name + '\',' + item.price + ')" style="background:#D4AF37; color:#000; border:none; padding:10px; border-radius:6px; font-weight:800; cursor:pointer; transition:0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1">+ ADD</button>';
-            } else {
-                html += '<div style="color:#aaa; font-size:11px; margin-bottom:10px;">H: ₹' + item.halfPrice + ' | F: ₹' + item.fullPrice + '</div>';
-                html += '<div style="display:flex; gap:5px;">';
-                html += '<button onclick="addToCart(\'' + item.name + ' (H)\',' + item.halfPrice + ')" style="background:#f0f0f0; flex:1; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer; font-size:11px;">HALF</button>';
-                html += '<button onclick="addToCart(\'' + item.name + ' (F)\',' + item.fullPrice + ')" style="background:#D4AF37; flex:1; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer; font-size:11px;">FULL</button>';
-                html += '</div>';
-            }
-            html += '</div>';
+        section.items.forEach(item => {
+            html += `
+            <div style="background:rgba(255,255,255,0.05); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="color:#fff; font-size:13px; margin-bottom:8px;">${item.name}</div>
+                ${item.type === 'single' ? `
+                    <div style="color:#D4AF37; font-weight:bold; margin-bottom:8px;">₹${item.price}</div>
+                    <button onclick="addToCart('${item.name}', ${item.price})" style="background:#D4AF37; color:#000; border:none; padding:10px; border-radius:6px; font-weight:800; cursor:pointer;">+ ADD</button>
+                ` : `
+                    <div style="color:#D4AF37; font-size:11px; margin-bottom:8px;">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div>
+                    <div style="display:flex; gap:4px;">
+                        <button onclick="addToCart('${item.name} (H)', ${item.halfPrice})" style="background:#f0f0f0; border:none; padding:8px 4px; border-radius:6px; font-weight:700; cursor:pointer; flex:1; font-size:10px;">HALF</button>
+                        <button onclick="addToCart('${item.name} (F)', ${item.fullPrice})" style="background:#D4AF37; border:none; padding:8px 4px; border-radius:6px; font-weight:700; cursor:pointer; flex:1; font-size:10px;">FULL</button>
+                    </div>
+                `}
+            </div>`;
         });
-        html += '</div></div>';
+        html += `</div></div>`;
     });
     container.innerHTML = html;
-};
+}
 
-// 4. Add to Cart Logic
 window.addToCart = function(name, price) {
-    const existingItem = cart.find(item => item.name === name);
-    if (existingItem) {
-        existingItem.qty += 1;
-    } else {
-        cart.push({ name: name, price: price, qty: 1 });
-    }
-    updateCartUI();
+    const existing = cart.find(i => i.name === name);
+    if (existing) existing.qty++;
+    else cart.push({ name, price, qty: 1 });
+    
+    updateCartDisplay();
 };
 
-// 5. Update UI
-function updateCartUI() {
-    const cartFooter = document.getElementById('cart-footer');
-    const cartTotal = document.getElementById('cart-total');
-    const cartCount = document.getElementById('cart-count');
+function updateCartDisplay() {
+    const footer = document.getElementById('cart-footer');
+    const totalEl = document.getElementById('cart-total');
+    const countEl = document.getElementById('cart-count');
     
-    let total = 0;
-    let itemsCount = 0;
-    
-    cart.forEach(item => {
-        total += (item.price * item.qty);
-        itemsCount += item.qty;
-    });
+    let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+    let count = cart.reduce((s, i) => s + i.qty, 0);
 
-    if (itemsCount > 0) {
-        cartFooter.style.display = 'block';
-        cartTotal.innerText = total;
-        cartCount.innerText = itemsCount + " Items in Cart";
-    } else {
-        cartFooter.style.display = 'none';
+    if (count > 0) {
+        footer.style.display = 'block';
+        totalEl.innerText = total;
+        countEl.innerText = count + " Items Selected";
     }
 }
 
-// 6. WhatsApp Integration
 window.sendToWhatsApp = function() {
-    const phoneNumber = "91XXXXXXXXXX"; // APNA NUMBER YAHAN DALO
-    let message = "*New Order from RSK Royal Kitchen*%0A---------------------------%0A";
+    let msg = "*New Order - RSK Royal Kitchen*%0A--------------------------%0A";
     let total = 0;
-
     cart.forEach((item, index) => {
-        message += (index + 1) + ". " + item.name + " x " + item.qty + " = ₹" + (item.price * item.qty) + "%0A";
+        msg += `${index+1}. ${item.name} x ${item.qty} = ₹${item.price * item.qty}%0A`;
         total += (item.price * item.qty);
     });
-
-    message += "---------------------------%0A";
-    message += "*Grand Total: ₹" + total + "*%0A%0A_Please confirm my order!_";
-
-    window.open("https://wa.me/" + phoneNumber + "?text=" + message, '_blank');
+    msg += "--------------------------%0A";
+    msg += `*Total Amount: ₹${total}*`;
+    
+    window.open(`https://wa.me/${RSK_PHONE}?text=${msg}`, '_blank');
 };
 
-// Initialize
-window.renderRSKMenu();
+// Start
+document.addEventListener('DOMContentLoaded', renderMenu);
 </script>
