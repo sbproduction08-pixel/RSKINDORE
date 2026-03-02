@@ -1,8 +1,37 @@
 <div id="dynamic-menu-render" style="padding: 10px;"></div>
 
+<style>
+    /* Section Hover Effect */
+    .menu-section-container {
+        margin-bottom: 35px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        padding: 5px;
+    }
+    .menu-section-container:hover {
+        transform: translateY(-5px);
+        border-color: #D4AF37;
+        background: rgba(212, 175, 55, 0.05);
+    }
+    .menu-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: 0.3s;
+    }
+    .menu-card:hover {
+        border-color: #D4AF37;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    }
+</style>
+
 <script>
 (function() {
-    // Menu Data
     const menuData = [
         {
             sectionName: "👑 RSK ROYAL COMBOS",
@@ -13,57 +42,48 @@
             ]
         },
         {
-            sectionName: "🍢 ROYAL STARTERS",
-            sectionPhoto: "STARTERS_BANNER.jpg",
+            sectionName: "🍢 TANDOORI STARTERS",
+            sectionPhoto: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=80",
             items: [
                 { name: "Chicken Seekh Kebab", price: 179, type: "single" },
-                { name: "Veg Spring Roll", price: 120, type: "single" },
-                { name: "Crispy Corn", price: 130, type: "single" }
+                { name: "Paneer Tikka Royal", price: 210, type: "single" },
+                { name: "Afghani Chicken", halfPrice: 240, fullPrice: 450, type: "dual" }
             ]
         },
         {
-            sectionName: "🍗 NON-VEG SPECIALS",
-            sectionPhoto: "NON_VEG_BANNER.jpg",
+            sectionName: "🍗 NON-VEG CURRIES",
+            sectionPhoto: "https://images.unsplash.com/photo-1603894584115-f73f2ec851ad?auto=format&fit=crop&w=800&q=80",
             items: [
                 { name: "RSK Special Chicken", halfPrice: 219, fullPrice: 399, type: "dual" },
-                { name: "Chicken Masala", halfPrice: 180, fullPrice: 320, type: "dual" },
-                { name: "Chicken Keema Paratha", price: 149, type: "single" }
+                { name: "Butter Chicken", halfPrice: 230, fullPrice: 420, type: "dual" },
+                { name: "Chicken Masala", halfPrice: 180, fullPrice: 320, type: "dual" }
             ]
         },
         {
-            sectionName: "🍛 MAIN COURSE (VEG)",
-            sectionPhoto: "VEG_MAIN_BANNER.jpg",
+            sectionName: "🍛 VEG MAIN COURSE",
+            sectionPhoto: "https://images.unsplash.com/photo-1585937421612-70a0f295561a?auto=format&fit=crop&w=800&q=80",
             items: [
                 { name: "Paneer Butter Masala", price: 240, type: "single" },
                 { name: "Dal Makhani Royal", price: 220, type: "single" },
-                { name: "Mix Veg", price: 180, type: "single" }
+                { name: "Mix Veg Special", price: 180, type: "single" }
             ]
         },
         {
-            sectionName: "🍜 MAGGIE & SNACKS",
-            sectionPhoto: "MAGGIE_BANNER.jpg",
+            sectionName: "🍜 CHINESE & SNACKS",
+            sectionPhoto: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "RSK Special Maggie", price: 99, type: "single" },
-                { name: "Egg Maggie", price: 119, type: "single" },
-                { name: "Veg Cheese Maggie", price: 110, type: "single" }
+                { name: "Veg Manchurian", price: 140, type: "single" },
+                { name: "Hakka Noodles", price: 120, type: "single" },
+                { name: "RSK Special Maggie", price: 99, type: "single" }
             ]
         },
         {
-            sectionName: "🫓 ROYAL BREADS",
-            sectionPhoto: "BREADS_BANNER.jpg",
+            sectionName: "🥤 ROYAL DRINKS",
+            sectionPhoto: "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "Butter Naan", price: 40, type: "single" },
-                { name: "Lachha Paratha", price: 50, type: "single" },
-                { name: "Rumali Roti", price: 15, type: "single" }
-            ]
-        },
-        {
-            sectionName: "🥤 DRINKS & DESSERTS",
-            sectionPhoto: "DRINKS_BANNER.jpg",
-            items: [
-                { name: "Cold Coffee", price: 99, type: "single" },
-                { name: "Masala Tea", price: 30, type: "single" },
-                { name: "Gulab Jamun (2pc)", price: 60, type: "single" }
+                { name: "Cold Coffee Premium", price: 99, type: "single" },
+                { name: "Masala Lemonade", price: 60, type: "single" },
+                { name: "Virgin Mojito", price: 110, type: "single" }
             ]
         }
     ];
@@ -72,19 +92,19 @@
     if (container) {
         let html = "";
         menuData.forEach(section => {
-            html += `<div style="margin-bottom:30px;">
-                <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.4);" onerror="this.style.display='none'">
+            html += `<div class="menu-section-container">
+                <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.4);" onerror="this.src='https://via.placeholder.com/800x400?text=RSK+Indore+Special'">
                 <div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px; font-size:14px;">${section.sectionName}</div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">`;
             
             section.items.forEach(item => {
-                html += `<div style="background:rgba(255,255,255,0.06); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; box-shadow: inset 0 0 10px rgba(212,175,55,0.05);">
+                html += `<div class="menu-card">
                     <div style="color:#fff; font-size:13px; font-weight:500; margin-bottom:5px;">${item.name}</div>`;
                 
                 if (item.type === 'single') {
                     html += `
                     <div style="color:#D4AF37; font-weight:bold; margin-bottom:10px; font-size:15px;">₹${item.price}</div>
-                    <button onclick="window.addToCart('${item.name}', ${item.price})" style="background:#D4AF37; color:#000; border:none; width:100%; padding:10px; border-radius:8px; font-weight:800; cursor:pointer; font-size:11px; transition:0.3s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">+ ADD</button>`;
+                    <button onclick="window.addToCart('${item.name}', ${item.price})" style="background:#D4AF37; color:#000; border:none; width:100%; padding:10px; border-radius:8px; font-weight:800; cursor:pointer; font-size:11px;">+ ADD</button>`;
                 } else {
                     html += `
                     <div style="color:#D4AF37; font-size:11px; margin-bottom:10px; opacity:0.8;">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div>
