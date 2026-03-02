@@ -1,102 +1,61 @@
-<style>
-    /* Section & Banner */
-    .cat-section { margin-bottom: 35px; animation: fadeIn 0.5s ease; }
-    .section-banner { 
-        width: 100%; border-radius: 12px; border: 1px solid var(--gold); 
-        margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    }
-    .cat-title { 
-        color: var(--gold); font-size: 16px; font-weight: bold; 
-        border-left: 4px solid var(--gold); padding-left: 12px; 
-        margin-bottom: 18px; text-transform: uppercase; letter-spacing: 1px;
-    }
-
-    /* Grid & Cards */
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .item-card { 
-        background: rgba(255,255,255,0.05); border: 1px solid #333; 
-        border-radius: 12px; padding: 12px; display: flex; 
-        flex-direction: column; justify-content: space-between;
-        transition: 0.3s;
-    }
-    .item-card:active { transform: scale(0.96); border-color: var(--gold); }
-    
-    .item-name { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.3; min-height: 34px; }
-    .price-info { color: var(--gold); font-size: 13px; font-weight: bold; margin: 8px 0; }
-
-    /* Action Buttons */
-    .add-btn-menu { 
-        background: #fff; color: #000; border: none; padding: 10px; 
-        border-radius: 6px; font-size: 10px; font-weight: 800; 
-        cursor: pointer; width: 100%; text-transform: uppercase;
-    }
-    .add-btn-menu.dual-btn { margin-bottom: 6px; background: #f8f8f8; }
-
-    /* Fixed Checkout Footer (Index ke checkout() se connect hai) */
-    #floatingCheckout { 
-        position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); 
-        width: 90%; max-width: 400px; background: #25D366; color: #fff; 
-        padding: 16px; border-radius: 50px; display: none; justify-content: center; 
-        align-items: center; font-weight: 900; box-shadow: 0 8px 25px #000; 
-        z-index: 2100; border: none; cursor: pointer; font-size: 14px;
-        letter-spacing: 1px;
-    }
-</style>
-
 <div id="dynamic-menu-render">
     </div>
 
-<button id="floatingCheckout" onclick="window.checkout()">
+<button id="floatingCheckout" onclick="window.checkout()" style="display:none; position:fixed; bottom:85px; left:50%; transform:translateX(-50%); width:90%; background:#25D366; color:#fff; padding:16px; border-radius:50px; font-weight:900; border:none; z-index:2100;">
     🚀 PLACE ORDER (WHATSAPP)
 </button>
 
 <script>
 (function() {
     const renderArea = document.getElementById('dynamic-menu-render');
+    
+    // Superfast Render Function
+    function renderMenu() {
+        if (!window.menuData) {
+            renderArea.innerHTML = "<div style='text-align:center; padding:40px; color:#D4AF37;'>Data load ho raha hai...</div>";
+            return;
+        }
 
-    // Check agar Data load hua hai ya nahi
-    if (!window.menuData) {
-        renderArea.innerHTML = "<div style='text-align:center; padding:40px; color:var(--gold);'>⚠️ Menu items load nahi ho paye.</div>";
-        return;
-    }
+        let fullHTML = "";
+        window.menuData.forEach(section => {
+            let sectionHTML = `
+                <div class="cat-section" style="margin-bottom:30px;">
+                    <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; border:1px solid #D4AF37; margin-bottom:15px;">
+                    <div style="color:#D4AF37; font-size:16px; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase;">${section.sectionName}</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            `;
 
-    // Loop through each section in item_menu_code.js
-    window.menuData.forEach(section => {
-        let sectionHTML = `
-            <div class="cat-section">
-                <img src="${section.sectionPhoto}" class="section-banner" onerror="this.style.display='none'">
-                <div class="cat-title">${section.sectionName}</div>
-                <div class="menu-grid">
-        `;
-
-        section.items.forEach(item => {
-            if (item.type === "single") {
-                // Single Price Layout
-                sectionHTML += `
-                    <div class="item-card">
-                        <div class="item-name">${item.name}</div>
-                        <div class="price-info">₹${item.price}</div>
-                        <button class="add-btn-menu" onclick="window.addToCart('${item.name}', ${item.price})">+ ADD</button>
-                    </div>`;
-            } else {
-                // Half/Full Dual Layout
-                sectionHTML += `
-                    <div class="item-card">
-                        <div class="item-name">${item.name}</div>
-                        <div class="price-info">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div>
-                        <button class="add-btn-menu dual-btn" onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})">ADD HALF</button>
-                        <button class="add-btn-menu" onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})">ADD FULL</button>
-                    </div>`;
-            }
+            section.items.forEach(item => {
+                if (item.type === "single") {
+                    sectionHTML += `
+                        <div style="background:rgba(255,255,255,0.05); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div style="font-size:13px; font-weight:600;">${item.name}</div>
+                            <div style="color:#D4AF37; font-size:13px; font-weight:bold; margin:8px 0;">₹${item.price}</div>
+                            <button onclick="window.addToCart('${item.name}', ${item.price})" style="background:#fff; color:#000; border:none; padding:10px; border-radius:6px; font-size:10px; font-weight:800; cursor:pointer; text-transform:uppercase;">+ ADD</button>
+                        </div>`;
+                } else {
+                    sectionHTML += `
+                        <div style="background:rgba(255,255,255,0.05); border:1px solid #333; border-radius:12px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                            <div style="font-size:13px; font-weight:600;">${item.name}</div>
+                            <div style="color:#D4AF37; font-size:13px; font-weight:bold; margin:8px 0;">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div>
+                            <button onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})" style="background:#f0f0f0; color:#000; border:none; padding:10px; border-radius:6px; font-size:10px; font-weight:800; cursor:pointer; text-transform:uppercase; margin-bottom:5px;">ADD HALF</button>
+                            <button onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})" style="background:#fff; color:#000; border:none; padding:10px; border-radius:6px; font-size:10px; font-weight:800; cursor:pointer; text-transform:uppercase;">ADD FULL</button>
+                        </div>`;
+                }
+            });
+            sectionHTML += `</div></div>`;
+            fullHTML += sectionHTML;
         });
-
-        sectionHTML += `</div></div>`;
-        renderArea.innerHTML += sectionHTML;
-    });
-
-    // Agar cart mein pehle se kuch hai toh checkout button dikhao
-    if (window.cart && window.cart.length > 0) {
-        document.getElementById('floatingCheckout').style.display = 'flex';
+        
+        renderArea.innerHTML = fullHTML;
+        
+        // Checkout button check
+        if (window.cart && window.cart.length > 0) {
+            document.getElementById('floatingCheckout').style.display = 'flex';
+        }
     }
+
+    // Jhapak se call karo
+    renderMenu();
 })();
 </script>
