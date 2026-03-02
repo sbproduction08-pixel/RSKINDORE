@@ -1,102 +1,116 @@
 <script src="item_menu_code.js"></script>
 
 <style>
-    .menu-tab-content { padding-bottom: 120px; color: #fff; }
-    .cat-section { margin-bottom: 30px; }
-    .section-banner { width: 100%; border-radius: 12px; border: 1px solid #D4AF37; margin-bottom: 15px; }
-    .cat-title { color: #D4AF37; font-size: 16px; font-weight: bold; border-left: 4px solid #D4AF37; padding-left: 12px; margin-bottom: 15px; }
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .item-card { background: rgba(255,255,255,0.05); border: 1px solid #222; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
-    .price-tag { color: #D4AF37; font-weight: bold; margin: 8px 0; font-size: 13px; }
-    .add-btn { background: #fff; color: #000; border: none; padding: 8px; border-radius: 5px; font-size: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
+    :root { --gold: #D4AF37; }
+    .menu-tab-content { padding-bottom: 120px; color: #fff; font-family: 'Segoe UI', sans-serif; }
+    .cat-section { margin-bottom: 40px; }
+    .section-banner { width: 100%; border-radius: 15px; border: 1px solid var(--gold); margin-bottom: 15px; display: block; }
+    .cat-title { color: var(--gold); font-size: 18px; font-weight: bold; border-left: 5px solid var(--gold); padding-left: 15px; margin-bottom: 20px; text-transform: uppercase; }
     
-    /* Footer & Token Styles */
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    
+    .item-card { 
+        background: rgba(255,255,255,0.07); border: 1px solid #333; border-radius: 12px; 
+        padding: 15px; display: flex; flex-direction: column; justify-content: space-between;
+        transition: 0.3s;
+    }
+    .item-name { font-size: 14px; font-weight: 600; margin-bottom: 8px; min-height: 35px; }
+    
+    /* Dual Price Styling */
+    .dual-price-container { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .price-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--gold); font-weight: bold; margin-bottom: 4px; }
+    
+    .add-btn { 
+        background: #fff; color: #000; border: none; padding: 10px; border-radius: 6px; 
+        font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; width: 100%;
+    }
+    .add-btn.half { background: #f0f0f0; margin-bottom: 5px; }
+    .add-btn:active { transform: scale(0.95); background: var(--gold); }
+
+    /* Floating Checkout */
     .checkout-footer { position: fixed; bottom: 85px; left: 0; width: 100%; display: none; justify-content: center; z-index: 999; }
-    .place-order-btn { background: #25D366; color: #fff; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px #000; }
-    #tokenModal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; border: 2px solid #D4AF37; padding: 25px; border-radius: 15px; text-align: center; z-index: 10000; display: none; width: 250px; }
+    .place-order-btn { background: #25D366; color: #fff; border: none; padding: 18px 40px; border-radius: 50px; font-weight: 900; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 15px; }
+
+    /* Token Popup */
+    #tokenModal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; border: 2px solid var(--gold); padding: 30px; border-radius: 20px; text-align: center; z-index: 10000; display: none; width: 280px; box-shadow: 0 0 100px #000; }
 </style>
 
-<div class="menu-tab-content" id="menuDisplay">
-    </div>
+<div class="menu-tab-content" id="renderMenu"></div>
 
 <div id="tokenModal">
-    <b style="color:#D4AF37">ROYAL KITCHEN</b>
-    <p style="font-size:12px;">Your Token Number:</p>
-    <h1 id="tokenNum" style="color:#D4AF37; font-size:50px; margin:10px 0;">01</h1>
-    <button class="add-btn" id="confirmOrder" style="background:#D4AF37">CONFIRM & WHATSAPP</button>
+    <b style="color:var(--gold); letter-spacing: 2px;">ROYAL KITCHEN</b>
+    <p style="color:#aaa; font-size:12px; margin-top:15px;">Your Order Token:</p>
+    <h1 id="tNum" style="color:var(--gold); font-size:60px; margin:10px 0; font-family: monospace;">01</h1>
+    <button class="add-btn" id="finalConfirm" style="background:var(--gold); padding:15px;">CONFIRM & WHATSAPP</button>
 </div>
 
-<div class="checkout-footer" id="floatingCart">
-    <button class="place-order-btn" id="checkoutBtn">🚀 SEND ORDER ON WHATSAPP</button>
+<div class="checkout-footer" id="cartStrip">
+    <button class="place-order-btn" id="waBtn">🚀 PLACE ORDER ON WHATSAPP</button>
 </div>
 
 <script>
 (function() {
-    let cart = [];
-    const ADMIN_NO = "917489999890";
-    const displayContainer = document.getElementById('menuDisplay');
+    const adminNo = "917489999890";
+    let myCart = [];
 
-    // 1. Menu Render Function (Data se HTML banana)
+    // Rendering Logic
+    const container = document.getElementById('renderMenu');
     menuData.forEach(section => {
-        let sectionHTML = `
-            <div class="cat-section">
-                <img src="${section.sectionPhoto}" class="section-banner">
-                <div class="cat-title">${section.sectionName}</div>
-                <div class="menu-grid">
-        `;
+        let html = `<div class="cat-section">
+            <img src="${section.sectionPhoto}" class="section-banner">
+            <div class="cat-title">${section.sectionName}</div>
+            <div class="menu-grid">`;
 
         section.items.forEach(item => {
             if(item.type === "single") {
-                sectionHTML += `
-                    <div class="item-card">
-                        <div><b>${item.name}</b></div>
-                        <div class="price-tag">₹${item.price}</div>
-                        <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">+ ADD</button>
-                    </div>`;
+                html += `<div class="item-card">
+                    <div class="item-name">${item.name}</div>
+                    <div class="price-row"><span>Price:</span> <span>₹${item.price}</span></div>
+                    <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">+ ADD</button>
+                </div>`;
             } else {
-                sectionHTML += `
-                    <div class="item-card">
-                        <div><b>${item.name}</b></div>
-                        <div class="price-tag">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div>
-                        <button class="add-btn" onclick="addToCart('${item.name} (Half)', ${item.halfPrice})">ADD HALF</button>
-                        <button class="add-btn" onclick="addToCart('${item.name} (Full)', ${item.fullPrice})">ADD FULL</button>
-                    </div>`;
+                html += `<div class="item-card">
+                    <div class="item-name">${item.name}</div>
+                    <div class="dual-price-container">
+                        <div class="price-row"><span>Half: ₹${item.halfPrice}</span></div>
+                        <button class="add-btn half" onclick="addToCart('${item.name} (H)', ${item.halfPrice})">ADD HALF</button>
+                        <div class="price-row"><span>Full: ₹${item.fullPrice}</span></div>
+                        <button class="add-btn" onclick="addToCart('${item.name} (F)', ${item.fullPrice})">ADD FULL</button>
+                    </div>
+                </div>`;
             }
         });
-
-        sectionHTML += `</div></div>`;
-        displayContainer.innerHTML += sectionHTML;
+        html += `</div></div>`;
+        container.innerHTML += html;
     });
 
-    // 2. Add to Cart Logic
-    window.addToCart = function(name, price) {
-        cart.push({ n: name, p: price });
-        document.getElementById('floatingCart').style.display = 'flex';
-        alert(name + " Added!");
+    window.addToCart = function(n, p) {
+        myCart.push({n, p});
+        document.getElementById('cartStrip').style.display = 'flex';
+        // Simple Vibration/Feedback
+        if(window.navigator.vibrate) window.navigator.vibrate(50);
     };
 
-    // 3. Checkout & Token Logic
-    document.getElementById('checkoutBtn').onclick = function() {
+    document.getElementById('waBtn').onclick = function() {
         let today = new Date().toDateString();
-        let count = (localStorage.getItem('rDate') === today) ? parseInt(localStorage.getItem('rCount')) + 1 : 1;
-        localStorage.setItem('rDate', today);
-        localStorage.setItem('rCount', count);
-        let tkn = count.toString().padStart(2, '0');
+        let count = (localStorage.getItem('d') === today) ? parseInt(localStorage.getItem('c')) + 1 : 1;
+        localStorage.setItem('d', today);
+        localStorage.setItem('c', count);
+        let token = count.toString().padStart(2, '0');
 
-        document.getElementById('tokenNum').innerText = tkn;
+        document.getElementById('tNum').innerText = token;
         document.getElementById('tokenModal').style.display = 'block';
 
-        // Parchi formation
-        let parchi = "🏷️ *TOKEN: " + tkn + "*\n━━━━━━━━━━━━━━━\n";
+        let msg = "🏷️ *TOKEN: " + token + "*\n━━━━━━━━━━━━━━━\n";
         let total = 0;
-        cart.forEach((it, i) => {
-            parchi += (i+1) + ". " + it.n + " - ₹" + it.p + "\n";
+        myCart.forEach((it, i) => {
+            msg += (i+1) + ". " + it.n + " - ₹" + it.p + "\n";
             total += it.p;
         });
-        parchi += "━━━━━━━━━━━━━━━\n*TOTAL: ₹" + total + "*";
+        msg += "━━━━━━━━━━━━━━━\n*TOTAL BILL: ₹" + total + "*";
 
-        document.getElementById('confirmOrder').onclick = function() {
-            window.location.href = "https://api.whatsapp.com/send?phone=" + ADMIN_NO + "&text=" + encodeURIComponent(parchi);
+        document.getElementById('finalConfirm').onclick = function() {
+            window.location.href = "https://api.whatsapp.com/send?phone=" + adminNo + "&text=" + encodeURIComponent(msg);
         };
     };
 })();
