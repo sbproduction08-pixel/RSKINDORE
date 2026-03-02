@@ -1,26 +1,20 @@
-<div id="dynamic-menu-render">
-    </div>
-
-<button id="floatingCheckout" onclick="window.checkout()" style="display:none; position:fixed; bottom:85px; left:50%; transform:translateX(-50%); width:90%; background:#25D366; color:#fff; padding:16px; border-radius:50px; font-weight:900; border:none; z-index:2100;">
-    🚀 PLACE ORDER (WHATSAPP)
-</button>
-
 <script>
 (function() {
     const renderArea = document.getElementById('dynamic-menu-render');
     
-    // Superfast Render Function
     function renderMenu() {
+        // Agar data nahi mila, toh 50ms baad fir check karo (Loop tab tak chalega jab tak data na mile)
         if (!window.menuData) {
-            renderArea.innerHTML = "<div style='text-align:center; padding:40px; color:#D4AF37;'>Data load ho raha hai...</div>";
+            setTimeout(renderMenu, 50);
             return;
         }
 
         let fullHTML = "";
         window.menuData.forEach(section => {
+            // Section Start
             let sectionHTML = `
                 <div class="cat-section" style="margin-bottom:30px;">
-                    <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; border:1px solid #D4AF37; margin-bottom:15px;">
+                    <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; border:1px solid #D4AF37; margin-bottom:15px;" onerror="this.style.display='none'">
                     <div style="color:#D4AF37; font-size:16px; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase;">${section.sectionName}</div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             `;
@@ -43,19 +37,18 @@
                         </div>`;
                 }
             });
-            sectionHTML += `</div></div>`;
+
+            sectionHTML += `</div></div>`; // Corrected: Yeh dono divs loop ke bahar band honge
             fullHTML += sectionHTML;
         });
         
         renderArea.innerHTML = fullHTML;
         
-        // Checkout button check
         if (window.cart && window.cart.length > 0) {
             document.getElementById('floatingCheckout').style.display = 'flex';
         }
     }
 
-    // Jhapak se call karo
     renderMenu();
 })();
 </script>
