@@ -1,82 +1,148 @@
-<div class="admin-panel-wrapper" style="animation: fadeIn 0.5s ease;">
+<div class="admin-panel-wrapper" style="animation: fadeIn 0.5s ease; padding-bottom: 50px;">
+    
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
         <div style="background: linear-gradient(45deg, #af8d19, #f1d36d); padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(212,175,55,0.3);">
-            <div style="font-size: 10px; color: #3a0d0d; font-weight: 800; text-transform: uppercase;">Today's Orders</div>
-            <div id="admin-total-orders" style="font-size: 24px; font-weight: bold; color: #000;">--</div>
+            <div style="font-size: 10px; color: #3a0d0d; font-weight: 800; text-transform: uppercase;">Total Tokens Today</div>
+            <div id="admin-total-orders" style="font-size: 26px; font-weight: bold; color: #000;">0</div>
         </div>
         <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--gold); padding: 15px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 10px; color: var(--gold); font-weight: 800; text-transform: uppercase;">Today's Sale</div>
-            <div style="font-size: 24px; font-weight: bold; color: var(--gold);">₹<span id="admin-total-sale">0</span></div>
+            <div style="font-size: 10px; color: var(--gold); font-weight: 800; text-transform: uppercase;">Estimated Sale</div>
+            <div style="font-size: 26px; font-weight: bold; color: var(--gold);">₹<span id="admin-total-sale">0</span></div>
         </div>
     </div>
 
-    <h3 style="font-family: 'Marcellus', serif; color: var(--gold); border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 15px; font-size: 16px;">Live Order Feed</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="font-family: 'Marcellus', serif; color: var(--gold); border-left: 3px solid var(--gold); padding-left: 10px; margin: 0; font-size: 16px;">Live Kitchen Feed</h3>
+        <button onclick="refreshAdminData()" style="background: transparent; border: 1px solid var(--gold); color: var(--gold); font-size: 10px; padding: 4px 10px; border-radius: 4px; cursor: pointer;">🔄 Refresh</button>
+    </div>
     
-    <div id="admin-orders-container" style="display: flex; flex-direction: column; gap: 12px;">
-        <div style="text-align: center; padding: 40px; color: #555;">Kripya wait karein, orders load ho rahe hain...</div>
+    <div id="admin-orders-list" style="display: flex; flex-direction: column; gap: 15px;">
+        <div style="text-align: center; padding: 40px; color: #555;">👑 Reading Sheet Data...</div>
     </div>
 </div>
+
+<audio id="kitchenBell" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
 <style>
     .order-card {
         background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(212,175,55,0.1);
+        border: 1px solid rgba(212,175,55,0.15);
         padding: 15px;
-        border-radius: 10px;
+        border-radius: 12px;
         position: relative;
         transition: 0.3s;
+        animation: slideUp 0.4s ease;
     }
     .status-badge {
         font-size: 9px;
-        padding: 3px 8px;
-        border-radius: 4px;
+        padding: 4px 10px;
+        border-radius: 50px;
         text-transform: uppercase;
-        font-weight: bold;
+        font-weight: 800;
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 15px;
+        right: 15px;
     }
-    .status-pending { background: #af8d19; color: #000; }
-    .status-cancelled { background: #ff4444; color: #fff; }
-    .status-done { background: #25D366; color: #fff; }
+    .status-pending { background: #af8d19; color: #000; box-shadow: 0 0 10px rgba(175,141,25,0.3); }
+    .status-cancelled { background: #3a0d0d; color: #ff4444; border: 1px solid #ff4444; }
+    .status-done { background: #1a3a1d; color: #25D366; border: 1px solid #25D366; }
     
-    .btn-action {
-        margin-top: 10px;
-        width: 100%;
-        padding: 8px;
-        border-radius: 5px;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 12px;
-    }
+    .cust-info { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; display: block; }
+    .order-items { font-size: 12px; color: #bbb; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; margin: 8px 0; }
+    
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
 <script>
-    // Ye function sirf layout check karne ke liye dummy data dikhayega
-    // Baad mein hum ise Google Sheet se connect karenge
-    function loadDummyAdminData() {
-        const container = document.getElementById('admin-orders-container');
-        container.innerHTML = `
-            <div class="order-card">
-                <span class="status-badge status-pending">Pending</span>
-                <div style="color: var(--gold); font-weight: bold;">Token #05</div>
-                <div style="font-size: 14px; margin: 5px 0;">Customer: Urvashi Khatri</div>
-                <div style="font-size: 11px; color: #aaa;">Items: Veg Maggi x1, Cold Coffee x2</div>
-                <div style="font-weight: bold; margin-top: 5px;">Total: ₹240</div>
-                <button class="btn-action" style="background: #25D366; color: white;">Mark as Prepared ✅</button>
-            </div>
-            
-            <div class="order-card" style="border-color: #ff4444; opacity: 0.7;">
-                <span class="status-badge status-cancelled">Cancelled</span>
-                <div style="color: #ff4444;">Token #04</div>
-                <div style="font-size: 14px;">Customer: Deeksha</div>
-                <button class="btn-action" style="background: #555; color: #fff;" disabled>Order Cancelled</button>
-            </div>
-        `;
-        document.getElementById('admin-total-orders').innerText = "12";
-        document.getElementById('admin-total-sale').innerText = "1,850";
+    // Bridge URL (Wahi jo index.html mein hai)
+    const adminBridge = 'https://script.google.com/macros/s/AKfycbyfJH5iauZsXjdewfHAgQ4Sbljm6Gj2vWR96WdDhK8GJLmntz6ixY9QD6xSUt9mN1MB/exec';
+    let lastKnownToken = localStorage.getItem('lastProcessedToken') || 0;
+    const bell = document.getElementById('kitchenBell');
+
+    function refreshAdminData() {
+        // Hum Google Sheet se sara data mangwayenge (Sheet name handle karne ke liye Admin mode)
+        fetch(adminBridge + "?action=readAdmin") 
+        .then(res => res.json())
+        .then(data => {
+            renderOrders(data);
+        })
+        .catch(err => {
+            console.log("Error loading admin data");
+        });
     }
 
-    loadDummyAdminData();
+    function renderOrders(orders) {
+        const list = document.getElementById('admin-orders-list');
+        const totalOrdersDisp = document.getElementById('admin-total-orders');
+        const totalSaleDisp = document.getElementById('admin-total-sale');
+        
+        let html = "";
+        let totalSale = 0;
+        let todayCount = 0;
+        let maxToken = 0;
+
+        // Date check: Aaj ke orders filter karne ke liye
+        const todayStr = new Date().toDateString();
+
+        orders.reverse().forEach(order => {
+            const orderDate = new Date(order.date).toDateString();
+            if(orderDate === todayStr) {
+                todayCount++;
+                if(order.status !== "Cancelled") totalSale += parseFloat(order.total || 0);
+                
+                let currentTokenNum = parseInt(order.token);
+                if(currentTokenNum > maxToken) maxToken = currentTokenNum;
+
+                let statusClass = "status-pending";
+                if(order.status === "Cancelled") statusClass = "status-cancelled";
+                if(order.status === "Done") statusClass = "status-done";
+
+                html += `
+                    <div class="order-card" style="${order.status === 'Cancelled' ? 'border-color: #ff4444; opacity:0.8;' : ''}">
+                        <span class="status-badge ${statusClass}">${order.status}</span>
+                        <div style="font-family: 'Marcellus', serif; color: var(--gold); font-size: 12px; margin-bottom: 5px;">TOKEN #${order.token}</div>
+                        <span class="cust-info">${order.name}</span>
+                        <div class="order-items">${order.items}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold; color:var(--gold); font-size:16px;">₹${order.total}</span>
+                            ${order.status === 'Pending' ? `<button onclick="markDone('${order.token}', '${order.name}')" style="background:#25D366; color:white; border:none; padding:6px 15px; border-radius:6px; font-weight:bold; font-size:11px; cursor:pointer;">DONE ✅</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // "Ting" Sound Logic: Agar naya token aaya ho
+        if(maxToken > lastKnownToken && lastKnownToken != 0) {
+            bell.play().catch(e => console.log("Sound blocked! Click once on screen."));
+            lastKnownToken = maxToken;
+            localStorage.setItem('lastProcessedToken', maxToken);
+        } else if (lastKnownToken == 0) {
+            lastKnownToken = maxToken;
+            localStorage.setItem('lastProcessedToken', maxToken);
+        }
+
+        list.innerHTML = html || "<div style='text-align:center; padding:50px; color:#555;'>Aaj koi orders nahi hain.</div>";
+        totalOrdersDisp.innerText = todayCount;
+        totalSaleDisp.innerText = totalSale.toLocaleString();
+    }
+
+    // Google Sheet mein Status badalne ke liye
+    window.markDone = function(token, name) {
+        if(!confirm("Order taiyar hai?")) return;
+        
+        fetch(adminBridge, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ token: token, name: name, status: "Done" })
+        });
+        
+        alert("Token #" + token + " marked as DONE!");
+        setTimeout(refreshAdminData, 1500); // Thoda ruk kar refresh
+    };
+
+    // Har 30 second mein Auto Refresh
+    setInterval(refreshAdminData, 30000);
+    refreshAdminData();
 </script>
