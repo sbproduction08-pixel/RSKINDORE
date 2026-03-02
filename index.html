@@ -14,39 +14,32 @@
         h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 15px 0 5px; letter-spacing: 2px; text-transform: uppercase; font-size: 22px; }
         .i-love-ind { width: 110px; margin-top: 5px; filter: drop-shadow(0 0 5px var(--gold)); }
 
-        /* Auth Panel */
         .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; min-height: 40px; }
         #welcome-user { color: var(--gold); font-weight: bold; font-size: 15px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
         .auth-btn { padding: 8px 20px; border-radius: 30px; font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: 0.4s; border: 1px solid var(--gold); }
         #loginBtn { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; box-shadow: 0 0 10px var(--gold-glow); }
         #logoutBtn { background: transparent; color: #ff4444; border: 1px solid #ff4444; display: none; padding: 4px 12px; font-size: 9px; }
 
-        /* Navigation */
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
         .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
 
-        .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 80px; }
+        .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 100px; }
         #content-area { animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Instagram Jumpy */
-        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 2100; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none; }
+        /* Floating Checkout Bar */
+        #floatingCheckout { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid var(--gold); padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 3000; box-sizing: border-box; }
+        .checkout-btn { background: #25D366; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .insta-jumpu { position: fixed; bottom: 85px; right: 20px; z-index: 2100; width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none; }
         @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
 
-        /* Footer Section */
         .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.6); margin-top: 20px; }
-        .fssai-main { width: 170px; margin-bottom: 20px; opacity: 0.9; }
-        
-        .sub-logos { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 10px; }
-        .sub-logos img { 
-            height: 55px; 
-            filter: drop-shadow(0 0 8px var(--gold-glow)); 
-            transition: 0.3s;
-        }
-        .sub-logos img:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--gold)); }
+        .fssai-main { width: 150px; margin-bottom: 20px; opacity: 0.9; }
+        .sub-logos { display: flex; justify-content: center; align-items: center; gap: 25px; }
+        .sub-logos img { height: 45px; filter: drop-shadow(0 0 5px var(--gold-glow)); }
     </style>
-    
 </head>
 <body>
 
@@ -71,8 +64,16 @@
 
 <div class="app-container" id="content-area"></div>
 
+<div id="floatingCheckout">
+    <div>
+        <div style="font-size: 10px; color: var(--gold);">Items in Cart</div>
+        <div style="font-size: 16px; font-weight: bold;">Total: ₹<span id="cart-total-display">0</span></div>
+    </div>
+    <button onclick="window.checkout()" class="checkout-btn">Order on WhatsApp</button>
+</div>
+
 <a href="https://www.instagram.com/rsk.indore/" class="insta-jumpu" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="30">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="25">
 </a>
 
 <div class="footer-section">
@@ -85,44 +86,104 @@
 </div>
 
 <script>
-   window.cart = []; 
+    window.cart = []; 
 
-    // 1. Add to Cart Function
-    window.addToCart = function(name, price) {
-        // Check agar item pehle se cart mein hai
-        const existingItem = window.cart.find(item => item.name === name);
+    // --- Tab Switching Logic ---
+    function showTab(tabId) {
+        var navItems = document.getElementsByClassName('nav-item');
+        for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
+        const activeBtn = document.getElementById('btn-' + tabId);
+        if(activeBtn) activeBtn.classList.add('active');
+
+        const contentArea = document.getElementById('content-area');
+        contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading...</div>";
+
+        fetch('./' + tabId + '-tab.html?v=' + Date.now())
+            .then(res => res.text())
+            .then(data => {
+                contentArea.innerHTML = data;
+                updateUserUI(); 
+                
+                // Execute scripts in the loaded tab
+                const scripts = contentArea.querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            })
+            .catch(err => {
+                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Swagat Hai!</div>";
+            });
+
+        localStorage.setItem('activeTab', tabId);
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    // --- User Auth UI ---
+    function updateUserUI() {
+        const userName = localStorage.getItem('userName');
+        const welcomeDiv = document.getElementById('welcome-user');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
         
-        if (existingItem) {
-            existingItem.qty += 1; // Quantity badhao
+        if(userName) {
+            welcomeDiv.innerHTML = "Namaste, " + userName + "! ✨";
+            loginBtn.style.display = 'none';
+            logoutBtn.style.display = 'inline-block';
         } else {
-            window.cart.push({ name: name, price: price, qty: 1 }); // Naya item add karo
+            welcomeDiv.innerHTML = "";
+            loginBtn.style.display = 'inline-block';
+            logoutBtn.style.display = 'none';
         }
-        
+    }
+
+    window.registerUser = function() {
+        let name = prompt("Aapka Naam?");
+        let phone = prompt("Aapka WhatsApp Number?");
+        if(name && phone && phone.length >= 10) {
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userPhone', phone);
+            updateUserUI();
+        }
+    };
+
+    window.logout = function() {
+        if(confirm("Logout karna chahte hain?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    };
+
+    // --- Cart Logic ---
+    window.addToCart = function(name, price) {
+        const existingItem = window.cart.find(item => item.name === name);
+        if (existingItem) {
+            existingItem.qty += 1;
+        } else {
+            window.cart.push({ name: name, price: price, qty: 1 });
+        }
         updateCartUI();
     };
 
-    // 2. UI Update Function (Bar dikhane aur Total calculate karne ke liye)
     function updateCartUI() {
         const bar = document.getElementById('floatingCheckout');
         const totalDisp = document.getElementById('cart-total-display');
-        
         let total = window.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        let count = window.cart.reduce((sum, item) => sum + item.qty, 0);
-
-        if (count > 0) {
-            bar.style.display = 'flex'; // Bar dikhao
-            totalDisp.innerText = total; // Total amount update karo
+        
+        if (window.cart.length > 0) {
+            bar.style.display = 'flex';
+            totalDisp.innerText = total;
         } else {
             bar.style.display = 'none';
         }
     }
 
-    // 3. Checkout (WhatsApp Message)
     window.checkout = function() {
         let uName = localStorage.getItem('userName') || "Guest";
         if(window.cart.length === 0) return alert("Pehle kuch add karein!");
 
-        // Token No Logic
         let today = new Date().toDateString();
         let lastDate = localStorage.getItem('tokenDate');
         let count = parseInt(localStorage.getItem('dailyCount')) || 0;
@@ -131,19 +192,18 @@
         localStorage.setItem('dailyCount', count);
         let tokenNo = count.toString().padStart(2, '0');
 
-        // Message Formatting
         let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        let itemDetails = window.cart.map((i, idx) => 
-            `*${idx + 1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`
-        ).join('%0A');
+        let itemDetails = window.cart.map((i, idx) => `*${idx+1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
 
-        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order Details:*%0A${itemDetails}%0A━━━━━━━━━━━━━━━%0A*Grand Total: ₹${total}*%0A━━━━━━━━━━━━━━━%0A_Order dene ke liye shukriya!_`;
+        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${itemDetails}%0A━━━━━━━━━━━━━━━%0A*Grand Total: ₹${total}*%0A━━━━━━━━━━━━━━━%0A_Order confirmed!_`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
-        
-        // Cart reset karein order ke baad
         window.cart = [];
         updateCartUI();
+    };
+
+    window.onload = () => {
+        showTab(localStorage.getItem('activeTab') || 'home');
     };
 </script>
 </body>
