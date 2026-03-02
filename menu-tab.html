@@ -1,32 +1,60 @@
 <div id="dynamic-menu-render" style="padding: 10px;"></div>
 
 <style>
-    /* Section Hover Effect */
+    /* Royal Hover Effects */
     .menu-section-container {
-        margin-bottom: 35px;
-        transition: transform 0.3s ease, border-color 0.3s ease;
-        border-radius: 12px;
-        border: 1px solid transparent;
-        padding: 5px;
+        margin-bottom: 40px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 15px;
+        padding: 10px;
+        border: 1px solid rgba(212, 175, 55, 0.1);
     }
     .menu-section-container:hover {
-        transform: translateY(-5px);
+        transform: scale(1.02);
         border-color: #D4AF37;
-        background: rgba(212, 175, 55, 0.05);
+        background: rgba(212, 175, 55, 0.03);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     .menu-card {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid #333;
+        background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+        border: 1px solid rgba(255,255,255,0.1);
         border-radius: 12px;
-        padding: 12px;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         transition: 0.3s;
+        position: relative;
+        overflow: hidden;
     }
     .menu-card:hover {
         border-color: #D4AF37;
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    }
+    .royal-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #D4AF37;
+        color: #000;
+        font-size: 8px;
+        padding: 2px 8px;
+        font-weight: bold;
+        border-bottom-left-radius: 8px;
+        text-transform: uppercase;
+    }
+    .add-btn-royal {
+        background: linear-gradient(45deg, #af8d19, #f1d36d);
+        color: #000;
+        border: none;
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: 800;
+        cursor: pointer;
+        font-size: 11px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 </style>
 
@@ -37,53 +65,53 @@
             sectionName: "👑 RSK ROYAL COMBOS",
             sectionPhoto: "ROYAL COMBO.jpg",
             items: [
-                { name: "Tawa Chicken + Paratha", price: 259, type: "single" },
-                { name: "Paneer Bhurji + Kulcha", price: 199, type: "single" }
+                { name: "Tawa Chicken + Paratha", price: 259, type: "single", royal: true },
+                { name: "Paneer Bhurji + Kulcha", price: 199, type: "single", royal: false }
             ]
         },
         {
             sectionName: "🍢 TANDOORI STARTERS",
             sectionPhoto: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "Chicken Seekh Kebab", price: 179, type: "single" },
-                { name: "Paneer Tikka Royal", price: 210, type: "single" },
-                { name: "Afghani Chicken", halfPrice: 240, fullPrice: 450, type: "dual" }
+                { name: "Royal Chicken Tikka", halfPrice: 160, fullPrice: 299, type: "dual", royal: true },
+                { name: "Paneer Tikka Special", halfPrice: 140, fullPrice: 260, type: "dual", royal: false },
+                { name: "Chicken Seekh Kebab", price: 179, type: "single", royal: true }
             ]
         },
         {
             sectionName: "🍗 NON-VEG CURRIES",
             sectionPhoto: "https://images.unsplash.com/photo-1603894584115-f73f2ec851ad?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "RSK Special Chicken", halfPrice: 219, fullPrice: 399, type: "dual" },
-                { name: "Butter Chicken", halfPrice: 230, fullPrice: 420, type: "dual" },
-                { name: "Chicken Masala", halfPrice: 180, fullPrice: 320, type: "dual" }
+                { name: "RSK Special Chicken", halfPrice: 219, fullPrice: 399, type: "dual", royal: true },
+                { name: "Butter Chicken Royal", halfPrice: 230, fullPrice: 420, type: "dual", royal: true },
+                { name: "Handi Chicken", halfPrice: 190, fullPrice: 350, type: "dual", royal: false }
             ]
         },
         {
             sectionName: "🍛 VEG MAIN COURSE",
             sectionPhoto: "https://images.unsplash.com/photo-1585937421612-70a0f295561a?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "Paneer Butter Masala", price: 240, type: "single" },
-                { name: "Dal Makhani Royal", price: 220, type: "single" },
-                { name: "Mix Veg Special", price: 180, type: "single" }
+                { name: "Paneer Butter Masala", halfPrice: 130, fullPrice: 240, type: "dual", royal: true },
+                { name: "Dal Makhani Special", halfPrice: 110, fullPrice: 210, type: "dual", royal: false },
+                { name: "Kadhai Paneer Royal", halfPrice: 140, fullPrice: 260, type: "dual", royal: true }
             ]
         },
         {
             sectionName: "🍜 CHINESE & SNACKS",
             sectionPhoto: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "Veg Manchurian", price: 140, type: "single" },
-                { name: "Hakka Noodles", price: 120, type: "single" },
-                { name: "RSK Special Maggie", price: 99, type: "single" }
+                { name: "Veg Manchurian", halfPrice: 80, fullPrice: 150, type: "dual", royal: false },
+                { name: "Chicken Noodles", halfPrice: 100, fullPrice: 180, type: "dual", royal: true },
+                { name: "RSK Special Maggie", price: 99, type: "single", royal: true }
             ]
         },
         {
             sectionName: "🥤 ROYAL DRINKS",
             sectionPhoto: "https://images.unsplash.com/photo-1544145945-f904253d0c7b?auto=format&fit=crop&w=800&q=80",
             items: [
-                { name: "Cold Coffee Premium", price: 99, type: "single" },
-                { name: "Masala Lemonade", price: 60, type: "single" },
-                { name: "Virgin Mojito", price: 110, type: "single" }
+                { name: "Cold Coffee Premium", price: 99, type: "single", royal: true },
+                { name: "Royal Badam Shake", price: 120, type: "single", royal: true },
+                { name: "Virgin Mojito", price: 110, type: "single", royal: false }
             ]
         }
     ];
@@ -93,24 +121,30 @@
         let html = "";
         menuData.forEach(section => {
             html += `<div class="menu-section-container">
-                <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.4);" onerror="this.src='https://via.placeholder.com/800x400?text=RSK+Indore+Special'">
-                <div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px; font-size:14px;">${section.sectionName}</div>
+                <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px; box-shadow: 0 4px 15px rgba(212,175,55,0.3);" onerror="this.src='https://via.placeholder.com/800x400?text=RSK+Indore+Special'">
+                <div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1.5px; font-size:14px; text-shadow: 0 0 5px rgba(212,175,55,0.5);">${section.sectionName}</div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">`;
             
             section.items.forEach(item => {
                 html += `<div class="menu-card">
-                    <div style="color:#fff; font-size:13px; font-weight:500; margin-bottom:5px;">${item.name}</div>`;
+                    ${item.royal ? '<div class="royal-badge">Royal</div>' : ''}
+                    <div style="color:#fff; font-size:13px; font-weight:600; margin-bottom:8px;">${item.name}</div>`;
                 
                 if (item.type === 'single') {
                     html += `
-                    <div style="color:#D4AF37; font-weight:bold; margin-bottom:10px; font-size:15px;">₹${item.price}</div>
-                    <button onclick="window.addToCart('${item.name}', ${item.price})" style="background:#D4AF37; color:#000; border:none; width:100%; padding:10px; border-radius:8px; font-weight:800; cursor:pointer; font-size:11px;">+ ADD</button>`;
+                    <div style="color:#D4AF37; font-weight:bold; margin-bottom:12px; font-size:16px;">₹${item.price}</div>
+                    <button onclick="window.addToCart('${item.name}', ${item.price})" class="add-btn-royal">+ ADD</button>`;
                 } else {
                     html += `
-                    <div style="color:#D4AF37; font-size:11px; margin-bottom:10px; opacity:0.8;">H: ₹${item.halfPrice} | F: ₹${item.fullPrice}</div>
-                    <div style="display:flex; flex-direction:column; gap:6px;">
-                        <button onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})" style="background:#f0f0f0; color:#333; border:none; padding:8px; border-radius:6px; font-weight:700; font-size:10px; cursor:pointer;">HALF +</button>
-                        <button onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})" style="background:#D4AF37; color:#000; border:none; padding:8px; border-radius:6px; font-weight:700; font-size:10px; cursor:pointer;">FULL +</button>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="color:#ccc; font-size:11px;">Half: ₹${item.halfPrice}</span>
+                            <button onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})" style="background:#444; color:#fff; border:none; padding:5px 10px; border-radius:4px; font-size:10px; cursor:pointer;">+ H</button>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="color:#D4AF37; font-size:11px; font-weight:bold;">Full: ₹${item.fullPrice}</span>
+                            <button onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})" style="background:#D4AF37; color:#000; border:none; padding:5px 10px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:bold;">+ F</button>
+                        </div>
                     </div>`;
                 }
                 html += `</div>`;
