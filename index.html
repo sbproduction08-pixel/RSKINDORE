@@ -14,46 +14,24 @@
         h1 { font-family: 'Marcellus', serif; color: var(--gold); margin: 15px 0 5px; letter-spacing: 2px; text-transform: uppercase; font-size: 22px; }
         .i-love-ind { width: 110px; margin-top: 5px; filter: drop-shadow(0 0 5px var(--gold)); }
 
-        /* --- ROYAL AUTH PANEL --- */
         .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; min-height: 40px; }
-        #welcome-user { color: var(--gold); font-weight: bold; font-size: 15px; font-family: 'Marcellus', serif; letter-spacing: 1px; text-shadow: 0 0 5px rgba(212,175,55,0.3); }
+        #welcome-user { color: var(--gold); font-weight: bold; font-size: 15px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
         
-        /* Royal Gold Login Button */
-        .auth-btn { 
-            padding: 8px 20px; border-radius: 30px; font-size: 11px; cursor: pointer; 
-            text-transform: uppercase; font-weight: 800; transition: 0.4s; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid var(--gold);
-        }
-        
-        #loginBtn { 
-            background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; 
-            display: inline-block; box-shadow: 0 0 10px var(--gold-glow);
-        }
-        #loginBtn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--gold); }
+        .auth-btn { padding: 8px 20px; border-radius: 30px; font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: 0.4s; border: 1px solid var(--gold); }
+        #loginBtn { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; }
+        #logoutBtn { background: transparent; color: #ff4444; border: 1px solid #ff4444; display: none; padding: 4px 12px; font-size: 9px; }
 
-        #logoutBtn { 
-            background: transparent; color: #ff4444; border: 1px solid #ff4444; 
-            display: none; padding: 4px 12px; font-size: 9px;
-        }
-        #logoutBtn:hover { background: rgba(255, 68, 68, 0.1); }
-
-        /* --- NAVIGATION --- */
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
-        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; letter-spacing: 1px; transition: 0.3s; }
-        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
+        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
 
         .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 80px; }
         #content-area { animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Floating Instagram */
-        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); }
-        @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
-
-        /* Footer */
+        .insta-jumpu { position: fixed; bottom: 30px; right: 20px; z-index: 1001; width: 55px; height: 55px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px var(--gold); }
         .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.6); }
-        .fssai-main { width: 160px; margin-bottom: 15px; opacity: 0.9; }
-        .sub-logos img { height: 40px; filter: grayscale(1) invert(1); margin: 0 15px; }
+        .fssai-main { width: 160px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -85,18 +63,14 @@
 
 <div class="footer-section">
     <img src="FSSAI_Logo.png" class="fssai-main">
-    <div class="sub-logos">
-        <img src="msme_logo.avif" alt="MSME">
-        <img src="Swachh_Bharat_Mission_Logo.png.png" alt="Swachh Bharat">
-    </div>
     <p style="font-size: 10px; color: #555; margin-top: 20px;">© 2026 ROYAL STREET KITCHEN • INDORE</p>
 </div>
+
 <script src="item_menu_code.js"></script>
-    
-    <script>
+
+<script>
     window.cart = []; 
 
-    // --- TAB SYSTEM ---
     function showTab(tabId) {
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
@@ -120,7 +94,6 @@
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // --- AUTH UI LOGIC ---
     function updateUserUI() {
         const userName = localStorage.getItem('userName');
         const welcomeDiv = document.getElementById('welcome-user');
@@ -138,62 +111,68 @@
         }
     }
 
-    // --- REGISTRATION & OTP ---
     window.registerUser = function() {
         let name = prompt("RSK mein aapka swagat hai! Aapka Naam?");
         let phone = prompt("Aapka Mobile Number?");
         
         if(name && phone && phone.length >= 10) {
-            let tempCode = Math.floor(1000 + Math.random() * 9000);
-            alert("Verification Code: RSK-" + tempCode + "\n\nIse WhatsApp par bhejein taaki hum aapka number verify kar sakein.");
-            
-            let verifyMsg = encodeURIComponent("Pranam RSK! Mera Verification Code hai: RSK-" + tempCode + " (Name: " + name + ")");
-            window.open(`https://wa.me/917489999890?text=${verifyMsg}`, '_blank');
-
             localStorage.setItem('userName', name);
             localStorage.setItem('userPhone', phone);
             updateUserUI();
+            alert("Swagat hai " + name + "!");
             return true;
         }
-        alert("Sahi details dena zaroori hai.");
         return false;
     };
 
-    // --- LOGOUT ---
     window.logout = function() {
-        if(confirm("Kya aap Logout karna chahte hain?")) {
-            localStorage.clear();
-            alert("Aap Logout ho gaye hain.");
-            location.reload();
-        }
+        if(confirm("Logout karna chahte hain?")) { localStorage.clear(); location.reload(); }
     };
 
-    // --- CART & CHECKOUT ---
+    // --- UPDATED ADD TO CART ---
     window.addToCart = function(name, price) {
         window.cart.push({name: name, price: price});
-        alert(name + " cart mein add ho gaya!");
-        const bar = document.getElementById('floatingCheckout');
-        if(bar) bar.style.display = 'flex';
+        const floatingBtn = document.getElementById('floatingCheckout');
+        if(floatingBtn) floatingBtn.style.display = 'flex';
+        // Vibrate for feedback
+        if(window.navigator.vibrate) window.navigator.vibrate(50);
     };
 
+    // --- UPDATED WHATSAPP CHECKOUT ---
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
         if(!uName) {
             if(!window.registerUser()) return;
-            return;
+            uName = localStorage.getItem('userName');
         }
 
         if(window.cart.length === 0) return alert("Pehle kuch tasty add karein!");
 
-        let tokenNo = Math.floor(Math.random() * 100) + 1; 
-        let total = window.cart.reduce((s, i) => s + i.price, 0);
-        let items = window.cart.map(i => `- ${i.name}`).join('%0A');
+        // Daily Token Logic
+        let today = new Date().toDateString();
+        let lastDate = localStorage.getItem('tokenDate');
+        let count = parseInt(localStorage.getItem('dailyCount')) || 0;
 
-        let message = `*ROYAL STREET KITCHEN* 👑%0A--------------------------%0A*Token No:* %23${tokenNo}%0A*Date:* ${new Date().toLocaleDateString('en-GB')}%0A*Customer:* ${uName}%0A--------------------------%0A*Order:*%0A${items}%0A--------------------------%0A*Total:* ₹${total}%0A--------------------------%0A_Kripya counter par token dikhayein._`;
+        if (lastDate !== today) {
+            count = 1;
+            localStorage.setItem('tokenDate', today);
+        } else {
+            count++;
+        }
+        localStorage.setItem('dailyCount', count);
+        let tokenNo = count.toString().padStart(2, '0');
+
+        let total = window.cart.reduce((s, i) => s + i.price, 0);
+        let items = window.cart.map((i, idx) => `${idx + 1}. ${i.name} - ₹${i.price}`).join('%0A');
+
+        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${items}%0A━━━━━━━━━━━━━━━%0A*Total Amount:* ₹${total}%0A━━━━━━━━━━━━━━━%0A_Kripya counter par token dikhayein._`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
+        
         window.cart = [];
-        if(document.getElementById('floatingCheckout')) document.getElementById('floatingCheckout').style.display = 'none';
+        const floatingBtn = document.getElementById('floatingCheckout');
+        if(floatingBtn) floatingBtn.style.display = 'none';
+        alert("Parchi bhej di gayi hai! Token: #" + tokenNo);
     }
 
     window.onload = () => showTab(localStorage.getItem('activeTab') || 'home');
