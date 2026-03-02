@@ -25,8 +25,29 @@
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
 
         .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 120px; }
-        #content-area { animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Cancellation Bar Style */
+        #cancel-bar {
+            display: none;
+            background: rgba(255, 68, 68, 0.15);
+            border: 1px solid #ff4444;
+            padding: 12px;
+            margin: 10px;
+            border-radius: 10px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .cancel-btn-small {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 12px;
+        }
 
         .insta-jumpu { position: fixed; bottom: 110px; right: 20px; z-index: 2100; width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none; }
         @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
@@ -36,28 +57,7 @@
         .sub-logos { display: flex; justify-content: center; align-items: center; gap: 25px; }
         .sub-logos img { height: 45px; filter: drop-shadow(0 0 5px var(--gold-glow)); }
 
-        /* Cancellation Bar Style */
-#cancel-bar {
-    display: none;
-    background: rgba(255, 68, 68, 0.15);
-    border: 1px solid #ff4444;
-    padding: 12px;
-    margin: 10px;
-    border-radius: 10px;
-    text-align: center;
-    animation: fadeIn 0.5s ease;
-}
-.cancel-btn-small {
-    background: #ff4444;
-    color: white;
-    border: none;
-    padding: 5px 15px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 8px;
-    font-size: 12px;
-}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -88,7 +88,7 @@
     </div>
     <button onclick="window.cancelOrder()" class="cancel-btn-small">Urgent Cancel ❌</button>
 </div>
-    
+
 <div class="app-container" id="content-area"></div>
 
 <div id="floatingCheckout" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid #D4AF37; padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 9999; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.8);">
@@ -117,6 +117,7 @@
 
 <script>
     window.cart = []; 
+    let cancelInterval;
 
     function showTab(tabId) {
         var navItems = document.getElementsByClassName('nav-item');
@@ -162,16 +163,38 @@
         }
     }
 
-   // --- 1. Updated Register/Verify Function ---
+    // --- Timer Logic Function ---
+    function startCancelTimer(duration) {
+        clearInterval(cancelInterval);
+        let timer = duration, minutes, seconds;
+        const display = document.getElementById('timer-display');
+        const bar = document.getElementById('cancel-bar');
+        
+        bar.style.display = 'block';
+        
+        cancelInterval = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(cancelInterval);
+                bar.style.display = 'none';
+                localStorage.removeItem('lastTokenNo');
+            }
+        }, 1000);
+    }
+
     window.registerUser = function() {
         let name = prompt("Aapka Naam?");
         let phone = prompt("Aapka WhatsApp Number?");
 
         if(name && phone && phone.length >= 10) {
-            // Random 4-digit code generate karna verification ke liye
             let vCode = Math.floor(1000 + Math.random() * 9000);
-            
-            // Temporary details save karna
             localStorage.setItem('tempName', name);
             localStorage.setItem('tempPhone', phone);
             localStorage.setItem('vCode', vCode);
@@ -179,27 +202,20 @@
             let verifyMsg = `*VERIFICATION REQUEST* 👑%0A━━━━━━━━━━━━━━━%0AHello RSK! I am *${name}*. %0APlease verify my number: ${phone}%0A━━━━━━━━━━━━━━━%0A*Verification Code: RSK-${vCode}*%0A━━━━━━━━━━━━━━━%0A_Note: Do not edit this code._`;
 
             if(confirm("Verification ke liye aapko WhatsApp par ek message bhejna hoga. Proceed karein?")) {
-                // WhatsApp par message bhejna
                 window.open(`https://wa.me/917489999890?text=${verifyMsg}`, '_blank');
-                
-                // Details ko permanently save karna (Message bhejne ke baad user verified mana jayega)
                 localStorage.setItem('userName', name);
                 localStorage.setItem('userPhone', phone);
                 localStorage.setItem('isVerified', 'true');
-                
                 updateUserUI();
-                alert("Namaste ${name}! Verification message bhejne ke liye shukriya. Aapka account active hai.");
+                alert(`Namaste ${name}! Verification message bhejne ke liye shukriya.`);
             }
         } else {
             alert("Kripya sahi naam aur 10-digit number daalein.");
         }
     };
 
-    // --- 2. Updated AddToCart (Security Check) ---
     window.addToCart = function(name, price) {
         const isVerified = localStorage.getItem('isVerified');
-        
-        // Agar user login nahi hai ya verified nahi hai
         if(!isVerified) {
             alert("⚠️ Security Check: Pehle WhatsApp Verification poora karein!");
             window.registerUser();
@@ -215,24 +231,11 @@
         updateCartUI();
     };
 
-    // --- 3. Updated Logout (Sab clear karne ke liye) ---
     window.logout = function() {
-        if(confirm("Kya aap logout karna chahte hain? Sabhi details clear ho jayengi.")) {
+        if(confirm("Kya aap logout karna chahte hain?")) {
             localStorage.clear();
             location.reload();
         }
-    };
-
-    window.addToCart = function(name, price) {
-        if(!localStorage.getItem('userName')) {
-            alert("Pehle Login karein!");
-            window.registerUser();
-            return;
-        }
-        const existing = window.cart.find(item => item.name === name);
-        if (existing) { existing.qty += 1; } 
-        else { window.cart.push({ name: name, price: price, qty: 1 }); }
-        updateCartUI();
     };
 
     window.removeFromCart = function(name) {
@@ -248,7 +251,6 @@
         const bar = document.getElementById('floatingCheckout');
         const totalDisp = document.getElementById('cart-total-display');
         const listDisp = document.getElementById('cart-items-list');
-        
         let total = window.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         
         if (window.cart.length > 0) {
@@ -257,7 +259,7 @@
             listDisp.innerHTML = window.cart.map(item => `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; background:rgba(255,255,255,0.08); padding:6px 10px; border-radius:6px; border:1px solid rgba(212,175,55,0.2);">
                     <span style="font-size:12px; color:#fff;">${item.name} <b style="color:#D4AF37;">x${item.qty}</b></span>
-                    <button onclick="window.removeFromCart('${item.name}')" style="background:#ff4444; color:white; border:none; border-radius:4px; width:22px; height:22px; font-size:16px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center;">-</button>
+                    <button onclick="window.removeFromCart('${item.name}')" style="background:#ff4444; color:white; border:none; border-radius:4px; width:22px; height:22px; font-size:16px; font-weight:bold; cursor:pointer;">-</button>
                 </div>
             `).join('');
         } else {
@@ -268,25 +270,56 @@
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
         let uPhone = localStorage.getItem('userPhone');
-        
         let today = new Date().toDateString();
         let count = parseInt(localStorage.getItem('dailyCount')) || 0;
-        if (localStorage.getItem('tokenDate') !== today) { count = 1; localStorage.setItem('tokenDate', today); } 
-        else { count++; }
+        
+        if (localStorage.getItem('tokenDate') !== today) { 
+            count = 1; 
+            localStorage.setItem('tokenDate', today); 
+        } else { 
+            count++; 
+        }
+        
         localStorage.setItem('dailyCount', count);
         let tokenNo = count.toString().padStart(2, '0');
-
         let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
         let items = window.cart.map((i, idx) => `*${idx+1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
 
         let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token:* %23${tokenNo}%0A*Cust:* ${uName}%0A*Mob:* ${uPhone}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${items}%0A━━━━━━━━━━━━━━━%0A*Total: ₹${total}*`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
+        
+        // --- Timer Trigger ---
+        localStorage.setItem('lastTokenNo', tokenNo);
+        document.getElementById('last-token').innerText = tokenNo;
+        startCancelTimer(300); // 5 Minutes
+        
         window.cart = [];
         updateCartUI();
     };
 
-    window.onload = () => { showTab(localStorage.getItem('activeTab') || 'home'); };
+    window.cancelOrder = function() {
+        const token = localStorage.getItem('lastTokenNo');
+        const name = localStorage.getItem('userName');
+        if(confirm("Kya aap sach mein order cancel karna chahte hain?")) {
+            let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
+            window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
+            clearInterval(cancelInterval);
+            document.getElementById('cancel-bar').style.display = 'none';
+            localStorage.removeItem('lastTokenNo');
+            alert("Cancellation request bhej di gayi hai.");
+        }
+    };
+
+    window.onload = () => { 
+        showTab(localStorage.getItem('activeTab') || 'home');
+        // Resume timer if page refreshed
+        const savedToken = localStorage.getItem('lastTokenNo');
+        if(savedToken) {
+            document.getElementById('last-token').innerText = savedToken;
+            startCancelTimer(300);
+        }
+    };
 </script>
 </body>
 </html>
