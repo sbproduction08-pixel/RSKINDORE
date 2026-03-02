@@ -26,7 +26,6 @@
 
         .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 120px; }
         
-        /* Cancellation Bar Style */
         #cancel-bar {
             display: none;
             background: rgba(255, 68, 68, 0.15);
@@ -118,6 +117,7 @@
 <script>
     window.cart = []; 
     let cancelInterval;
+    const bridgeUrl = 'https://script.google.com/macros/s/AKfycbyfJH5iauZsXjdewfHAgQ4Sbljm6Gj2vWR96WdDhK8GJLmntz6ixY9QD6xSUt9mN1MB/exec';
 
     function showTab(tabId) {
         var navItems = document.getElementsByClassName('nav-item');
@@ -163,7 +163,6 @@
         }
     }
 
-    // --- Timer Logic Function ---
     function startCancelTimer(duration) {
         clearInterval(cancelInterval);
         let timer = duration, minutes, seconds;
@@ -175,10 +174,8 @@
         cancelInterval = setInterval(function () {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
-
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-
             display.textContent = minutes + ":" + seconds;
 
             if (--timer < 0) {
@@ -192,15 +189,9 @@
     window.registerUser = function() {
         let name = prompt("Aapka Naam?");
         let phone = prompt("Aapka WhatsApp Number?");
-
         if(name && phone && phone.length >= 10) {
             let vCode = Math.floor(1000 + Math.random() * 9000);
-            localStorage.setItem('tempName', name);
-            localStorage.setItem('tempPhone', phone);
-            localStorage.setItem('vCode', vCode);
-
             let verifyMsg = `*VERIFICATION REQUEST* 👑%0A━━━━━━━━━━━━━━━%0AHello RSK! I am *${name}*. %0APlease verify my number: ${phone}%0A━━━━━━━━━━━━━━━%0A*Verification Code: RSK-${vCode}*%0A━━━━━━━━━━━━━━━%0A_Note: Do not edit this code._`;
-
             if(confirm("Verification ke liye aapko WhatsApp par ek message bhejna hoga. Proceed karein?")) {
                 window.open(`https://wa.me/917489999890?text=${verifyMsg}`, '_blank');
                 localStorage.setItem('userName', name);
@@ -215,27 +206,15 @@
     };
 
     window.addToCart = function(name, price) {
-        const isVerified = localStorage.getItem('isVerified');
-        if(!isVerified) {
-            alert("⚠️ Security Check: Pehle WhatsApp Verification poora karein!");
+        if(!localStorage.getItem('userName')) {
+            alert("Pehle Login karein!");
             window.registerUser();
             return;
         }
-
-        const existingItem = window.cart.find(item => item.name === name);
-        if (existingItem) {
-            existingItem.qty += 1;
-        } else {
-            window.cart.push({ name: name, price: price, qty: 1 });
-        }
+        const existing = window.cart.find(item => item.name === name);
+        if (existing) { existing.qty += 1; } 
+        else { window.cart.push({ name: name, price: price, qty: 1 }); }
         updateCartUI();
-    };
-
-    window.logout = function() {
-        if(confirm("Kya aap logout karna chahte hain?")) {
-            localStorage.clear();
-            location.reload();
-        }
     };
 
     window.removeFromCart = function(name) {
@@ -262,99 +241,71 @@
                     <button onclick="window.removeFromCart('${item.name}')" style="background:#ff4444; color:white; border:none; border-radius:4px; width:22px; height:22px; font-size:16px; font-weight:bold; cursor:pointer;">-</button>
                 </div>
             `).join('');
-        } else {
-            bar.style.display = 'none';
-        }
+        } else { bar.style.display = 'none'; }
     }
 
-   window.checkout = function() {
-        let uName = localStorage.getItem('userName');
-        let uPhone = localStorage.getItem('userPhone');
-        let today = new Date().toDateString();
-        let count = parseInt(localStorage.getItem('dailyCount')) || 0;
-        
-        if (localStorage.getItem('tokenDate') !== today) { 
-            count = 1; 
-            localStorage.setItem('tokenDate', today); 
-        } else { 
-            count++; 
-        }
-        
-        localStorage.setItem('dailyCount', count);
-        let tokenNo = count.toString().padStart(2, '0');
-        let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+    window.checkout = function() {
+        let uName = localStorage.getItem('userName');
+        let uPhone = localStorage.getItem('userPhone');
+        let today = new Date().toDateString();
+        let count = parseInt(localStorage.getItem('dailyCount')) || 0;
         
-        // Google Sheet ke liye items ki list (Sahi format mein)
+        if (localStorage.getItem('tokenDate') !== today) { count = 1; localStorage.setItem('tokenDate', today); } 
+        else { count++; }
+        
+        localStorage.setItem('dailyCount', count);
+        let tokenNo = count.toString().padStart(2, '0');
+        let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
         let itemsForSheet = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
-        let items = window.cart.map((i, idx) => `*${idx+1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
+        let itemsForWA = window.cart.map((i, idx) => `*${idx+1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
 
-        // --- GOOGLE SHEET SILENT ENTRY START ---
-        fetch('https://script.google.com/macros/s/AKfycbyfJH5iauZsXjdewfHAgQ4Sbljm6Gj2vWR96WdDhK8GJLmntz6ixY9QD6xSUt9mN1MB/exec', {
+        fetch(bridgeUrl, {
             method: 'POST',
             mode: 'no-cors',
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                token: tokenNo,
-                name: uName,
-                items: itemsForSheet,
-                total: total,
-                status: "Pending"
-            })
-        });
-        // --- GOOGLE SHEET SILENT ENTRY END ---
-
-        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token:* %23${tokenNo}%0A*Cust:* ${uName}%0A*Mob:* ${uPhone}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${items}%0A━━━━━━━━━━━━━━━%0A*Total: ₹${total}*`;
-
-        window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
-        
-        localStorage.setItem('lastTokenNo', tokenNo);
-        document.getElementById('last-token').innerText = tokenNo;
-        startCancelTimer(300); 
-        
-        window.cart = [];
-        updateCartUI();
-    };
-
-   window.cancelOrder = function() {
-    const token = localStorage.getItem('lastTokenNo');
-    const name = localStorage.getItem('userName');
-    if(confirm("Kya aap sach mein order cancel karna chahte hain?")) {
-        
-        fetch('https://script.google.com/macros/s/AKfycbyfJH5iauZsXjdewfHAgQ4Sbljm6Gj2vWR96WdDhK8GJLmntz6ixY9QD6xSUt9mN1MB/exec', {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                token: token,
-                name: name,
-                status: "Cancelled" // Sirf status update karne ke liye
-            })
+            body: JSON.stringify({ token: tokenNo, name: uName, items: itemsForSheet, total: total, status: "Pending" })
         });
 
-        let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
-        window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
+        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token:* %23${tokenNo}%0A*Cust:* ${uName}%0A*Mob:* ${uPhone}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${itemsForWA}%0A━━━━━━━━━━━━━━━%0A*Total: ₹${total}*`;
+        window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
         
-        clearInterval(cancelInterval);
-        document.getElementById('cancel-bar').style.display = 'none';
-        localStorage.removeItem('lastTokenNo');
-        alert("Order Status: CANCELLED update ho gaya hai.");
-    }
-};
-            // --- GOOGLE SHEET CANCELLATION ENTRY END ---
+        localStorage.setItem('lastTokenNo', tokenNo);
+        document.getElementById('last-token').innerText = tokenNo;
+        startCancelTimer(300);
+        window.cart = [];
+        updateCartUI();
+    };
 
-            let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
-            window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
-            clearInterval(cancelInterval);
-            document.getElementById('cancel-bar').style.display = 'none';
-            localStorage.removeItem('lastTokenNo');
-            alert("Cancellation request Sheet mein update ho gayi hai.");
-        }
-    };
+    window.cancelOrder = function() {
+        const token = localStorage.getItem('lastTokenNo');
+        const name = localStorage.getItem('userName');
+        if(confirm("Kya aap sach mein order cancel karna chahte hain?")) {
+            fetch(bridgeUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: token, name: name, status: "Cancelled" })
+            });
+
+            let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
+            window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
+            clearInterval(cancelInterval);
+            document.getElementById('cancel-bar').style.display = 'none';
+            localStorage.removeItem('lastTokenNo');
+            alert("Order Status: CANCELLED update ho gaya hai.");
+        }
+    };
+
+    window.logout = function() {
+        if(confirm("Kya aap logout karna chahte hain?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    };
 
     window.onload = () => { 
         showTab(localStorage.getItem('activeTab') || 'home');
-        // Resume timer if page refreshed
         const savedToken = localStorage.getItem('lastTokenNo');
         if(savedToken) {
             document.getElementById('last-token').innerText = savedToken;
