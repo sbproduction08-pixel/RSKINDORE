@@ -244,6 +244,17 @@
         } else { bar.style.display = 'none'; }
     }
 
+    // --- GOOGLE SHEET SEND DATA FUNCTION ---
+    function sendDataToSheet(payload) {
+        // We use text/plain to avoid CORS preflight issues in no-cors mode
+        fetch(bridgeUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload)
+        }).catch(err => console.log("Sheet Error:", err));
+    }
+
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
         let uPhone = localStorage.getItem('userPhone');
@@ -259,13 +270,8 @@
         let itemsForSheet = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
         let itemsForWA = window.cart.map((i, idx) => `*${idx+1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
 
-        fetch(bridgeUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: tokenNo, name: uName, items: itemsForSheet, total: total, status: "Pending" })
-        });
+        // Send to Sheet
+        sendDataToSheet({ token: tokenNo, name: uName, items: itemsForSheet, total: total, status: "Pending" });
 
         let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token:* %23${tokenNo}%0A*Cust:* ${uName}%0A*Mob:* ${uPhone}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${itemsForWA}%0A━━━━━━━━━━━━━━━%0A*Total: ₹${total}*`;
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
@@ -281,12 +287,9 @@
         const token = localStorage.getItem('lastTokenNo');
         const name = localStorage.getItem('userName');
         if(confirm("Kya aap sach mein order cancel karna chahte hain?")) {
-            fetch(bridgeUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: token, name: name, status: "Cancelled" })
-            });
+            
+            // Send Cancel Status to Sheet
+            sendDataToSheet({ token: token, name: name, status: "Cancelled" });
 
             let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
             window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
