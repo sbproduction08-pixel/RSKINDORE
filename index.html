@@ -85,111 +85,66 @@
 </div>
 
 <script>
-    window.cart = []; 
+   window.cart = []; 
 
-   function showTab(tabId) {
-    var navItems = document.getElementsByClassName('nav-item');
-    for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
-    const activeBtn = document.getElementById('btn-' + tabId);
-    if(activeBtn) activeBtn.classList.add('active');
-
-    const contentArea = document.getElementById('content-area');
-    contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading Royal Experience...</div>";
-
-    fetch('./' + tabId + '-tab.html?v=' + Date.now())
-        .then(res => res.text())
-        .then(data => {
-            contentArea.innerHTML = data;
-            updateUserUI(); 
-            
-            // --- YEH NAYA CODE HAI ---
-            // Menu Tab ke andar ki script ko manually dhundh kar chalane ke liye
-            const scripts = contentArea.querySelectorAll('script');
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement('script');
-                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
-        })
-        .catch(err => {
-            contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Swagat Hai! Tab select karein.</div>";
-        });
-
-    localStorage.setItem('activeTab', tabId);
-    window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-    function updateUserUI() {
-        const userName = localStorage.getItem('userName');
-        const welcomeDiv = document.getElementById('welcome-user');
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
+    // 1. Add to Cart Function
+    window.addToCart = function(name, price) {
+        // Check agar item pehle se cart mein hai
+        const existingItem = window.cart.find(item => item.name === name);
         
-        if(userName) {
-            if(welcomeDiv) welcomeDiv.innerHTML = "Namaste, " + userName + "! ✨";
-            if(loginBtn) loginBtn.style.display = 'none';
-            if(logoutBtn) logoutBtn.style.display = 'inline-block';
+        if (existingItem) {
+            existingItem.qty += 1; // Quantity badhao
         } else {
-            if(welcomeDiv) welcomeDiv.innerHTML = "";
-            if(loginBtn) loginBtn.style.display = 'inline-block';
-            if(logoutBtn) logoutBtn.style.display = 'none';
+            window.cart.push({ name: name, price: price, qty: 1 }); // Naya item add karo
+        }
+        
+        updateCartUI();
+    };
+
+    // 2. UI Update Function (Bar dikhane aur Total calculate karne ke liye)
+    function updateCartUI() {
+        const bar = document.getElementById('floatingCheckout');
+        const totalDisp = document.getElementById('cart-total-display');
+        
+        let total = window.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        let count = window.cart.reduce((sum, item) => sum + item.qty, 0);
+
+        if (count > 0) {
+            bar.style.display = 'flex'; // Bar dikhao
+            totalDisp.innerText = total; // Total amount update karo
+        } else {
+            bar.style.display = 'none';
         }
     }
 
-    window.registerUser = function() {
-        let name = prompt("Aapka Naam?");
-        let phone = prompt("Aapka WhatsApp Number?");
-        if(name && phone && phone.length >= 10) {
-            localStorage.setItem('userName', name);
-            localStorage.setItem('userPhone', phone);
-            updateUserUI();
-            return true;
-        }
-        return false;
-    };
-
-    window.logout = function() {
-        if(confirm("Logout karna chahte hain?")) {
-            localStorage.clear();
-            location.reload();
-        }
-    };
-
-    window.addToCart = function(name, price) {
-        window.cart.push({name: name, price: price});
-        const bar = document.getElementById('floatingCheckout');
-        if(bar) bar.style.display = 'flex';
-    };
-
+    // 3. Checkout (WhatsApp Message)
     window.checkout = function() {
         let uName = localStorage.getItem('userName') || "Guest";
         if(window.cart.length === 0) return alert("Pehle kuch add karein!");
 
+        // Token No Logic
         let today = new Date().toDateString();
         let lastDate = localStorage.getItem('tokenDate');
         let count = parseInt(localStorage.getItem('dailyCount')) || 0;
-
-        if (lastDate !== today) {
-            count = 1;
-            localStorage.setItem('tokenDate', today);
-        } else {
-            count++;
-        }
+        if (lastDate !== today) { count = 1; localStorage.setItem('tokenDate', today); } 
+        else { count++; }
         localStorage.setItem('dailyCount', count);
         let tokenNo = count.toString().padStart(2, '0');
 
-        let total = window.cart.reduce((s, i) => s + i.price, 0);
-        let items = window.cart.map((i, idx) => `${idx + 1}. ${i.name} - ₹${i.price}`).join('%0A');
+        // Message Formatting
+        let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        let itemDetails = window.cart.map((i, idx) => 
+            `*${idx + 1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`
+        ).join('%0A');
 
-        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${items}%0A━━━━━━━━━━━━━━━%0A*Total:* ₹${total}%0A━━━━━━━━━━━━━━━%0A_Kripya counter par token dikhayein._`;
+        let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token No:* %23${tokenNo}%0A*Customer:* ${uName}%0A━━━━━━━━━━━━━━━%0A*Order Details:*%0A${itemDetails}%0A━━━━━━━━━━━━━━━%0A*Grand Total: ₹${total}*%0A━━━━━━━━━━━━━━━%0A_Order dene ke liye shukriya!_`;
 
         window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
+        
+        // Cart reset karein order ke baad
         window.cart = [];
-        if(document.getElementById('floatingCheckout')) document.getElementById('floatingCheckout').style.display = 'none';
+        updateCartUI();
     };
-
-    window.onload = () => showTab(localStorage.getItem('activeTab') || 'home');
 </script>
 </body>
 </html>
