@@ -11,9 +11,8 @@
             --gold: #D4AF37; 
             --black: #0a0a0a; 
             --royal-red: #3a0d0d; 
-            --gold-glow: rgba(212, 175, 55, 0.5); 
+            --gold-glow: rgba(212, 175, 55, 0.6); 
             --fire: #ff4500;
-            --fire-glow: rgba(255, 69, 0, 0.6);
         }
 
         body { 
@@ -27,24 +26,24 @@
 
         /* --- Upgraded Royal Header Section --- */
         header { 
-            padding: 40px 20px 20px; 
+            padding: 50px 20px 30px; 
             text-align: center; 
             border-bottom: 2px solid rgba(212,175,55,0.3); 
             position: relative; 
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
         }
         
         /* 1. Logo with Animated Fire Ring */
         .logo-container {
             position: relative;
             display: inline-block;
-            width: 120px;
-            height: 120px;
-            margin-bottom: 10px;
+            width: 130px;
+            height: 130px;
+            margin-bottom: 15px;
         }
         .main-logo { 
             position: relative;
-            width: 100px; height: 100px; 
+            width: 110px; height: 110px; 
             border-radius: 50%; 
             border: 2px solid var(--gold); 
             box-shadow: 0 0 25px var(--gold); 
@@ -57,36 +56,33 @@
 
         .fire-ring {
             position: absolute;
-            top: 5px; left: 5px;
-            width: 110px; height: 110px;
+            top: 0; left: 0;
+            width: 130px; height: 130px;
             border-radius: 50%;
-            border: 3px solid var(--fire);
-            box-shadow: 0 0 15px var(--fire), inset 0 0 10px var(--fire);
-            animation: rotateFire 4s linear infinite;
+            border: 4px solid var(--fire);
+            box-shadow: 0 0 20px var(--fire), inset 0 0 15px var(--fire);
+            animation: rotateFire 3s linear infinite;
             z-index: 5;
+            filter: blur(1px);
         }
         @keyframes rotateFire {
-            from { transform: rotate(0deg); opacity: 0.8; }
-            50% { opacity: 0.4; }
-            to { transform: rotate(360deg); opacity: 0.8; }
+            from { transform: rotate(0deg) scale(1); opacity: 0.8; }
+            50% { transform: rotate(180deg) scale(1.1); opacity: 0.5; }
+            to { transform: rotate(360deg) scale(1); opacity: 0.8; }
         }
 
-        /* 2. Royal Text with 3D Glow & Shine Streak */
+        /* 2. Royal Text Image with Pulsating Crown & Shine */
         .title-wrapper {
             position: relative;
             display: inline-block;
-            overflow: hidden; /* For shine streak */
-            padding: 5px 15px;
+            overflow: hidden; 
+            padding: 10px;
         }
-        h1 { 
-            font-family: 'Marcellus', serif; 
-            color: var(--gold); 
-            margin: 5px 0; 
-            letter-spacing: 3px; 
-            text-transform: uppercase; 
-            font-size: 26px; 
-            text-shadow: 0 0 10px var(--gold-glow);
-            animation: textGlow 2s infinite alternate;
+        .royal-title-img {
+            width: 280px; /* Adjust according to your image size */
+            display: block;
+            filter: drop-shadow(0 0 10px var(--gold-glow));
+            animation: titleGlow 2s infinite alternate;
         }
         /* Shine Streak Effect on Hover */
         .title-wrapper::after {
@@ -95,44 +91,43 @@
             top: 0; left: -150%;
             width: 100%; height: 100%;
             background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.6s;
+            transition: 0.7s;
         }
         .title-wrapper:hover::after { left: 150%; }
 
-        @keyframes textGlow {
-            from { text-shadow: 0 0 10px var(--gold), 0 0 15px var(--fire); }
-            to { text-shadow: 0 0 20px var(--gold), 0 0 35px var(--fire); }
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 5px var(--gold)) brightness(1); }
+            to { filter: drop-shadow(0 0 20px var(--fire)) brightness(1.2); }
         }
 
         /* 3. I Love Indore Heartbeat Bounce */
         .i-love-ind { 
-            width: 120px; 
+            width: 130px; 
             display: block;
-            margin: 10px auto; 
-            filter: drop-shadow(0 0 8px var(--gold)); 
-            animation: heartbeat 1.5s infinite ease-in-out;
+            margin: 15px auto; 
+            filter: drop-shadow(0 0 10px var(--gold)); 
+            animation: heartbeat 1.4s infinite ease-in-out;
         }
         @keyframes heartbeat {
             0%, 100% { transform: scale(1); }
-            15% { transform: scale(1.1); }
+            15% { transform: scale(1.1) translateY(-5px); }
             30% { transform: scale(1.05); }
-            45% { transform: scale(1.2); }
+            45% { transform: scale(1.2) translateY(-8px); }
         }
 
         /* --- User Panel & Auth Buttons --- */
-        .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; min-height: 40px; }
-        #welcome-user { color: var(--gold); font-weight: bold; font-size: 15px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
-        .auth-btn { padding: 8px 25px; border-radius: 30px; font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: 0.4s; border: 1px solid var(--gold); outline: none; }
+        .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 20px; min-height: 40px; }
+        #welcome-user { color: var(--gold); font-weight: bold; font-size: 16px; font-family: 'Marcellus', serif; letter-spacing: 1px; }
+        .auth-btn { padding: 10px 25px; border-radius: 30px; font-size: 12px; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: 0.4s; border: 1px solid var(--gold); outline: none; }
         #loginBtn { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; box-shadow: 0 0 15px var(--gold-glow); }
-        #loginBtn:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--gold); }
         #logoutBtn { background: transparent; color: #ff4444; border: 1px solid #ff4444; display: none; padding: 5px 15px; font-size: 10px; }
 
-        /* --- Navigation & Container --- */
-        .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
+        /* --- Navigation --- */
+        .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(10, 10, 10, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
         .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
 
-        .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 120px; }
+        .app-container { max-width: 500px; margin: 0 auto; min-height: 60vh; padding: 15px; padding-bottom: 120px; }
         
         /* --- Order Status Bar --- */
         #cancel-bar {
@@ -151,11 +146,11 @@
         .insta-jumpu { position: fixed; bottom: 110px; right: 20px; z-index: 2100; width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none; }
         @keyframes jump { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
 
-        #floatingCheckout { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid var(--gold); padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 9999; box-sizing: border-box; box-shadow: 0 -5px 25px rgba(0,0,0,0.9); }
+        #floatingCheckout { position: fixed; bottom: 0; left: 0; width: 100%; background: #111; border-top: 2px solid var(--gold); padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 9999; box-sizing: border-box; box-shadow: 0 -5px 25px rgba(0,0,0,0.9); }
 
         /* --- Footer Section --- */
-        .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.6); margin-top: 20px; }
-        .fssai-main { width: 140px; margin-bottom: 20px; opacity: 0.9; }
+        .footer-section { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(212,175,55,0.2); background: rgba(0,0,0,0.8); margin-top: 30px; }
+        .fssai-main { width: 140px; margin-bottom: 20px; }
         .sub-logos { display: flex; justify-content: center; align-items: center; gap: 25px; }
         .sub-logos img { height: 40px; filter: drop-shadow(0 0 5px var(--gold-glow)); }
 
@@ -171,10 +166,10 @@
     </div>
 
     <div class="title-wrapper">
-        <h1>Royal Street Kitchen</h1>
+        <img src="royalstreetkitchen.jpg" class="royal-title-img" alt="Royal Street Kitchen">
     </div>
 
-    <img src="i_love_ind.png" class="i-love-ind" alt="I Love Indore">
+    <img src="vectoriloveindore.jpg" class="i-love-ind" alt="I Love Indore">
     
     <div class="user-panel">
         <span id="welcome-user"></span>
@@ -219,7 +214,7 @@
     <img src="FSSAI_Logo.png" class="fssai-main">
     <div class="sub-logos">
         <img src="msme_logo.avif" alt="MSME">
-        <img src="Swachh_Bharat_Mission_Logo.png.png" alt="Swachh Bharat">
+        <img src="Swachh_Bharat_Mission_Logo.png" alt="Swachh Bharat">
     </div>
     <p style="font-size: 10px; color: #555; margin-top: 25px;">© 2026 ROYAL STREET KITCHEN • INDORE</p>
 </div>
@@ -236,28 +231,20 @@
         logoClicks++;
         clearTimeout(clickTimer);
         clickTimer = setTimeout(() => { logoClicks = 0; }, 3000);
-
         if (logoClicks === 3) {
             logoClicks = 0;
             let pass = prompt("🔐 Enter Royal Admin Key:");
-            if (pass === "RSK@2026") { 
-                showTab('admin');
-            } else if (pass !== null) {
-                alert("❌ Galat Password! Access Denied.");
-            }
+            if (pass === "RSK@2026") { showTab('admin'); }
         }
     };
 
     function showTab(tabId) {
         var navItems = document.getElementsByClassName('nav-item');
         for (var i = 0; i < navItems.length; i++) { navItems[i].classList.remove('active'); }
-        
         const activeBtn = document.getElementById('btn-' + tabId);
         if(activeBtn) activeBtn.classList.add('active');
-
         const contentArea = document.getElementById('content-area');
         contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading...</div>";
-
         fetch('./' + tabId + '-tab.html?v=' + Date.now())
             .then(res => res.text())
             .then(data => {
@@ -272,7 +259,6 @@
                 });
             })
             .catch(err => { contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Swagat Hai!</div>"; });
-
         if(tabId !== 'admin') localStorage.setItem('activeTab', tabId);
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
@@ -298,16 +284,11 @@
         let timer = duration, minutes, seconds;
         const display = document.getElementById('timer-display');
         const bar = document.getElementById('cancel-bar');
-        
         bar.style.display = 'block';
-        
         cancelInterval = setInterval(function () {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
-            display.textContent = minutes + ":" + seconds;
-
+            display.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
             if (--timer < 0) {
                 clearInterval(cancelInterval);
                 bar.style.display = 'none';
@@ -320,38 +301,24 @@
         let name = prompt("Aapka Naam?");
         let phone = prompt("Aapka WhatsApp Number?");
         if(name && phone && phone.length >= 10) {
-            let vCode = Math.floor(1000 + Math.random() * 9000);
-            let verifyMsg = `*VERIFICATION REQUEST* 👑%0A━━━━━━━━━━━━━━━%0AHello RSK! I am *${name}*. %0APlease verify my number: ${phone}%0A━━━━━━━━━━━━━━━%0A*Verification Code: RSK-${vCode}*%0A━━━━━━━━━━━━━━━%0A_Note: Do not edit this code._`;
-            if(confirm("Verification ke liye aapko WhatsApp par ek message bhejna hoga. Proceed karein?")) {
-                window.open(`https://wa.me/917489999890?text=${verifyMsg}`, '_blank');
-                localStorage.setItem('userName', name);
-                localStorage.setItem('userPhone', phone);
-                localStorage.setItem('isVerified', 'true');
-                updateUserUI();
-                alert(`Namaste ${name}! Verification message bhejne ke liye shukriya.`);
-            }
-        } else {
-            alert("Kripya sahi naam aur 10-digit number daalein.");
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userPhone', phone);
+            updateUserUI();
+            alert(`Namaste ${name}!`);
         }
     };
 
     window.addToCart = function(name, price) {
-        if(!localStorage.getItem('userName')) {
-            alert("Pehle Login karein!");
-            window.registerUser();
-            return;
-        }
+        if(!localStorage.getItem('userName')) { window.registerUser(); return; }
         const existing = window.cart.find(item => item.name === name);
-        if (existing) { existing.qty += 1; } 
-        else { window.cart.push({ name: name, price: price, qty: 1 }); }
+        if (existing) { existing.qty += 1; } else { window.cart.push({ name: name, price: price, qty: 1 }); }
         updateCartUI();
     };
 
     window.removeFromCart = function(name) {
         const idx = window.cart.findIndex(item => item.name === name);
         if (idx > -1) {
-            if (window.cart[idx].qty > 1) { window.cart[idx].qty -= 1; } 
-            else { window.cart.splice(idx, 1); }
+            if (window.cart[idx].qty > 1) { window.cart[idx].qty -= 1; } else { window.cart.splice(idx, 1); }
         }
         updateCartUI();
     };
@@ -361,7 +328,6 @@
         const totalDisp = document.getElementById('cart-total-display');
         const listDisp = document.getElementById('cart-items-list');
         let total = window.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        
         if (window.cart.length > 0) {
             bar.style.display = 'flex';
             totalDisp.innerText = total;
@@ -374,81 +340,41 @@
         } else { bar.style.display = 'none'; }
     }
 
-    function sendDataToSheet(payload) {
-        fetch(bridgeUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(payload)
-        }).catch(err => console.log("Sheet Error:", err));
-    }
-
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
-        let uPhone = localStorage.getItem('userPhone');
-        
-        const checkoutBtn = document.querySelector('#floatingCheckout button');
-        const originalText = checkoutBtn.innerText;
-        checkoutBtn.disabled = true;
-        checkoutBtn.innerText = "Processing... ⏳";
-
-        fetch(bridgeUrl) 
-        .then(res => res.text())
-        .then(currentCount => {
-            let count = parseInt(currentCount) || 0;
-            let nextToken = (count + 1).toString().padStart(2, '0');
-            
+        fetch(bridgeUrl).then(res => res.text()).then(currentCount => {
+            let nextToken = (parseInt(currentCount) + 1).toString().padStart(2, '0');
             let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
-            let itemsForSheet = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
-            let itemsForWA = window.cart.map((i, idx) => `*${idx+1}.* ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
+            let itemsStr = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
+            
+            fetch(bridgeUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ token: nextToken, name: uName, items: itemsStr, total: total, status: "Pending" }) });
 
-            sendDataToSheet({ token: nextToken, name: uName, items: itemsForSheet, total: total, status: "Pending" });
-
-            let message = `*ROYAL STREET KITCHEN* 👑%0A━━━━━━━━━━━━━━━%0A*Token:* %23${nextToken}%0A*Cust:* ${uName}%0A*Mob:* ${uPhone}%0A━━━━━━━━━━━━━━━%0A*Order:*%0A${itemsForWA}%0A━━━━━━━━━━━━━━━%0A*Total: ₹${total}*`;
-            window.open(`https://wa.me/917489999890?text=${message}`, '_blank');
+            let waMsg = `*ROYAL STREET KITCHEN*%0A*Token:* %23${nextToken}%0A*Cust:* ${uName}%0A*Total: ₹${total}*`;
+            window.open(`https://wa.me/917489999890?text=${waMsg}`, '_blank');
             
             localStorage.setItem('lastTokenNo', nextToken);
             document.getElementById('last-token').innerText = nextToken;
             startCancelTimer(300);
-            
-            window.cart = [];
-            updateCartUI();
-            checkoutBtn.disabled = false;
-            checkoutBtn.innerText = originalText;
-        })
-        .catch(err => {
-            alert("Network issue! Please try again.");
-            checkoutBtn.disabled = false;
-            checkoutBtn.innerText = originalText;
+            window.cart = []; updateCartUI();
         });
     };
 
     window.cancelOrder = function() {
-        const token = localStorage.getItem('lastTokenNo');
-        const name = localStorage.getItem('userName');
-        if(confirm("Kya aap sach mein order cancel karna chahte hain?")) {
-            sendDataToSheet({ token: token, name: name, items: "❌ CANCELLED BY CUSTOMER", total: 0, status: "Cancelled" });
-            let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
-            window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
+        if(confirm("Cancel order?")) {
+            let token = localStorage.getItem('lastTokenNo');
+            fetch(bridgeUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ token: token, name: localStorage.getItem('userName'), items: "CANCELLED", total: 0, status: "Cancelled" }) });
             clearInterval(cancelInterval);
             document.getElementById('cancel-bar').style.display = 'none';
             localStorage.removeItem('lastTokenNo');
-            alert("Order Status: CANCELLED entry bhej di gayi hai.");
         }
     };
 
-    window.logout = function() {
-        if(confirm("Kya aap logout karna chahte hain?")) {
-            localStorage.clear();
-            location.reload();
-        }
-    };
+    window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
 
     window.onload = () => { 
         showTab(localStorage.getItem('activeTab') || 'home');
-        const savedToken = localStorage.getItem('lastTokenNo');
-        if(savedToken) {
-            document.getElementById('last-token').innerText = savedToken;
+        if(localStorage.getItem('lastTokenNo')) {
+            document.getElementById('last-token').innerText = localStorage.getItem('lastTokenNo');
             startCancelTimer(300);
         }
     };
