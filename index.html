@@ -162,7 +162,7 @@
         .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
 
         .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 120px; }
-        #cancel-bar { display: none; background: rgba(255, 68, 68, 0.15); border: 1px solid #ff4444; padding: 12px; margin: 10px; border-radius: 10px; text-align: center; animation: fadeIn 0.5s ease; }
+        #el-bar { display: none; background: rgba(255, 68, 68, 0.15); border: 1px solid #ff4444; padding: 12px; margin: 10px; border-radius: 10px; text-align: center; animation: fadeIn 0.5s ease; }
         
         #floatingCheckout { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid #D4AF37; padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 9999; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.8); }
 
@@ -373,19 +373,32 @@
 window.cancelOrder = function() {
     const token = localStorage.getItem('lastTokenNo');
     const name = localStorage.getItem('userName');
-    if(confirm("Order cancel karein?")) {
+    
+    if(!token || !name) return alert("No active order found!");
+
+    if(confirm("Order cancel karein? Entry update ho jayegi.")) {
+        // CORS-safe tarika: Data ko URL parameters ki tarah bhejna
+        const params = new URLSearchParams();
+        params.append('token', token);
+        params.append('name', name);
+        params.append('status', 'Cancelled');
+
         fetch(bridgeUrl, {
             method: 'POST',
             mode: 'no-cors',
-            body: JSON.stringify({ token: token, name: name, status: "Cancelled" })
+            body: params // Params bhej rahe hain JSON nahi
         });
+
+        // WhatsApp turant
+        let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}`;
+        window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
+        
         clearInterval(cancelInterval);
         document.getElementById('cancel-bar').style.display = 'none';
         localStorage.removeItem('lastTokenNo');
-        alert("Cancellation Request Sent!");
+        alert("Cancellation Request Sent! Check Sheet in a few seconds.");
     }
-};
-    window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
+};    window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
     window.onload = () => { 
         showTab(localStorage.getItem('activeTab') || 'home');
         if(localStorage.getItem('lastTokenNo')) startCancelTimer(300);
