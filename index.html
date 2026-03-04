@@ -424,15 +424,38 @@
     };
 
     window.cancelOrder = function() {
-        if(confirm("Cancel order?")) {
-            let token = localStorage.getItem('lastTokenNo');
-            fetch(bridgeUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ token: token, name: localStorage.getItem('userName'), items: "CANCELLED", total: 0, status: "Cancelled" }) });
+    const token = localStorage.getItem('lastTokenNo');
+    const name = localStorage.getItem('userName'); // Name dhoondhne ke liye zaroori hai
+
+    if(!token) {
+        alert("Koi active order nahi mila!");
+        return;
+    }
+
+    if(confirm("Kya aap sach mein order cancel karna chahte hain?")) {
+        // Sheet ko update karne ke liye request
+        fetch(bridgeUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ 
+                token: token, 
+                name: name, 
+                status: "Cancelled" // Ye status Apps Script ke Logic 1 ko trigger karega
+            })
+        }).then(() => {
+            // WhatsApp message for manual info (optional)
+            let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}%0A━━━━━━━━━━━━━━━%0A_Kripya mera order cancel kar dein._`;
+            window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
+            
+            // Timer aur UI saaf karein
             clearInterval(cancelInterval);
             document.getElementById('cancel-bar').style.display = 'none';
             localStorage.removeItem('lastTokenNo');
-        }
-    };
-
+            alert("Order Status: CANCELLED update bhej diya gaya hai.");
+        }).catch(err => console.log("Cancel Error:", err));
+    }
+};
     window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
 
     window.onload = () => { 
