@@ -156,6 +156,19 @@
         }
         #logoutBtn:hover { background: #ff4444; color: #fff; box-shadow: 0 0 20px rgba(255, 68, 68, 0.6); }
 
+        #cancel-bar { 
+    display: none; /* Default hide */
+    background: rgba(0,0,0,0.8); 
+    border: 1px solid var(--gold); 
+    padding: 15px; 
+    margin: 10px; 
+    border-radius: 10px; 
+    text-align: center;
+    position: sticky;
+    top: 70px;
+    z-index: 3000;
+}
+
         /* --- UI & Navigation --- */
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
         .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
@@ -288,22 +301,40 @@
         document.getElementById('logoutBtn').style.display = userName ? 'inline-block' : 'none';
     }
 
-    function startCancelTimer(duration) {
-        clearInterval(cancelInterval);
-        let timer = duration;
-        const display = document.getElementById('timer-display');
-        const bar = document.getElementById('cancel-bar');
-        bar.style.display = 'block';
-        cancelInterval = setInterval(function () {
-            let minutes = parseInt(timer / 60, 10);
-            let seconds = parseInt(timer % 60, 10);
-            display.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-            if (--timer < 0) {
-                clearInterval(cancelInterval); bar.style.display = 'none';
-                localStorage.removeItem('lastTokenNo');
-            }
-        }, 1000);
+  // Timer ko manage karne ka sahi tarika
+function startCancelTimer(duration, isNew = false) {
+    clearInterval(cancelInterval);
+    const display = document.getElementById('timer-display');
+    const bar = document.getElementById('cancel-bar');
+    const tokenSpan = document.getElementById('last-token');
+    
+    let startTime;
+    if (isNew) {
+        startTime = Date.now();
+        localStorage.setItem('timerStartTime', startTime);
+    } else {
+        startTime = parseInt(localStorage.getItem('timerStartTime'));
     }
+
+    tokenSpan.innerText = localStorage.getItem('lastTokenNo');
+    bar.style.display = 'block';
+
+    cancelInterval = setInterval(function () {
+        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        let remainingTime = duration - elapsedTime;
+
+        if (remainingTime <= 0) {
+            clearInterval(cancelInterval);
+            bar.style.display = 'none';
+            localStorage.removeItem('lastTokenNo');
+            localStorage.removeItem('timerStartTime');
+        } else {
+            let minutes = Math.floor(remainingTime / 60);
+            let seconds = remainingTime % 60;
+            display.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+        }
+    }, 1000);
+}
 
     window.registerUser = function() {
         let name = prompt("Aapka Naam?"); let phone = prompt("WhatsApp Number?");
@@ -337,11 +368,13 @@
         } else { bar.style.display = 'none'; }
     }
 
-    // --- FIX FOR ORDER NOW ---
-   window.checkout = function() {
+    // Checkout function fix
+window.checkout = function() {
     let uName = localStorage.getItem('userName');
+    if(!uName) return window.registerUser();
+
     const btn = document.getElementById('orderNowBtn');
-    btn.innerText = "Wait... ⏳"; btn.disabled = true;
+    btn.innerText = "Processing... ⏳"; btn.disabled = true;
 
     fetch(bridgeUrl)
     .then(res => res.text())
@@ -349,56 +382,71 @@
         let nextToken = (parseInt(currentCount) + 1).toString().padStart(2, '0');
         let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
         let itemsStr = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
-        
-        // Data Sheet mein bhejna
+
+        // Google Sheet update
         fetch(bridgeUrl, {
-            method: 'POST', 
-            mode: 'no-cors', 
-            body: JSON.stringify({ token: nextToken, name: uName, items: itemsStr, total: total }) 
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                token: nextToken, 
+                name: uName, 
+                items: itemsStr, 
+                total: total,
+                status: "Pending" // Explicit status
+            })
         });
 
-        // WhatsApp turant kholna
+        localStorage.setItem('lastTokenNo', nextToken);
+        startCancelTimer(300, true); // True means new order
+        
         let waMsg = `*ROYAL STREET KITCHEN*%0A*Token:* %23${nextToken}%0A*Order:* ${itemsStr}%0A*Total: ₹${total}*`;
         window.open(`https://wa.me/917489999890?text=${waMsg}`, '_blank');
-        
-        localStorage.setItem('lastTokenNo', nextToken);
-        document.getElementById('last-token').innerText = nextToken;
-        startCancelTimer(300);
+
         window.cart = []; updateCartUI();
         btn.innerText = "Order Now"; btn.disabled = false;
-    })
+    });
+};
     .catch(() => { alert("Check Connection!"); btn.innerText = "Order Now"; btn.disabled = false; });
 };
 
+// Cancel function fix
 window.cancelOrder = function() {
     const token = localStorage.getItem('lastTokenNo');
     const name = localStorage.getItem('userName');
     
-    if(!token || !name) return alert("No active order found!");
-
-    if(confirm("Order cancel karein? Entry update ho jayegi.")) {
-        // CORS-safe tarika: Data ko URL parameters ki tarah bhejna
-        const params = new URLSearchParams();
-        params.append('token', token);
-        params.append('name', name);
-        params.append('status', 'Cancelled');
-
+    if(confirm("Order cancel karein?")) {
+        // Apps Script ko status bhejna
         fetch(bridgeUrl, {
             method: 'POST',
             mode: 'no-cors',
-            body: params // Params bhej rahe hain JSON nahi
+            body: JSON.stringify({ 
+                token: token, 
+                name: name, 
+                status: "Cancelled" 
+            })
         });
 
-        // WhatsApp turant
-        let cancelMsg = `*URGENT CANCELLATION* ❌%0A━━━━━━━━━━━━━━━%0A*Token:* %23${token}%0A*Customer:* ${name}`;
+        let cancelMsg = `*URGENT CANCELLATION* ❌%0A*Token:* %23${token}%0A*Customer:* ${name}`;
         window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
         
         clearInterval(cancelInterval);
         document.getElementById('cancel-bar').style.display = 'none';
         localStorage.removeItem('lastTokenNo');
-        alert("Cancellation Request Sent! Check Sheet in a few seconds.");
+        localStorage.removeItem('timerStartTime');
+        alert("Cancelled!");
     }
-};    window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
+};
+
+// OnLoad check
+window.onload = () => { 
+    showTab(localStorage.getItem('activeTab') || 'home');
+    if(localStorage.getItem('lastTokenNo') && localStorage.getItem('timerStartTime')) {
+        startCancelTimer(300, false); // Existing order check
+    }
+}; 
+    
+    window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
     window.onload = () => { 
         showTab(localStorage.getItem('activeTab') || 'home');
         if(localStorage.getItem('lastTokenNo')) startCancelTimer(300);
