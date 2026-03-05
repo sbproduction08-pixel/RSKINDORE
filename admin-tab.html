@@ -58,24 +58,20 @@
     const bell = document.getElementById('kitchenBell');
 
    function refreshAdminData() {
-    const url = adminBridge + "?action=readAdmin";
+    // 1. Ek unique callback function banayein
+    const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
     
-    fetch(url, {
-        method: 'GET',
-        mode: 'cors', // Ise 'cors' hi rehne dein
-        redirect: 'follow' // Google Script ke liye ye zaroori hai
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.json();
-    })
-    .then(data => {
-        renderOrders(data);
-    })
-    .catch(err => {
-        console.error("CORS Error Fix Try:", err);
-        // Agar fir bhi error aaye toh ye backup tarika hai (JSONP shortcut nahi hai isliye ignore)
-    });
+    // 2. Window object par ye function register karein
+    window[callbackName] = function(data) {
+        renderOrders(data); // Data milte hi render karein
+        delete window[callbackName]; // Kaam hone ke baad saaf karein
+        document.body.removeChild(script); // Script tag hata dein
+    };
+
+    // 3. Dynamic Script tag banayein (Ye CORS bypass kar lega)
+    const script = document.createElement('script');
+    script.src = adminBridge + "?action=readAdmin&callback=" + callbackName;
+    document.body.appendChild(script);
 }
     function renderOrders(orders) {
         const list = document.getElementById('admin-orders-list');
