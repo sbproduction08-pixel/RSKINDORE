@@ -49,25 +49,23 @@
     
     .cust-info { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; display: block; }
     .order-items { font-size: 12px; color: #bbb; line-height: 1.4; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; margin: 8px 0; }
-    
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
 <script>
-    // Bridge URL (Wahi jo index.html mein hai)
+    // 1.bridgeUrl wahi rakhein jo index.html mein hai
     const adminBridge = 'https://script.google.com/macros/s/AKfycbyfJH5iauZsXjdewfHAgQ4Sbljm6Gj2vWR96WdDhK8GJLmntz6ixY9QD6xSUt9mN1MB/exec';
     let lastKnownToken = localStorage.getItem('lastProcessedToken') || 0;
     const bell = document.getElementById('kitchenBell');
 
     function refreshAdminData() {
-        // Hum Google Sheet se sara data mangwayenge (Sheet name handle karne ke liye Admin mode)
+        // action=readAdmin bhej rahe hain doGet ke liye
         fetch(adminBridge + "?action=readAdmin") 
         .then(res => res.json())
         .then(data => {
             renderOrders(data);
         })
         .catch(err => {
-            console.log("Error loading admin data");
+            console.log("Admin Data load nahi ho raha...");
         });
     }
 
@@ -80,8 +78,6 @@
         let totalSale = 0;
         let todayCount = 0;
         let maxToken = 0;
-
-        // Date check: Aaj ke orders filter karne ke liye
         const todayStr = new Date().toDateString();
 
         orders.reverse().forEach(order => {
@@ -112,37 +108,38 @@
             }
         });
 
-        // "Ting" Sound Logic: Agar naya token aaya ho
+        // Ting Sound Logic
         if(maxToken > lastKnownToken && lastKnownToken != 0) {
-            bell.play().catch(e => console.log("Sound blocked! Click once on screen."));
-            lastKnownToken = maxToken;
-            localStorage.setItem('lastProcessedToken', maxToken);
-        } else if (lastKnownToken == 0) {
-            lastKnownToken = maxToken;
-            localStorage.setItem('lastProcessedToken', maxToken);
+            bell.play().catch(e => console.log("Click on screen to enable sound"));
         }
+        lastKnownToken = maxToken;
+        localStorage.setItem('lastProcessedToken', maxToken);
 
         list.innerHTML = html || "<div style='text-align:center; padding:50px; color:#555;'>Aaj koi orders nahi hain.</div>";
         totalOrdersDisp.innerText = todayCount;
         totalSaleDisp.innerText = totalSale.toLocaleString();
     }
 
-    // Google Sheet mein Status badalne ke liye
+    // Is markDone ko aise hi rakhein taaki purana doPost ise samajh sake
     window.markDone = function(token, name) {
         if(!confirm("Order taiyar hai?")) return;
         
+        const params = new URLSearchParams();
+        params.append('token', token);
+        params.append('name', name);
+        params.append('status', 'Done');
+
         fetch(adminBridge, {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ token: token, name: name, status: "Done" })
+            body: params.toString(),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
         });
         
         alert("Token #" + token + " marked as DONE!");
-        setTimeout(refreshAdminData, 1500); // Thoda ruk kar refresh
+        setTimeout(refreshAdminData, 1000); 
     };
 
-    // Har 30 second mein Auto Refresh
     setInterval(refreshAdminData, 30000);
     refreshAdminData();
 </script>
