@@ -23,7 +23,7 @@
             overflow-x: hidden; 
         }
 
-        /* --- HORIZONTAL ROYAL HEADER SECTION --- */
+        /* --- HEADER SECTION --- */
         header { 
             padding: 30px 10px; 
             text-align: center; 
@@ -38,161 +38,45 @@
             flex-wrap: nowrap; 
         }
 
-        /* 1. Main Logo with Fire Motion */
-        .logo-box {
-            position: relative;
-            flex-shrink: 0;
-            width: 85px;
-            height: 85px;
-        }
-        .main-logo { 
-            position: relative;
-            width: 75px; height: 75px; 
-            border-radius: 50%; 
-            border: 2px solid var(--gold); 
-            box-shadow: 0 0 15px var(--gold); 
-            cursor: pointer; 
-            z-index: 10;
-            background: #000;
-        }
-        .fire-motion {
-            position: absolute;
-            top: -5px; left: -5px;
-            width: 85px; height: 85px;
-            border-radius: 50%;
-            border: 3px solid var(--fire);
-            filter: blur(1px);
-            box-shadow: 0 0 15px var(--fire), inset 0 0 10px var(--fire);
-            animation: burn 3s linear infinite;
-            z-index: 5;
-        }
-        @keyframes burn {
-            0% { transform: rotate(0deg) scale(1); opacity: 0.8; }
-            50% { transform: rotate(180deg) scale(1.1); opacity: 0.5; }
-            100% { transform: rotate(360deg) scale(1); opacity: 0.8; }
-        }
-
-        /* 2. Royal Text Image (Center - BIG & CLEAR) */
-        .title-wrapper {
-            position: relative;
-            flex-grow: 1;
-            max-width: 500px;
-            overflow: visible;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-        }
-        .royal-title-img {
-            width: 100%;
-            max-width: 500px;
-            display: block;
-            filter: drop-shadow(0 0 10px var(--gold));
-            animation: titlePulse 3s infinite ease-in-out;
-            transform-origin: center;
-        }
-        .title-wrapper::after {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.7s;
-        }
-        .title-wrapper:hover::after { left: 150%; }
-
-        @keyframes titlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* 3. Indore Vector (Right) */
-        .vector-container {
-            flex-shrink: 0;
-            width: 100px;
-        }
-        .indore-vector { 
-            width: 160%; 
-            display: block;
-            filter: drop-shadow(0 0 8px var(--gold)); 
-            animation: heartBeat 1.2s infinite ease-in-out;
-        }
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* --- User Panel & Royal Buttons --- */
-        .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; min-height: 40px; }
-        #welcome-user { color: var(--gold); font-weight: bold; font-size: 17px; font-family: 'Marcellus', serif; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); margin-bottom: 5px; }
+        .logo-box { position: relative; flex-shrink: 0; width: 85px; height: 85px; }
+        .main-logo { position: relative; width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 15px var(--gold); cursor: pointer; z-index: 10; background: #000; }
+        .fire-motion { position: absolute; top: -5px; left: -5px; width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--fire); filter: blur(1px); box-shadow: 0 0 15px var(--fire), inset 0 0 10px var(--fire); animation: burn 3s linear infinite; z-index: 5; }
         
-        #loginBtn { 
-            background: linear-gradient(45deg, #8a6d3b, #D4AF37, #f1d36d, #8a6d3b);
-            background-size: 200% auto;
-            color: #000; 
-            border: 1px solid #5c4013;
-            box-shadow: 0 0 15px var(--gold-glow), inset 0 0 5px rgba(255,255,255,0.5);
-            padding: 10px 30px;
-            border-radius: 30px;
-            font-size: 13px;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: 0.5s;
-            font-family: 'Marcellus', serif;
-            font-weight: 800;
-        }
-        #loginBtn:hover { background-position: right center; transform: scale(1.08) translateY(-2px); box-shadow: 0 0 25px var(--gold); }
+        @keyframes burn { 0% { transform: rotate(0deg) scale(1); opacity: 0.8; } 50% { transform: rotate(180deg) scale(1.1); opacity: 0.5; } 100% { transform: rotate(360deg) scale(1); opacity: 0.8; } }
 
-        #logoutBtn { 
-            background: rgba(20, 20, 20, 0.8); 
-            color: #ff4444; 
-            border: 1px solid #ff4444; 
-            display: none; 
-            padding: 8px 20px; 
-            border-radius: 30px;
-            font-size: 10px; 
-            cursor: pointer;
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        #logoutBtn:hover { background: #ff4444; color: #fff; box-shadow: 0 0 20px rgba(255, 68, 68, 0.6); }
+        .title-wrapper { position: relative; flex-grow: 1; max-width: 500px; display: flex; justify-content: center; }
+        .royal-title-img { width: 100%; max-width: 500px; filter: drop-shadow(0 0 10px var(--gold)); animation: titlePulse 3s infinite ease-in-out; }
+        
+        @keyframes titlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
+        .user-panel { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 15px; min-height: 40px; }
+        #welcome-user { color: var(--gold); font-weight: bold; font-size: 17px; font-family: 'Marcellus', serif; }
+        
+        #loginBtn { background: linear-gradient(45deg, #8a6d3b, #D4AF37, #f1d36d); color: #000; border: 1px solid #5c4013; padding: 10px 30px; border-radius: 30px; font-weight: 800; cursor: pointer; }
+        #logoutBtn { background: rgba(20, 20, 20, 0.8); color: #ff4444; border: 1px solid #ff4444; display: none; padding: 8px 20px; border-radius: 30px; cursor: pointer; }
+
+        /* --- ACTIVE ORDER BAR --- */
         #cancel-bar { 
-    display: none; /* Default hide */
-    background: rgba(0,0,0,0.8); 
-    border: 1px solid var(--gold); 
-    padding: 15px; 
-    margin: 10px; 
-    border-radius: 10px; 
-    text-align: center;
-    position: sticky;
-    top: 70px;
-    z-index: 3000;
-}
+            display: none; 
+            background: rgba(0,0,0,0.9); 
+            border: 1px solid var(--gold); 
+            padding: 15px; 
+            margin: 10px; 
+            border-radius: 10px; 
+            text-align: center;
+            position: sticky;
+            top: 70px;
+            z-index: 3000;
+        }
 
-        /* --- UI & Navigation --- */
         .bottom-nav { position: sticky; top: 0; z-index: 2000; width: 100%; background: rgba(15, 12, 5, 0.95); border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(10px); }
-        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; text-shadow: 0 0 10px var(--gold); }
+        .nav-item { color: #888; font-size: 11px; text-transform: uppercase; font-weight: 800; cursor: pointer; }
+        .nav-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
 
         .app-container { max-width: 500px; margin: 0 auto; min-height: 65vh; padding: 15px; padding-bottom: 120px; }
-        #el-bar { display: none; background: rgba(255, 68, 68, 0.15); border: 1px solid #ff4444; padding: 12px; margin: 10px; border-radius: 10px; text-align: center; animation: fadeIn 0.5s ease; }
+        #floatingCheckout { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid #D4AF37; padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 9999; }
         
-        #floatingCheckout { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1a; border-top: 2px solid #D4AF37; padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 9999; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.8); }
-
-        /* --- ROYAL FOOTER --- */
-        .footer-section { 
-            text-align: center; 
-            padding: 50px 20px; 
-            background: linear-gradient(to bottom, #1a1a1a, #2a0a0a); 
-            border-top: 3px solid var(--gold); 
-            box-shadow: 0 -10px 30px rgba(212, 175, 55, 0.2);
-            margin-top: 30px; 
-        }
-        .sub-logos { display: flex; justify-content: center; align-items: center; gap: 40px; margin-top: 25px; }
-        .swachh-logo { height: 90px !important; filter: drop-shadow(0 0 10px var(--gold-glow)) brightness(1.2); }
-        .footer-section p { color: var(--gold); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; margin-top: 40px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .footer-section { text-align: center; padding: 50px 20px; background: linear-gradient(to bottom, #1a1a1a, #2a0a0a); border-top: 3px solid var(--gold); margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -200,20 +84,20 @@
 <header>
     <div class="logo-box">
         <div class="fire-motion"></div>
-        <img src="MAIN_LOGO.jpeg" class="main-logo" alt="RSK Logo" onclick="handleAdminAccess()">
+        <img src="MAIN_LOGO.jpeg" class="main-logo" onclick="handleAdminAccess()">
     </div>
     <div class="title-wrapper">
-        <img src="royalstreetkitchen.png" class="royal-title-img" alt="Royal Street Kitchen Title">
+        <img src="royalstreetkitchen.png" class="royal-title-img">
     </div>
-    <div class="vector-container">
-        <img src="vectoriloveindore.png" class="indore-vector" alt="I Love Indore">
+    <div class="vector-container" style="width:100px;">
+        <img src="vectoriloveindore.png" style="width:160%;">
     </div>
 </header>
 
 <div class="user-panel">
     <span id="welcome-user"></span>
-    <button onclick="window.registerUser()" id="loginBtn" class="auth-btn">👑 Login / Register 👑</button>
-    <button onclick="window.logout()" id="logoutBtn" class="auth-btn">Logout Account</button>
+    <button onclick="window.registerUser()" id="loginBtn">👑 Login / Register 👑</button>
+    <button onclick="window.logout()" id="logoutBtn">Logout Account</button>
 </div>
 
 <div class="bottom-nav">
@@ -228,7 +112,7 @@
         🕒 <b>Active Order: Token #<span id="last-token">00</span></b><br>
         Cancel karne ke liye <span id="timer-display" style="color: #ff4444; font-weight: bold;">05:00</span> bache hain.
     </div>
-    <button onclick="window.cancelOrder()" style="background:#ff4444; color:white; border:none; padding:5px 15px; border-radius:5px; margin-top:8px; cursor:pointer;">Urgent Cancel ❌</button>
+    <button onclick="window.cancelOrder()" style="background:#ff4444; color:white; border:none; padding:8px 15px; border-radius:5px; margin-top:8px; cursor:pointer; font-weight:bold;">Urgent Cancel ❌</button>
 </div>
 
 <div class="app-container" id="content-area"></div>
@@ -236,24 +120,12 @@
 <div id="floatingCheckout">
     <div style="flex: 1; padding-right: 10px;">
         <div id="cart-items-list" style="font-size: 11px; color: #fff; margin-bottom: 8px; max-height: 80px; overflow-y: auto;"></div>
-        <div style="font-size: 10px; color: #D4AF37; text-transform: uppercase; letter-spacing: 1px;">Total Amount</div>
         <div style="font-size: 20px; font-weight: bold; color: #D4AF37;">₹<span id="cart-total-display">0</span></div>
     </div>
-    <button onclick="window.checkout()" id="orderNowBtn" style="background: #25D366; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-        Order Now
-    </button>
+    <button onclick="window.checkout()" id="orderNowBtn" style="background: #25D366; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">Order Now</button>
 </div>
 
-<a href="https://www.instagram.com/rsk.indore/" style="position: fixed; bottom: 110px; right: 20px; z-index: 2100; width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; justify-content: center; align-items: center; animation: jump 3s infinite; box-shadow: 0 0 15px var(--gold); text-decoration: none;" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="25">
-</a>
-
 <div class="footer-section">
-    <img src="FSSAI_Logo.png" class="fssai-main" style="width: 220px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.2)); margin-bottom: 40px;">
-    <div class="sub-logos">
-        <img src="msme_logo.avif" alt="MSME" style="height: 50px;">
-        <img src="Swachh_Bharat_Mission_Logo.png.png" alt="Swachh Bharat" class="swachh-logo">
-    </div>
     <p>© 2026 ROYAL STREET KITCHEN • RSK INDORE</p>
 </div>
 
@@ -262,26 +134,20 @@
     let cancelInterval;
     const bridgeUrl = 'https://script.google.com/macros/s/AKfycbzW74ZcMwYcbBsXa9YTExua--mx-AiY5dLmZsde9Qqpikrtkp_8OU8rjeJhy-FQiBM/exec';
 
-    // --- SECRET ADMIN ACCESS ---
-    let logoClicks = 0; let clickTimer;
-    window.handleAdminAccess = function() {
-        logoClicks++; clearTimeout(clickTimer);
-        clickTimer = setTimeout(() => { logoClicks = 0; }, 3000);
-        if (logoClicks === 3) {
-            logoClicks = 0;
-            let pass = prompt("🔐 Enter Royal Admin Key:");
-            if (pass === "RSK@2026") { showTab('admin'); }
-        }
-    };
-
+    // --- TAB SYSTEM ---
     function showTab(tabId) {
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         const activeBtn = document.getElementById('btn-' + tabId);
         if(activeBtn) activeBtn.classList.add('active');
+        
         const contentArea = document.getElementById('content-area');
         contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading...</div>";
-        fetch('./' + tabId + '-tab.html?v=' + Date.now()).then(res => res.text()).then(data => {
-            contentArea.innerHTML = data; updateUserUI();
+        
+        fetch('./' + tabId + '-tab.html?v=' + Date.now())
+        .then(res => res.text())
+        .then(data => {
+            contentArea.innerHTML = data;
+            updateUserUI();
             const scripts = contentArea.querySelectorAll('script');
             scripts.forEach(oldScript => {
                 const newScript = document.createElement('script');
@@ -289,7 +155,9 @@
                 newScript.appendChild(document.createTextNode(oldScript.innerHTML));
                 oldScript.parentNode.replaceChild(newScript, oldScript);
             });
-        }).catch(err => { contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome!</div>"; });
+        })
+        .catch(err => { contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome!</div>"; });
+        
         if(tabId !== 'admin') localStorage.setItem('activeTab', tabId);
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
@@ -301,51 +169,115 @@
         document.getElementById('logoutBtn').style.display = userName ? 'inline-block' : 'none';
     }
 
-  // Timer ko manage karne ka sahi tarika
-function startCancelTimer(duration, isNew = false) {
-    clearInterval(cancelInterval);
-    const display = document.getElementById('timer-display');
-    const bar = document.getElementById('cancel-bar');
-    const tokenSpan = document.getElementById('last-token');
-    
-    let startTime;
-    if (isNew) {
-        startTime = Date.now();
-        localStorage.setItem('timerStartTime', startTime);
-    } else {
-        startTime = parseInt(localStorage.getItem('timerStartTime'));
+    // --- TIMER LOGIC ---
+    function startCancelTimer(duration, isNew = false) {
+        clearInterval(cancelInterval);
+        const display = document.getElementById('timer-display');
+        const bar = document.getElementById('cancel-bar');
+        const tokenSpan = document.getElementById('last-token');
+        
+        let startTime;
+        if (isNew) {
+            startTime = Date.now();
+            localStorage.setItem('timerStartTime', startTime);
+        } else {
+            startTime = parseInt(localStorage.getItem('timerStartTime'));
+        }
+
+        const token = localStorage.getItem('lastTokenNo');
+        if(!token || !startTime) return;
+
+        tokenSpan.innerText = token;
+        bar.style.display = 'block';
+
+        cancelInterval = setInterval(function () {
+            let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            let remainingTime = duration - elapsedTime;
+
+            if (remainingTime <= 0) {
+                clearInterval(cancelInterval);
+                bar.style.display = 'none';
+                localStorage.removeItem('lastTokenNo');
+                localStorage.removeItem('timerStartTime');
+            } else {
+                let minutes = Math.floor(remainingTime / 60);
+                let seconds = remainingTime % 60;
+                display.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            }
+        }, 1000);
     }
 
-    tokenSpan.innerText = localStorage.getItem('lastTokenNo');
-    bar.style.display = 'block';
+    // --- ORDER & CANCEL ---
+    window.checkout = function() {
+        let uName = localStorage.getItem('userName');
+        if(!uName) { alert("Pehle Login Karein!"); return window.registerUser(); }
+        if(window.cart.length === 0) return alert("Cart khali hai!");
 
-    cancelInterval = setInterval(function () {
-        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        let remainingTime = duration - elapsedTime;
+        const btn = document.getElementById('orderNowBtn');
+        btn.innerText = "Processing... ⏳"; btn.disabled = true;
 
-        if (remainingTime <= 0) {
+        fetch(bridgeUrl)
+        .then(res => res.text())
+        .then(currentCount => {
+            let nextToken = (parseInt(currentCount) + 1).toString().padStart(2, '0');
+            let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            let itemsStr = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
+
+            fetch(bridgeUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ token: nextToken, name: uName, items: itemsStr, total: total, status: "Pending" })
+            });
+
+            localStorage.setItem('lastTokenNo', nextToken);
+            startCancelTimer(300, true);
+            
+            let waMsg = `*ROYAL STREET KITCHEN*%0A*Token:* %23${nextToken}%0A*Order:* ${itemsStr}%0A*Total: ₹${total}*`;
+            window.open(`https://wa.me/917489999890?text=${waMsg}`, '_blank');
+
+            window.cart = []; updateCartUI();
+            btn.innerText = "Order Now"; btn.disabled = false;
+        })
+        .catch(() => { 
+            alert("Connection Error!"); 
+            btn.innerText = "Order Now"; 
+            btn.disabled = false; 
+        });
+    };
+
+    window.cancelOrder = function() {
+        const token = localStorage.getItem('lastTokenNo');
+        const name = localStorage.getItem('userName');
+        if(!token) return;
+        
+        if(confirm("Order cancel karein?")) {
+            fetch(bridgeUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ token: token, name: name, status: "Cancelled" })
+            });
+            window.open(`https://wa.me/917489999890?text=*CANCELLED*%0A*Token:* ${token}`, '_blank');
             clearInterval(cancelInterval);
-            bar.style.display = 'none';
+            document.getElementById('cancel-bar').style.display = 'none';
             localStorage.removeItem('lastTokenNo');
             localStorage.removeItem('timerStartTime');
-        } else {
-            let minutes = Math.floor(remainingTime / 60);
-            let seconds = remainingTime % 60;
-            display.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            alert("Order Cancelled!");
         }
-    }, 1000);
-}
+    };
 
+    // --- AUTH & CART ---
     window.registerUser = function() {
-        let name = prompt("Aapka Naam?"); let phone = prompt("WhatsApp Number?");
-        if(name && phone && phone.length >= 10) {
-            localStorage.setItem('userName', name); localStorage.setItem('userPhone', phone);
-            updateUserUI(); alert(`Namaste ${name}!`);
+        let name = prompt("Aapka Naam?"); 
+        let phone = prompt("WhatsApp Number?");
+        if(name && phone && phone.length >= 10) { 
+            localStorage.setItem('userName', name); 
+            localStorage.setItem('userPhone', phone); 
+            updateUserUI(); 
         }
     };
 
     window.addToCart = function(name, price) {
-        if(!localStorage.getItem('userName')) { alert("Pehle Login karein!"); window.registerUser(); return; }
+        if(!localStorage.getItem('userName')) return window.registerUser();
         const existing = window.cart.find(item => item.name === name);
         if (existing) { existing.qty += 1; } else { window.cart.push({ name: name, price: price, qty: 1 }); }
         updateCartUI();
@@ -364,92 +296,30 @@ function startCancelTimer(duration, isNew = false) {
         let total = window.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         if (window.cart.length > 0) {
             bar.style.display = 'flex'; totalDisp.innerText = total;
-            listDisp.innerHTML = window.cart.map(item => `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; background:rgba(255,255,255,0.08); padding:6px 10px; border-radius:6px; border:1px solid rgba(212,175,55,0.2);"><span style="font-size:12px; color:#fff;">${item.name} <b style="color:#D4AF37;">x${item.qty}</b></span><button onclick="window.removeFromCart('${item.name}')" style="background:#ff4444; color:white; border:none; border-radius:4px; width:22px; height:22px; cursor:pointer;">-</button></div>`).join('');
+            listDisp.innerHTML = window.cart.map(item => `<div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span>${item.name} x${item.qty}</span><button onclick="window.removeFromCart('${item.name}')">-</button></div>`).join('');
         } else { bar.style.display = 'none'; }
     }
 
-    // Checkout function fix
-window.checkout = function() {
-    let uName = localStorage.getItem('userName');
-    if(!uName) return window.registerUser();
+    // --- ADMIN ---
+    let logoClicks = 0; let clickTimer;
+    window.handleAdminAccess = function() {
+        logoClicks++; clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { logoClicks = 0; }, 3000);
+        if (logoClicks === 3) {
+            logoClicks = 0;
+            let pass = prompt("🔐 Enter Royal Admin Key:");
+            if (pass === "RSK@2026") { showTab('admin'); }
+        }
+    };
 
-    const btn = document.getElementById('orderNowBtn');
-    btn.innerText = "Processing... ⏳"; btn.disabled = true;
-
-    fetch(bridgeUrl)
-    .then(res => res.text())
-    .then(currentCount => {
-        let nextToken = (parseInt(currentCount) + 1).toString().padStart(2, '0');
-        let total = window.cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        let itemsStr = window.cart.map(i => `${i.name} x${i.qty}`).join(', ');
-
-        // Google Sheet update
-        fetch(bridgeUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                token: nextToken, 
-                name: uName, 
-                items: itemsStr, 
-                total: total,
-                status: "Pending" // Explicit status
-            })
-        });
-
-        localStorage.setItem('lastTokenNo', nextToken);
-        startCancelTimer(300, true); // True means new order
-        
-        let waMsg = `*ROYAL STREET KITCHEN*%0A*Token:* %23${nextToken}%0A*Order:* ${itemsStr}%0A*Total: ₹${total}*`;
-        window.open(`https://wa.me/917489999890?text=${waMsg}`, '_blank');
-
-        window.cart = []; updateCartUI();
-        btn.innerText = "Order Now"; btn.disabled = false;
-    });
-};
-    .catch(() => { alert("Check Connection!"); btn.innerText = "Order Now"; btn.disabled = false; });
-};
-
-// Cancel function fix
-window.cancelOrder = function() {
-    const token = localStorage.getItem('lastTokenNo');
-    const name = localStorage.getItem('userName');
-    
-    if(confirm("Order cancel karein?")) {
-        // Apps Script ko status bhejna
-        fetch(bridgeUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({ 
-                token: token, 
-                name: name, 
-                status: "Cancelled" 
-            })
-        });
-
-        let cancelMsg = `*URGENT CANCELLATION* ❌%0A*Token:* %23${token}%0A*Customer:* ${name}`;
-        window.open(`https://wa.me/917489999890?text=${cancelMsg}`, '_blank');
-        
-        clearInterval(cancelInterval);
-        document.getElementById('cancel-bar').style.display = 'none';
-        localStorage.removeItem('lastTokenNo');
-        localStorage.removeItem('timerStartTime');
-        alert("Cancelled!");
-    }
-};
-
-// OnLoad check
-window.onload = () => { 
-    showTab(localStorage.getItem('activeTab') || 'home');
-    if(localStorage.getItem('lastTokenNo') && localStorage.getItem('timerStartTime')) {
-        startCancelTimer(300, false); // Existing order check
-    }
-}; 
-    
     window.logout = function() { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
+
+    // --- INITIAL LOAD ---
     window.onload = () => { 
         showTab(localStorage.getItem('activeTab') || 'home');
-        if(localStorage.getItem('lastTokenNo')) startCancelTimer(300);
+        if(localStorage.getItem('lastTokenNo') && localStorage.getItem('timerStartTime')) {
+            startCancelTimer(300, false);
+        }
     };
 </script>
 </body>
