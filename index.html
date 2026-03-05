@@ -251,11 +251,21 @@
         if(!token || !name) return alert("Order details missing!");
         
         if(confirm("Order cancel karein?")) {
-            fetch(bridgeUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({ token: token, name: name, status: "Cancelled" })
-            });
+        // Data ko URL format mein taiyar karna
+        const formData = new URLSearchParams();
+        formData.append('token', token);
+        formData.append('name', name);
+        formData.append('status', 'Cancelled');
+
+        fetch(bridgeUrl, {
+            method: 'POST',
+            mode: 'no-cors', 
+            body: formData.toString(), // JSON ki jagah string bhej rahe hain
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        });
+
+            // WhatsApp aur UI logic
+        let cancelMsg = `*CANCELLED*%0A*Token:* ${token}`;
             window.open(`https://wa.me/917489999890?text=*CANCELLED*%0A*Token:* ${token}`, '_blank');
             clearInterval(cancelInterval);
             document.getElementById('cancel-bar').style.display = 'none';
