@@ -79,7 +79,7 @@
         .footer-section { text-align: center; padding: 50px 20px; background: linear-gradient(to bottom, #1a1a1a, #2a0a0a); border-top: 3px solid var(--gold); margin-top: 30px; }
    
     /* Floating Social Bar */
-.royal-social-bar
+#royal-social-float
 {    position: fixed;
     right: 20px;       /* Right se doori */
     bottom: 30px;      /* Niche se doori */
@@ -190,6 +190,9 @@
         <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
     </a>
 </div>
+
+    <div class="royal-social-bar" id="royal-social-float">
+    </div>
     
 <script>
     window.cart = []; 
@@ -370,6 +373,17 @@
             bar.style.display = 'flex'; totalDisp.innerText = total;
             listDisp.innerHTML = window.cart.map(item => `<div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span>${item.name} x${item.qty}</span><button onclick="window.removeFromCart('${item.name}')">-</button></div>`).join('');
         } else { bar.style.display = 'none'; }
+// Social icons ko gayab kar do
+        if(socialBar) socialBar.style.display = 'none';
+
+    } else {
+        // Jab cart khali ho
+        bar.style.display = 'none';
+
+        // Social icons ko wapas dikha do
+        if(socialBar) socialBar.style.display = 'flex';
+    }
+        
     }
 
     // --- ADMIN ---
