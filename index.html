@@ -363,6 +363,7 @@
         const bar = document.getElementById('floatingCheckout');
         const listDisp = document.getElementById('cart-items-list');
         const totalDisp = document.getElementById('cart-total-display');
+        const socialBar = document.getElementById('royal-social-float');
         let total = window.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         if (window.cart.length > 0) {
             bar.style.display = 'flex'; totalDisp.innerText = total;
