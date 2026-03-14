@@ -1,88 +1,92 @@
 <div class="paigaam-wrapper" style="animation: royalEntrance 1s ease-out; padding: 10px;">
     
     <style>
-        /* Royal Background & Border */
+        /* Royal Container */
         .royal-envelope {
             background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
             border: 2px solid #D4AF37;
             border-radius: 20px;
             padding: 30px 15px;
             position: relative;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.15), inset 0 0 20px rgba(212, 175, 55, 0.05);
-            overflow: hidden;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            text-align: center;
         }
 
-        /* Decorative Corners */
-        .royal-envelope::before, .royal-envelope::after {
-            content: "👑";
-            position: absolute;
-            font-size: 20px;
-            opacity: 0.4;
-        }
-        .royal-envelope::before { top: 10px; left: 10px; }
-        .royal-envelope::after { bottom: 10px; right: 10px; }
-
-        /* Typography */
         .paigaam-title {
             font-family: 'Marcellus', serif;
             color: #D4AF37;
-            font-size: 28px;
-            letter-spacing: 5px;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 26px;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
         }
 
-        .paigaam-subtitle {
-            font-family: 'Poppins', sans-serif;
-            color: #888;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
+        /* --- Naya Feedback Dene Wala Royal Button --- */
+        .direct-google-btn {
+            background: linear-gradient(45deg, #D4AF37, #8a6d3b);
+            color: #000;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 35px;
+            font-weight: 800;
+            font-family: 'Marcellus', serif;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 10px;
+            transition: 0.3s;
+            font-size: 15px;
+            border: 1px solid #000;
         }
 
-        /* Golden Divider */
-        .royal-divider {
-            height: 1px;
-            width: 60%;
-            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
-            margin: 0 auto 30px auto;
+        .direct-google-btn:active { transform: scale(0.9); }
+
+        /* Animation for Button Glow */
+        @keyframes goldGlow {
+            0% { box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+            50% { box-shadow: 0 0 25px rgba(212,175,55,0.8); }
+            100% { box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+        }
+        .animate-glow { animation: goldGlow 2s infinite; }
+
+        /* --- Reviews Visibility Fix --- */
+        .ti-widget.ti-google .ti-review-text, 
+        .ti-widget.ti-google .ti-name, 
+        .ti-widget.ti-google .ti-date,
+        .ti-widget.ti-google .ti-header .ti-text,
+        .ti-widget.ti-google .ti-rating-num {
+            color: #ffffff !important; /* Text White dikhega */
+        }
+        
+        .ti-widget.ti-google .ti-stars .ti-star.f {
+            color: #D4AF37 !important; /* Stars Gold dikhenge */
         }
 
-        /* Animation */
         @keyframes royalEntrance {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        /* Trustindex Customization Overlay */
-        #trustindex-wrapper {
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            padding: 10px;
-            min-height: 250px;
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 
     <div class="royal-envelope">
-        <div class="paigaam-title">PAIGAAM</div>
-        <div class="paigaam-subtitle">Muntazir-e-Khaas (Awaiting your words)</div>
+        <div class="paigaam-title">PAIGAAM-E-KHAAS</div>
         
-        <div class="royal-divider"></div>
-
-        <p style="color: #eee; font-size: 14px; line-height: 1.6; margin-bottom: 25px; font-style: italic;">
-            "Aapki rai hamare liye kisi tohfe se kam nahi. Kripya apne shahi anubhav ko duniya ke saath saajha karein."
-        </p>
-
-        <div id="trustindex-wrapper">
-            <script defer async src='https://cdn.trustindex.io/loader.js?63390da67d48201047069d19ae7'></script>
+        <div style="margin-bottom: 35px;">
+            <p style="color: #ccc; font-size: 13px; margin-bottom: 15px;">Aapka anubhav hamare liye swarna-saman hai.</p>
+            
+            <a href="https://search.google.com/local/writereview?placeid=ChIJ8_Bf-77vYjkREHl5p_X8_Uo" target="_blank" class="direct-google-btn animate-glow">
+                PAIGAAM ARZI KAREIN 👑
+            </a>
+            
+            <p style="color: #666; font-size: 10px; margin-top: 8px;">(Click karne par Google Review box khulega)</p>
         </div>
 
-        <div style="margin-top: 30px; opacity: 0.6;">
-            <img src="royalstreetkitchen.png" style="width: 80px; filter: grayscale(1) brightness(2);">
-            <p style="font-size: 9px; color: #D4AF37; margin-top: 10px; letter-spacing: 2px;">
-                SHAHI MEHMAN-NAWAZI • RSK INDORE
-            </p>
+        <div style="height: 1px; width: 80%; background: linear-gradient(90deg, transparent, #D4AF37, transparent); margin: 0 auto 30px auto;"></div>
+
+        <h3 style="color: #D4AF37; font-family: 'Marcellus'; font-size: 16px; margin-bottom: 15px;">SHAHI REVIEWS</h3>
+
+        <div id="trustindex-display" style="min-height: 250px;">
+            <script defer async src='https://cdn.trustindex.io/loader.js?63390da67d48201047069d19ae7'></script>
         </div>
     </div>
 </div>
