@@ -295,7 +295,7 @@
             let waMsg = `*ROYAL STREET KITCHEN*%0A*Token:* %23${nextToken}%0A*Order:* ${itemsStr}%0A*Total: ₹${total}*`;
             window.open(`https://wa.me/917489999890?text=${waMsg}`, '_blank');
 
-            window.cart = []; updateCartUI();
+            window.cart = JSON.parse(localStorage.getItem('userCart')) || []; updateCartUI();
             btn.innerText = "Order Now"; btn.disabled = false;
         })
         .catch(() => { 
