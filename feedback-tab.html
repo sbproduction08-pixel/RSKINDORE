@@ -1,92 +1,106 @@
 <div class="paigaam-wrapper" style="animation: royalEntrance 1s ease-out; padding: 10px;">
     
     <style>
-        /* Royal Container */
         .royal-envelope {
             background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
             border: 2px solid #D4AF37;
             border-radius: 20px;
-            padding: 30px 15px;
+            padding: 35px 20px;
             position: relative;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.05);
             text-align: center;
+            overflow: hidden;
+        }
+
+        .side-brand {
+            position: absolute;
+            right: -35px;
+            top: 50px;
+            transform: rotate(90deg);
+            color: rgba(212, 175, 55, 0.3);
+            font-family: 'Marcellus', serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            white-space: nowrap;
+            text-transform: uppercase;
         }
 
         .paigaam-title {
             font-family: 'Marcellus', serif;
             color: #D4AF37;
-            font-size: 26px;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
+            font-size: 28px;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
         }
 
-        /* --- Naya Feedback Dene Wala Royal Button --- */
-        .direct-google-btn {
+        .paigaam-subtitle {
+            font-family: 'Poppins', sans-serif;
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        /* --- UPDATED DIRECT REVIEW BUTTON --- */
+        .shahi-btn {
             background: linear-gradient(45deg, #D4AF37, #8a6d3b);
             color: #000;
-            border: none;
-            padding: 16px 35px;
+            border: 1px solid #000;
+            padding: 15px 35px;
             border-radius: 35px;
             font-weight: 800;
             font-family: 'Marcellus', serif;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
             text-decoration: none;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 40px;
             transition: 0.3s;
-            font-size: 15px;
-            border: 1px solid #000;
+            position: relative;
+            z-index: 10;
         }
 
-        .direct-google-btn:active { transform: scale(0.9); }
+        .shahi-btn:active { transform: scale(0.95); }
 
-        /* Animation for Button Glow */
-        @keyframes goldGlow {
-            0% { box-shadow: 0 0 10px rgba(212,175,55,0.4); }
-            50% { box-shadow: 0 0 25px rgba(212,175,55,0.8); }
-            100% { box-shadow: 0 0 10px rgba(212,175,55,0.4); }
-        }
-        .animate-glow { animation: goldGlow 2s infinite; }
-
-        /* --- Reviews Visibility Fix --- */
+        /* Review visibility fixes */
         .ti-widget.ti-google .ti-review-text, 
         .ti-widget.ti-google .ti-name, 
         .ti-widget.ti-google .ti-date,
         .ti-widget.ti-google .ti-header .ti-text,
         .ti-widget.ti-google .ti-rating-num {
-            color: #ffffff !important; /* Text White dikhega */
+            color: #ffffff !important;
         }
-        
+
         .ti-widget.ti-google .ti-stars .ti-star.f {
-            color: #D4AF37 !important; /* Stars Gold dikhenge */
+            color: #D4AF37 !important;
         }
 
         @keyframes royalEntrance {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 
     <div class="royal-envelope">
-        <div class="paigaam-title">PAIGAAM-E-KHAAS</div>
+        <div class="side-brand">ROYAL STREET KITCHEN</div>
         
-        <div style="margin-bottom: 35px;">
-            <p style="color: #ccc; font-size: 13px; margin-bottom: 15px;">Aapka anubhav hamare liye swarna-saman hai.</p>
-            
-            <a href="https://search.google.com/local/writereview?placeid=ChIJ8_Bf-77vYjkREHl5p_X8_Uo" target="_blank" class="direct-google-btn animate-glow">
-                PAIGAAM ARZI KAREIN 👑
-            </a>
-            
-            <p style="color: #666; font-size: 10px; margin-top: 8px;">(Click karne par Google Review box khulega)</p>
-        </div>
+        <span class="paigaam-subtitle">Muntazir-e-Khaas</span>
+        <div class="paigaam-title">PAIGAAM</div>
+        
+        <div style="height: 1px; width: 60%; background: linear-gradient(90deg, transparent, #D4AF37, transparent); margin: 15px auto 30px auto;"></div>
 
-        <div style="height: 1px; width: 80%; background: linear-gradient(90deg, transparent, #D4AF37, transparent); margin: 0 auto 30px auto;"></div>
-
-        <h3 style="color: #D4AF37; font-family: 'Marcellus'; font-size: 16px; margin-bottom: 15px;">SHAHI REVIEWS</h3>
+        <a href="https://search.google.com/local/writereview?placeid=ChIJidkS38T4YjkRZ17fW3G8kQo" target="_blank" class="shahi-btn">
+            LIKHEIN APNA SHAHI ANUBHAV 👑
+        </a>
 
         <div id="trustindex-display" style="min-height: 250px;">
-           <script defer async src='https://cdn.trustindex.io/loader.js?63390da67d48201047069d19ae7'></script>
+            <script defer async src='https://cdn.trustindex.io/loader.js?63390da67d48201047069d19ae7'></script>
+        </div>
+
+        <div style="margin-top: 30px; opacity: 0.4;">
+            <p style="font-size: 9px; color: #D4AF37; letter-spacing: 2px;">SHAHI MEHMAN-NAWAZI • INDORE</p>
         </div>
     </div>
 </div>
