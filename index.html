@@ -462,14 +462,16 @@
 
     // --- INITIAL LOAD ---
     window.onload = () => { 
-    showTab(localStorage.getItem('activeTab') || 'home');
-    // Naya logic: Agar admin logged in hai, toh wahi dikhao
+    let tabToShow = localStorage.getItem('activeTab') || 'home';
+    
+    // Agar admin logged in hai toh wahi dikhao
     if(localStorage.getItem('isAdminLoggedIn') === 'true') {
         tabToShow = 'admin';
-            
-    // Refresh ke baad cart ko dobara screen par lane ke liye:
+    }
+    
+    showTab(tabToShow);
     updateCartUI(); 
-
+    
     if(localStorage.getItem('lastTokenNo') && localStorage.getItem('timerStartTime')) {
         startCancelTimer(300, false);
     }
