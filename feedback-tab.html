@@ -1,23 +1,25 @@
-<div class="paigaam-wrapper" style="animation: royalEntrance 1s ease-out; padding: 10px; width: 98vw !important; margin-left: calc(-49vw + 50%); position: relative; left: 50%; transform: translateX(-50%);">
+<div class="paigaam-wrapper" style="animation: royalEntrance 1s ease-out; padding: 10px; width: 100%; display: flex; justify-content: center;">
     
     <style>
-        /* --- THE SHAHI SPOTLIGHT DESIGN --- */
+        /* --- ALIGNMENT & WIDE FIX --- */
         .royal-envelope-wide {
-            /* SHARP GRADIENT: Upar-Niche Dark, Beech mein Pure White */
+            /* SHARP GRADIENT: Beech mein Whitish Path */
             background: linear-gradient(180deg, 
                 #0a0a0a 0%, 
-                #1a1a1a 25%, 
-                #ffffff 30%, 
-                #ffffff 70%, 
-                #1a1a1a 75%, 
+                #1a1a1a 20%, 
+                #ffffff 25%, 
+                #ffffff 75%, 
+                #1a1a1a 80%, 
                 #0a0a0a 100%);
             border: 2px solid #D4AF37;
             border-radius: 12px;
             padding: 40px 25px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            width: 100% !important;
+            width: 100%; /* Apne parent ke hisaab se wide hoga */
+            max-width: 1100px; /* Desktop par limit rakhega taaki bahar na bhage */
             box-sizing: border-box;
             overflow: hidden;
+            position: relative;
         }
 
         /* Top Left Crown */
@@ -28,20 +30,17 @@
             left: 20px;
             font-size: 18px;
             color: #D4AF37;
-            z-index: 10;
         }
 
         /* --- FONT: GOLD ON DARK TOP --- */
         .paigaam-title {
             font-family: 'Marcellus', serif;
             color: #D4AF37 !important; 
-            font-size: 34px;
-            letter-spacing: 8px;
+            font-size: clamp(24px, 6vw, 36px);
+            letter-spacing: 6px;
             margin: 10px 0 5px 0;
             text-align: left;
             font-weight: 900;
-            position: relative;
-            z-index: 10;
         }
 
         .paigaam-subtitle {
@@ -53,8 +52,6 @@
             text-align: left;
             margin-bottom: 30px;
             display: block;
-            position: relative;
-            z-index: 10;
         }
 
         /* Button: Strong Gold */
@@ -72,29 +69,25 @@
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
             margin-bottom: 50px;
             transition: 0.3s;
-            position: relative;
-            z-index: 10;
         }
 
-        /* --- TRUSTINDEX FIXES (White Path par Black Text) --- */
+        /* --- TRUSTINDEX VISIBILITY (Safe for Wide) --- */
+        .ti-widget.ti-google .ti-widget-container {
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
         .ti-widget.ti-google .ti-name, 
         .ti-widget.ti-google .ti-review-text,
         .ti-widget.ti-google .ti-date {
-            color: #000000 !important; /* Ekdum kaala text safed raaste par */
+            color: #000000 !important;
             font-weight: 600 !important;
         }
 
-        .ti-widget.ti-google .ti-inner-reply {
-            background-color: #f1ebd1 !important; /* Royal Gold tinted reply */
-            border-left: 4px solid #D4AF37 !important;
-        }
-
-        /* Bottom Logo: On Dark Bottom Section */
+        /* Bottom Logo Section */
         .bottom-branding {
             margin-top: 60px;
             text-align: left;
-            position: relative;
-            z-index: 10;
         }
 
         .bottom-branding img {
