@@ -113,12 +113,21 @@
     document.addEventListener('click', () => { bell.pause(); bell.currentTime = 0; }, {once: false});
 
     window.updateStatus = function(token, name, status) {
-        if(!confirm(status + " Token #" + token + "?")) return;
-        const params = new URLSearchParams();
-        params.append('token', token); params.append('name', name); params.append('status', status);
-        fetch(adminBridge, { method: 'POST', mode: 'no-cors', body: params.toString() });
-        alert("Action Saved!"); setTimeout(refreshAdminData, 1500);
-    };
+    if(!confirm(status + " Token #" + token + "?")) return;
+    
+    // JSON ki jagah parameters bhejenge taaki Apps Script turant pakad le
+    const url = adminBridge + "?token=" + token + "&name=" + encodeURIComponent(name) + "&status=" + encodeURIComponent(status);
+
+    fetch(url, {
+        method: 'POST',
+        mode: 'no-cors' 
+    }).then(() => {
+        alert("Action Saved!");
+        setTimeout(refreshAdminData, 1000);
+    }).catch(err => {
+        alert("Network Error!");
+    });
+};
 
     setInterval(refreshAdminData, 30000);
     refreshAdminData();
