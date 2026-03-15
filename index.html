@@ -470,6 +470,18 @@
         startCancelTimer(300, false);
     }
 };
+function toggleSideMenu() {
+    const drawer = document.getElementById('side-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    
+    if (drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+        overlay.style.display = 'none';
+    } else {
+        drawer.classList.add('open');
+        overlay.style.display = 'block';
+    }
+}    
 </script>
 </body>
 </html>
