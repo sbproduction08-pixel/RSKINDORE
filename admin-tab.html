@@ -75,18 +75,26 @@
 
     window.updateStatus = function(token, newStatus) {
         if(!confirm("Are you sure?")) return;
-        
+        const updateData = {
+        token: token.toString(),
+        status: newStatus
+    };
         // POST request fixed
         fetch(adminBridge, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ 'token': token, 'status': newStatus }).toString()
+            body: JSON.stringify(updateData)
         }).then(() => {
-            alert("Updated!");
-            setTimeout(refreshAdminData, 1000);
-        });
-    };
+        alert("Success: " + newStatus);
+        // Data turant refresh karne ke liye
+        setTimeout(refreshAdminData, 1000);
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Kuch gadbad hui, console check karein.");
+    });
+};
 
     function refreshAdminData() {
         const callbackName = 'jsonp_' + Date.now();
