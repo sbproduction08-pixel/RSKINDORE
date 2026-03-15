@@ -10,10 +10,11 @@
         .offers-header h2 {
             font-family: 'Marcellus', serif;
             color: var(--gold);
-            font-size: 30px;
+            font-size: 32px;
             letter-spacing: 5px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
         }
 
         /* --- SHAHI CARDS DESIGN --- */
@@ -25,25 +26,26 @@
             margin-bottom: 25px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            transition: 0.3s ease;
         }
 
         .offer-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px var(--gold-glow);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
         }
 
-        /* Card ke peeche halka sa watermark */
+        /* Background RSK Watermark */
         .offer-card::after {
             content: "RSK";
             position: absolute;
             right: -10px;
             bottom: -10px;
-            font-size: 80px;
-            color: rgba(212, 175, 55, 0.05);
+            font-size: 90px;
+            color: rgba(212, 175, 55, 0.04);
             font-family: 'Marcellus', serif;
             font-weight: bold;
+            pointer-events: none;
         }
 
         .offer-badge {
@@ -51,94 +53,125 @@
             color: #000;
             font-size: 10px;
             font-weight: 800;
-            padding: 5px 15px;
+            padding: 6px 15px;
             border-radius: 20px;
             display: inline-block;
             margin-bottom: 15px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .offer-title {
             font-family: 'Marcellus', serif;
             color: #fff;
-            font-size: 22px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 12px;
             display: block;
+            letter-spacing: 1px;
         }
 
         .offer-desc {
             color: #ccc;
-            font-size: 13px;
+            font-size: 14px;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .offer-footer {
             font-size: 11px;
             color: var(--gold);
             font-weight: 600;
-            border-top: 1px dashed rgba(212, 175, 55, 0.3);
-            padding-top: 15px;
+            border-top: 1px dashed rgba(212, 175, 55, 0.2);
+            padding-top: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* Shahi Button in Card */
+        /* Shahi Share Button */
         .claim-btn {
-            background: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-size: 10px;
+            background: linear-gradient(45deg, #D4AF37, #8a6d3b);
+            color: #000;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: 0.2s;
         }
 
+        .claim-btn:active { transform: scale(0.95); }
+
         @keyframes royalEntrance {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 
     <div class="offers-header">
         <h2>Shahi Saugat</h2>
-        <p style="font-size: 10px; color: #888; letter-spacing: 2px;">EXCLUSIVE OFFERS FOR OUR ROYAL GUESTS</p>
+        <p style="font-size: 11px; color: #888; letter-spacing: 3px; text-transform: uppercase;">Exclusive Rewards for Royal Guests</p>
     </div>
 
     <div class="offer-card">
         <div class="offer-badge">🎓 Indore Students Special</div>
         <span class="offer-title">Padhaku Parindey Offer</span>
-        <p class="offer-desc">Apni College ID dikhayein aur har Shahi Order par payein seedha 10% ka "Samman Discount". Kyunki Indore ke students hi hamari shaan hain!</p>
+        <p class="offer-desc">Apni College ID dikhayein aur har Shahi Order par payein seedha <b>10% Discount</b>. Indore ke future stars ke liye hamari taraf se chhota sa samman!</p>
         <div class="offer-footer">
             <span>*Valid on Bill above ₹199</span>
-            <span style="font-size: 14px;">🔥 Limited</span>
+            <button class="claim-btn" onclick="shareOffer('Padhaku Parindey (Student Discount)', 'STUDENT10')">Bhejein 🔗</button>
         </div>
     </div>
 
     <div class="offer-card" style="border-color: #ff4500;">
         <div class="offer-badge" style="background: #ff4500; color: #fff;">🔥 Itwar-e-Khas</div>
         <span class="offer-title">Sunday Shahi Feast</span>
-        <p class="offer-desc">Har Sunday, Royal Street Kitchen par laayein apne 3 doston ko, aur payein apni pasand ki ek "Signature Dish" bilkul FREE!</p>
+        <p class="offer-desc">Har Sunday, Royal Street Kitchen par laayein apne 3 doston ko, aur apni pasand ki ek <b>Signature Dish</b> bilkul FREE paayein!</p>
         <div class="offer-footer">
-            <span>*T&C Apply</span>
-            <button class="claim-btn" style="border-color: #ff4500; color: #ff4500;">Khaas Offer</button>
+            <span style="color: #ff4500;">*Hurry! Valid Only on Sundays</span>
+            <button class="claim-btn" style="background: #ff4500; color: #fff;" onclick="shareOffer('Sunday Shahi Feast (Buy 3 Get 1)', 'SUNDAYFREE')">Share 🔗</button>
         </div>
     </div>
 
     <div class="offer-card">
         <div class="offer-badge">🤝 Yaari Dosti</div>
         <span class="offer-title">Neki Kar, Chai Pi</span>
-        <p class="offer-desc">Apne kisi bhi dost ko RSK par pehli baar laayein aur dono payein hamari kadak "Royal Ginger Tea" ka ek ek pyaala muft.</p>
+        <p class="offer-desc">Apne kisi bhi dost ko RSK par pehli baar laayein aur dono payein hamari kadak <b>Royal Ginger Tea</b> ka ek-ek pyaala muft!</p>
         <div class="offer-footer">
-            <span>Referral Code: #RSKFRIEND</span>
-            <button class="claim-btn">Share 🔗</button>
+            <span>Code: #RSKFRIEND</span>
+            <button class="claim-btn" onclick="shareOffer('Neki Kar, Chai Pi (Free Ginger Tea)', '#RSKFRIEND')">Dost ko bulayein 🔗</button>
         </div>
     </div>
 
-    <p style="text-align: center; color: #555; font-size: 10px; margin-top: 30px;">
-        Saugat ki shartein Royal Street Kitchen ke adhikaar mein hain. <br> © 2026 RSK INDORE
+    <p style="text-align: center; color: #555; font-size: 11px; margin-top: 40px; line-height: 1.5;">
+        Saugat ki shartein Royal Street Kitchen ke adhikaar mein hain. <br> 
+        <b>Indore's Pride • Royal Street Kitchen © 2026</b>
     </p>
+
+    <script>
+    function shareOffer(title, code) {
+        const shareText = `Hey! Indore ke Royal Street Kitchen par kamaal ka offer chal raha hai: "${title}". \n\nPromo Code: ${code} \n\nChalo saath mein Shahi Swad ka maza lete hain! 👑🍔 \n\nCheck here:`;
+        const shareUrl = window.location.href;
+
+        if (navigator.share) {
+            navigator.share({
+                title: 'Royal Street Kitchen Offers',
+                text: shareText,
+                url: shareUrl
+            }).catch((err) => console.log('Error sharing:', err));
+        } else {
+            const fullText = `${shareText} ${shareUrl}`;
+            navigator.clipboard.writeText(fullText).then(() => {
+                alert("Offer details copy ho gayi hain! 🤝 Ab ise WhatsApp par apne doston ko bhejein.");
+            });
+        }
+    }
+    </script>
 
 </div>
