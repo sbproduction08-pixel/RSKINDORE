@@ -334,6 +334,7 @@
     // --- ORDER & CANCEL ---
     window.checkout = function() {
         let uName = localStorage.getItem('userName');
+        let uPhone = localStorage.getItem('userPhone');
         if(!uName) { alert("Pehle Login Karein!"); return window.registerUser(); }
         if(window.cart.length === 0) return alert("Cart khali hai!");
 
