@@ -1,32 +1,30 @@
-<div class="admin-panel-wrapper" style="padding-bottom: 50px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-        <div style="background: linear-gradient(45deg, #af8d19, #f1d36d); padding: 15px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 10px; color: #3a0d0d; font-weight: 800;">Total Tokens Today</div>
-            <div id="admin-total-orders" style="font-size: 26px; font-weight: bold; color: #000;">0</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--gold); padding: 15px; border-radius: 12px; text-align: center;">
-            <div style="font-size: 10px; color: var(--gold); font-weight: 800;">Estimated Sale</div>
-            <div style="font-size: 26px; font-weight: bold; color: var(--gold);">₹<span id="admin-total-sale">0</span></div>
-        </div>
-    </div>
-
-    <div id="admin-orders-list" style="display: flex; flex-direction: column; gap: 20px;">
-        <div style="text-align: center; padding: 40px; color: #555;">👑 Loading Royal Data...</div>
-    </div>
-</div>
-
-<style>
-    .order-card { background: rgba(255,255,255,0.03); border: 2px solid rgba(212,175,55,0.3); padding: 18px; border-radius: 15px; position: relative; }
-    .status-badge { font-size: 9px; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; font-weight: 800; position: absolute; top: 15px; right: 15px; }
-    .status-pending { background: #af8d19; color: #000; }
-    .status-cancelled { background: #3a0d0d; color: #ff4444; border: 1px solid #ff4444; }
-    .status-done { background: #1a3a1d; color: #25D366; border: 1px solid #25D366; }
-</style>
-
 <script>
+    // 1. URL aur Bell define karna (Jo missing tha)
+    const adminBridge = 'https://script.google.com/macros/s/AKfycbzW74ZcMwYcbBsXa9YTExua--mx-AiY5dLmZsde9Qqpikrtkp_8OU8rjeJhy-FQiBM/exec';
+    const bell = document.getElementById('kitchenBell');
+    let lastKnownToken = parseInt(localStorage.getItem('lastProcessedToken')) || 0;
+
+    // 2. Data Load Function (JSONP Fix)
+    function refreshAdminData() {
+        const callbackName = 'jsonp_' + Date.now();
+        const script = document.createElement('script');
+        script.id = 'temp-jsonp-script';
+        
+        window[callbackName] = function(data) { 
+            renderOrders(data); 
+            delete window[callbackName]; 
+            const oldScript = document.getElementById('temp-jsonp-script');
+            if(oldScript) oldScript.remove();
+        };
+
+        script.src = `${adminBridge}?action=readAdmin&callback=${callbackName}`;
+        document.body.appendChild(script);
+    }
+
+    // 3. Render Orders (Design & Display)
     function renderOrders(orders) {
         const list = document.getElementById('admin-orders-list');
-        let html = ""; let totalSale = 0; let todayCount = 0;
+        let html = ""; let totalSale = 0; let todayCount = 0; let currentMaxToken = 0;
         const todayStr = new Date().toDateString();
 
         orders.reverse().forEach(order => {
@@ -34,11 +32,13 @@
             if(dateObj.toDateString() === todayStr) {
                 todayCount++;
                 if(order.status === "Done") totalSale += parseFloat(order.total || 0);
+                
+                let tNum = parseInt(order.token);
+                if(tNum > currentMaxToken) currentMaxToken = tNum;
             }
 
             let statusClass = order.status === "Done" ? "status-done" : (order.status.includes("Cancelled") ? "status-cancelled" : "status-pending");
             
-            // Cancel Time Logic
             let cancelDisplay = "";
             if(order.cancelTime && order.status.includes("Cancelled")) {
                 const cTime = new Date(order.cancelTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -60,49 +60,44 @@
                         </div>
                         ${order.status === 'Pending' ? `
                             <div style="display:flex; gap:5px;">
-                                <button onclick="updateStatus('${order.token}', 'Cancelled By Admin')" style="background:#3a0d0d; color:#ff4444; border:1px solid #ff4444; padding:8px; border-radius:6px; font-size:10px;">CANCEL</button>
-                                <button onclick="updateStatus('${order.token}', 'Done')" style="background:#25D366; color:#fff; border:none; padding:8px 12px; border-radius:6px; font-size:10px; font-weight:bold;">DONE</button>
+                                <button onclick="updateStatus('${order.token}', 'Cancelled By Admin')" style="background:#3a0d0d; color:#ff4444; border:1px solid #ff4444; padding:8px; border-radius:6px; font-size:10px; cursor:pointer;">CANCEL</button>
+                                <button onclick="updateStatus('${order.token}', 'Done')" style="background:#25D366; color:#fff; border:none; padding:8px 12px; border-radius:6px; font-size:10px; font-weight:bold; cursor:pointer;">DONE</button>
                             </div>
                         ` : ''}
                     </div>
                 </div>
             `;
         });
-        list.innerHTML = html;
+
+        // Naye order par Bell bajana
+        if(currentMaxToken > lastKnownToken && lastKnownToken !== 0 && bell) {
+            bell.play().catch(e => console.log("Bell sound need touch"));
+        }
+        if(currentMaxToken > 0) {
+            lastKnownToken = currentMaxToken;
+            localStorage.setItem('lastProcessedToken', currentMaxToken);
+        }
+
+        list.innerHTML = html || "<div style='text-align:center; padding:50px; color:#555;'>Aaj koi orders nahi hain.</div>";
         document.getElementById('admin-total-orders').innerText = todayCount;
         document.getElementById('admin-total-sale').innerText = totalSale.toLocaleString();
     }
 
+    // 4. Update Function (Buttons Fix)
     window.updateStatus = function(token, newStatus) {
-        if(!confirm("Are you sure?")) return;
-        const updateData = {
-        token: token.toString(),
-        status: newStatus
-    };
-        // POST request fixed
+        if(!confirm(newStatus + " Token #" + token + "?")) return;
+        
         fetch(adminBridge, {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: JSON.stringify(updateData)
+            body: JSON.stringify({ token: token, status: newStatus })
         }).then(() => {
-        alert("Success: " + newStatus);
-        // Data turant refresh karne ke liye
-        setTimeout(refreshAdminData, 1000);
-    })
-    .catch(err => {
-        console.error("Error:", err);
-        alert("Kuch gadbad hui, console check karein.");
-    });
-};
+            alert("Action Saved!");
+            setTimeout(refreshAdminData, 1000);
+        });
+    };
 
-    function refreshAdminData() {
-        const callbackName = 'jsonp_' + Date.now();
-        const script = document.createElement('script');
-        window[callbackName] = function(data) { renderOrders(data); delete window[callbackName]; script.remove(); };
-        script.src = `${adminBridge}?action=readAdmin&callback=${callbackName}`;
-        document.body.appendChild(script);
-    }
+    // Auto load
     refreshAdminData();
     setInterval(refreshAdminData, 30000);
 </script>
