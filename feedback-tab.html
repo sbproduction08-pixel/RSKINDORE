@@ -1,110 +1,108 @@
-<div class="paigaam-wrapper" style="animation: royalEntrance 1s ease-out; padding: 10px;">
+<div class="paigaam-wrapper" style="animation: royalEntrance 1s ease-out; padding: 10px; max-width: 600px; margin: 0 auto;">
     
     <style>
-        .royal-envelope {
+        /* Wide Rectangle Container */
+        .royal-envelope-wide {
             background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
             border: 2px solid #D4AF37;
-            border-radius: 20px;
-            padding: 40px 20px;
+            border-radius: 15px;
+            padding: 30px 20px;
             position: relative;
-            box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
             text-align: center;
             overflow: hidden;
+            width: 100%; /* Wide Shape */
+            box-sizing: border-box;
         }
 
-        /* --- LEFT SIDE BRANDING (Jaise aapne bataya) --- */
+        /* Left Side Vertical Label with Crown */
         .left-royal-label {
             position: absolute;
-            left: -48px;
+            left: -42px;
             top: 50%;
             transform: translateY(-50%) rotate(-90deg);
             display: flex;
             align-items: center;
             gap: 8px;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         .label-text {
             color: #D4AF37;
             font-family: 'Marcellus', serif;
             font-size: 10px;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
-        /* --- HEADER LOGO DESIGN (Image ke mutabiq) --- */
-        .royal-header-img {
-            width: 100%;
-            max-width: 280px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+        /* Typography */
+        .paigaam-title {
+            font-family: 'Marcellus', serif;
+            color: #D4AF37;
+            font-size: 24px;
+            letter-spacing: 5px;
+            margin-top: 5px;
         }
 
-        /* --- 100% WORKING GOOGLE REVIEW BUTTON --- */
-        .shahi-btn {
+        /* Full Width Review Button */
+        .shahi-btn-wide {
             background: linear-gradient(45deg, #D4AF37, #8a6d3b);
             color: #000;
             border: 1px solid #000;
-            padding: 16px 35px;
-            border-radius: 40px;
+            padding: 12px 0;
+            border-radius: 8px;
             font-weight: 800;
             font-family: 'Marcellus', serif;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
             text-decoration: none;
-            display: inline-block;
-            margin-bottom: 40px;
+            display: block; /* Poori width lega */
+            width: 100%;
+            max-width: 350px;
+            margin: 20px auto 35px auto;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
             transition: 0.3s;
-            position: relative;
-            z-index: 100;
-            font-size: 14px;
         }
 
-        .shahi-btn:active { transform: scale(0.92); }
+        /* Trustindex Visibility Fixes for Rectangle View */
+        .ti-widget.ti-google .ti-widget-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
 
-        /* Trustindex Color Fixes */
         .ti-widget.ti-google .ti-review-text, 
         .ti-widget.ti-google .ti-name, 
         .ti-widget.ti-google .ti-date,
-        .ti-widget.ti-google .ti-header .ti-text,
         .ti-widget.ti-google .ti-rating-num {
             color: #ffffff !important;
         }
-        .ti-widget.ti-google .ti-stars .ti-star.f {
-            color: #D4AF37 !important;
-        }
 
         @keyframes royalEntrance {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 
-    <div class="royal-envelope">
+    <div class="royal-envelope-wide">
         <div class="left-royal-label">
             <span style="color:#D4AF37; transform: rotate(90deg); font-size:12px;">👑</span>
             <span class="label-text">ROYAL STREET KITCHEN</span>
         </div>
         
-        <img src="royalstreetkitchen.png" class="royal-header-img" alt="Royal Street Kitchen">
+        <div class="paigaam-title">PAIGAAM</div>
+        <p style="color: #888; font-size: 10px; letter-spacing: 2px; margin-bottom: 20px;">ANUBHAV-E-KHAS</p>
         
-        <div style="height: 1px; width: 60%; background: linear-gradient(90deg, transparent, #D4AF37, transparent); margin: 0 auto 30px auto;"></div>
+        <a href="https://search.google.com/local/writereview?placeid=ChIJidkS38T4YjkRZ17fW3G8kQo" target="_blank" class="shahi-btn-wide">
+            WRITE A REVIEW ON GOOGLE 👑
+        </a>
 
-        <div style="margin-bottom: 40px;">
-            <p style="color: #888; font-size: 12px; margin-bottom: 15px;">"Muntazir-e-Khaas"</p>
-            <a href="https://g.page/r/CWde31txvJEKEBM/review" target="_blank" class="shahi-btn">
-                ARZI KAREIN (WRITE REVIEW) 👑
-            </a>
-            <p style="color: #555; font-size: 9px; margin-top: 8px;">(Google Maps par login hona zaruri hai)</p>
-        </div>
-
-        <div id="trustindex-display" style="min-height: 250px;">
+        <div id="trustindex-wide" style="min-height: 200px; width: 100%;">
             <script defer async src='https://cdn.trustindex.io/loader.js?63390da67d48201047069d19ae7'></script>
         </div>
 
-        <div style="margin-top: 30px; opacity: 0.3;">
-            <p style="font-size: 10px; color: #D4AF37; letter-spacing: 4px;">ESTD 2026 • INDORE</p>
+        <div style="margin-top: 25px; border-top: 1px solid rgba(212,175,55,0.1); padding-top: 15px;">
+            <p style="font-size: 9px; color: #555; letter-spacing: 3px;">ROYAL STREET KITCHEN • RSK INDORE</p>
         </div>
     </div>
 </div>
