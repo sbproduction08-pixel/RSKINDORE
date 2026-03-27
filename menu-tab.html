@@ -1,63 +1,41 @@
+<div style="padding: 10px; position: sticky; top: 0; z-index: 100; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+    <input type="text" id="customerMenuSearch" oninput="window.filterMenuByCustomer()" placeholder="🔍 Search Dish (e.g. Maggie, Paneer...)" 
+           style="width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid var(--gold); background: #111; color: #fff; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+</div>
+
 <div id="dynamic-menu-render" style="padding: 10px;"></div>
 
 <style>
-    .menu-section-container {
-        margin-bottom: 40px;
-        transition: all 0.4s ease;
-        border-radius: 15px;
-        padding: 10px;
-        border: 1px solid rgba(212, 175, 55, 0.1);
-    }
-    .menu-section-container:hover {
-        transform: scale(1.01);
-        border-color: #D4AF37;
-        background: rgba(212, 175, 55, 0.03);
-    }
-    .menu-card {
-        background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: 0.3s;
-        position: relative;
-    }
-    .menu-card:hover {
-        border-color: #D4AF37;
-        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
-    }
-    .add-btn-royal {
-        background: linear-gradient(45deg, #af8d19, #f1d36d);
-        color: #000;
-        border: none;
-        width: 100%;
-        padding: 8px;
-        border-radius: 6px;
-        font-weight: 800;
-        cursor: pointer;
-        font-size: 11px;
-        text-transform: uppercase;
-    }
-    .dual-btn {
-        background: #444;
-        color: #fff;
-        border: none;
-        padding: 5px 8px;
-        border-radius: 4px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-    .dual-btn-full {
-        background: #D4AF37;
-        color: #000;
-        font-weight: bold;
-    }
+    .menu-section-container { margin-bottom: 40px; transition: all 0.4s ease; border-radius: 15px; padding: 10px; border: 1px solid rgba(212, 175, 55, 0.1); }
+    .menu-card { background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 110px; }
+    .add-btn-royal { background: linear-gradient(45deg, #af8d19, #f1d36d); color: #000; border: none; width: 100%; padding: 8px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 11px; }
+    .dual-btn { background: #444; color: #fff; border: none; padding: 6px 10px; border-radius: 4px; font-size: 10px; cursor: pointer; font-weight: bold; }
+    .dual-btn-full { background: var(--gold); color: #000; }
+    .sold-out-badge { color: #ff4444; font-weight: 800; font-size: 10px; text-align: center; margin-bottom: 5px; }
 </style>
 
 <script>
-(function() {
+(async function() {
+    const bridgeUrl = 'https://script.google.com/macros/s/AKfycbzW74ZcMwYcbBsXa9YTExua--mx-AiY5dLmZsde9Qqpikrtkp_8OU8rjeJhy-FQiBM/exec';
+    let inventoryData = {};
+    
+    // --- 1. SEARCH LOGIC ---
+    window.filterMenuByCustomer = function() {
+        let input = document.getElementById('customerMenuSearch').value.toLowerCase();
+        let cards = document.getElementsByClassName('menu-card');
+        for (let card of cards) {
+            let name = card.innerText.toLowerCase();
+            card.parentElement.style.display = name.includes(input) ? "block" : "none";
+        }
+    };
+
+    // --- 2. FETCH STOCK DATA ---
+    try {
+        const res = await fetch(bridgeUrl + "?action=getInventory");
+        inventoryData = await res.json();
+    } catch(e) { console.log("Inventory offline"); }
+
+    // --- 3. THE MASTER 36 ITEMS LIST ---
     const menuData = [
         {
             sectionName: "👑 RSK ROYAL COMBOS",
@@ -133,37 +111,43 @@
         }
     ];
 
+    // --- 4. RENDER ENGINE ---
     const container = document.getElementById('dynamic-menu-render');
     if (container) {
         let html = "";
         menuData.forEach(section => {
             html += `<div class="menu-section-container">
                 <img src="${section.sectionPhoto}" style="width:100%; border-radius:12px; margin-bottom:15px;" onerror="this.src='https://via.placeholder.com/800x400?text=RSK+Indore'">
-                <div style="color:#D4AF37; font-weight:bold; border-left:4px solid #D4AF37; padding-left:12px; margin-bottom:15px; text-transform:uppercase;">${section.sectionName}</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">`;
+                <div style="color:var(--gold); font-weight:800; border-left:4px solid var(--gold); padding-left:12px; margin-bottom:15px;">${section.sectionName}</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">`;
             
             section.items.forEach(item => {
-                html += `<div class="menu-card">
-                    <div style="color:#fff; font-size:12px; font-weight:600; margin-bottom:8px;">${item.name}</div>`;
+                const isOut = inventoryData[item.name] === "Out";
+                const cardStyle = isOut ? 'filter: grayscale(1); opacity: 0.5;' : '';
+                
+                html += `<div><div class="menu-card" style="${cardStyle}">
+                    <div style="color:#fff; font-size:12px; font-weight:600; margin-bottom:5px;">${item.name}</div>`;
                 
                 if (item.type === 'single') {
-                    html += `
-                    <div style="color:#D4AF37; font-weight:bold; margin-bottom:10px; font-size:14px;">₹${item.price}</div>
-                    <button onclick="window.addToCart('${item.name}', ${item.price})" class="add-btn-royal">+ ADD</button>`;
+                    if (isOut) {
+                        html += `<div class="sold-out-badge">● SOLD OUT</div><button disabled class="add-btn-royal" style="background:#333; color:#888;">OUT</button>`;
+                    } else {
+                        html += `<div style="color:var(--gold); font-weight:bold; font-size:14px; margin-bottom:8px;">₹${item.price}</div>
+                                 <button onclick="window.addToCart('${item.name}', ${item.price})" class="add-btn-royal">+ ADD</button>`;
+                    }
                 } else {
-                    html += `
-                    <div style="display:flex; flex-direction:column; gap:6px;">
+                    html += `<div style="display:flex; flex-direction:column; gap:5px;">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <span style="color:#ccc; font-size:10px;">H: ₹${item.halfPrice}</span>
-                            <button onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})" class="dual-btn">+ H</button>
+                            ${isOut ? '<button disabled class="dual-btn">X</button>' : `<button onclick="window.addToCart('${item.name} (H)', ${item.halfPrice})" class="dual-btn">+ H</button>`}
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="color:#D4AF37; font-size:10px; font-weight:bold;">F: ₹${item.fullPrice}</span>
-                            <button onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})" class="dual-btn dual-btn-full">+ F</button>
+                            <span style="color:var(--gold); font-size:10px; font-weight:bold;">F: ₹${item.fullPrice}</span>
+                            ${isOut ? '<button disabled class="dual-btn">X</button>' : `<button onclick="window.addToCart('${item.name} (F)', ${item.fullPrice})" class="dual-btn dual-btn-full">+ F</button>`}
                         </div>
                     </div>`;
                 }
-                html += `</div>`;
+                html += `</div></div>`;
             });
             html += `</div></div>`;
         });
