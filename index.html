@@ -288,7 +288,7 @@
                 newScript.textContent = oldScript.textContent; // 🔥 Reliable script loading
                 oldScript.parentNode.replaceChild(newScript, oldScript);
             });
-        })
+    
         .catch(err => { contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome!</div>"; 
         });
 
