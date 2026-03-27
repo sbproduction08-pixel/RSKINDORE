@@ -289,9 +289,9 @@
                 oldScript.parentNode.replaceChild(newScript, oldScript);
             });
         })
-        .catch(err => { contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome!</div>"; });
-  }
-        
+        .catch(err => { contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome!</div>"; 
+        });
+
         if(tabId !== 'admin') localStorage.setItem('activeTab', tabId);
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
