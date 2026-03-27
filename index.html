@@ -360,39 +360,47 @@
          * 2. SHAHI TAB ENGINE
          */
         function showTab(tabId) {
-            // UI Cleanup
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            const activeBtn = document.getElementById('btn-' + tabId);
-            if(activeBtn) activeBtn.classList.add('active');
-            
-            const contentArea = document.getElementById('content-area');
-            contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading Shahi Section...</div>";
-            
-            // Dynamic Fetch
-            fetch('./' + tabId + '-tab.html?v=' + Date.now())
-            .then(res => res.text())
-            .then(data => {
-                contentArea.innerHTML = data;
-                updateUserUI();
-                
-                // Script Injection Logic
-                const scripts = contentArea.querySelectorAll('script');
-                scripts.forEach(oldScript => {
-                    const newScript = document.createElement('script');
-                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                    newScript.textContent = oldScript.textContent; 
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
-                });
-            })
-            .catch(err => { 
-                console.error("Tab load failed:", err);
-                contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome to Royal Street Kitchen!</div>"; 
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    const activeBtn = document.getElementById('btn-' + tabId);
+    if(activeBtn) activeBtn.classList.add('active');
+    
+    const contentArea = document.getElementById('content-area');
+    contentArea.innerHTML = "<div style='text-align:center; padding:50px; color:var(--gold);'>👑 Loading...</div>";
+    
+    fetch('./' + tabId + '-tab.html?v=' + Date.now())
+    .then(res => res.text())
+    .then(data => {
+        contentArea.innerHTML = data;
+        updateUserUI();
+        
+        // 🔥 ERROR PROOF SCRIPT INJECTION
+        const scripts = contentArea.querySelectorAll('script');
+        scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            // Saare attributes copy karo
+            Array.from(oldScript.attributes).forEach(attr => {
+                newScript.setAttribute(attr.name, attr.value);
             });
             
-            // Tab Persistence
-            if(tabId !== 'admin') localStorage.setItem('activeTab', tabId);
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+            // Text assign karo (textContent is safer for parsing)
+            newScript.textContent = oldScript.textContent;
+            
+            // Purane script ko replace karo
+            try {
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            } catch (scriptErr) {
+                console.error("Script Execution Failed for:", tabId, scriptErr);
+            }
+        });
+    })
+    .catch(err => { 
+        console.error("Tab Load Error:", err);
+        contentArea.innerHTML = "<div style='text-align:center; padding:50px;'>Welcome!</div>"; 
+    });
+
+    if(tabId !== 'admin') localStorage.setItem('activeTab', tabId);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
         /**
          * 3. USER INTERFACE UPDATER
